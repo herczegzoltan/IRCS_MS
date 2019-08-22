@@ -9,7 +9,7 @@ using System.IO.Ports;
 namespace SerialCommunicator.Infrastructure
 {
     public static class SerialCommunicationSettings
-    {
+    {   
         public static List<string> ListOfSerialPorts()
         {
             string[] ports = SerialPort.GetPortNames();

@@ -42,7 +42,7 @@ namespace SerialCommunicator.ViewModel
 
         SerialPort COMPort = null;
 
-        private string _stateOfDevice;
+        private string _stateOfDevice = "State: False";
 
         private bool _connectButtonIsEnabled = true ;
 
@@ -129,6 +129,7 @@ namespace SerialCommunicator.ViewModel
                 MessageBox.Show("Serial Port is not active!");
             }
         }
+
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             MessageRecievedText += COMPort.ReadExisting();
@@ -218,7 +219,6 @@ namespace SerialCommunicator.ViewModel
 
             }
         }
-
         
         public string MessageRecievedText
         {
