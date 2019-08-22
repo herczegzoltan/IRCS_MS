@@ -16,100 +16,136 @@ namespace SerialCommunicator.ViewModel
     public class MainViewModel : NotifyViewModel
     {
         #region Variables
-        private ICommand m_ConnectCommand;
+        private ICommand  _connectCommand;
 
-        private ICommand m_DisConnectCommand;
+        private ICommand _disConnectCommand; //CmdSendData
 
-        private List<string> m_AvailablePorts;
+        private ICommand _sendData;
 
-        private List<int> m_BaudRates;
+        private List<string> _availablePorts;
 
-        private string m_SelectedAvailablePort;
+        private List<int> _baudRates;
 
-        private int m_SelectedBaudRate;
+        private string _selectedAvailablePort = null;
 
-        public ICommand CmdConnect => m_ConnectCommand;
+        private string _messageSendText;
 
-        public ICommand CmdDisConnect => m_DisConnectCommand;
+        private string _messageRecievedText;
+
+        private int _selectedBaudRate = 0;
+
+        public ICommand CmdConnect => _connectCommand;
+
+        public ICommand CmdDisConnect => _disConnectCommand;
+
+        public ICommand CmdSendData => _sendData;
 
         SerialPort COMPort = null;
 
-        private string m_StateOfDevice;
+        private string _stateOfDevice;
 
-        private bool m_ConnectButtonIsEnabled = true ;
+        private bool _connectButtonIsEnabled = true ;
 
-        private bool m_DisConnectButtonIsEnabled = false;
+        private bool _disConnectButtonIsEnabled = false;
+
+        private bool _runningTask;
 
         #endregion
 
         public MainViewModel()
         {
-            m_ConnectCommand = new DelegateCommand(ConnectToDevice);
-            m_DisConnectCommand = new DelegateCommand(DisConnect);
+            _connectCommand = new DelegateCommand(ConnectToDevice);
+            _disConnectCommand = new DelegateCommand(DisConnect);
+            _sendData = new DelegateCommand(SendData);
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
         }
 
         private void ConnectToDevice()
         {
-            COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
-            try
+            if (SelectedAvailablePort == null)
             {
-                COMPort.Open();
-                CmdConnectIsEnabled = false;
-                CmdDisConnectIsEnabled = true;
-                ReadingSerialState();
+                MessageBox.Show("No selected COM Port!");
+
             }
-            catch (Exception e)
+            else if (SelectedBaudRate == 0)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show("No selected Baud Rate!");
+            }
+            else
+            {
+                COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
+                try
+                {
+                    COMPort.Open();
+                    CmdConnectIsEnabled = false;
+                    CmdDisConnectIsEnabled = true;
+                    _runningTask = true;
+                    ReadingSerialState();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.ToString());
+                }
             }
         }
 
         private void ReadingSerialState()
         {
-            StateOfDevice = "State:" + COMPort.IsOpen.ToString();
+            Thread _thread = null;
+            var taskState = Task.Run(() =>
+            {
+                _thread = Thread.CurrentThread;
 
-
-            //await Task.Run(() =>
-     
-            //    while (true)
-            //    {
-            //        Application.Current.Dispatcher.Invoke(() =>
-            //        {
-            //            try
-            //            {
-            //            }
-            //            catch (Exception e)
-            //            {
-            //                MessageBox.Show(e.ToString());
-            //            }
-            //        });
-            //        Task.Delay(1000);
-            //    }
-            //});
+                while (true)
+                {
+                    StateOfDevice = "State: " + COMPort.IsOpen.ToString();
+                    Thread.Sleep(100);
+                    if (!_runningTask)
+                        _thread.Abort();
+                }
+            });
         }
 
         private  void DisConnect()
         {
             CmdConnectIsEnabled = true;
-            CmdDisConnectIsEnabled = true;
+            CmdDisConnectIsEnabled = false;
+            _runningTask = false;
+            ReadingSerialState();
             COMPort.Close();
+        }
+
+        private void SendData()
+        {
+            if (COMPort.IsOpen)
+            {
+                COMPort.Write(MessageSendText);
+
+                COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+            }
+            else
+            {
+                MessageBox.Show("Serial Port is not active!");
+            }
+        }
+        private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
+        {
+            MessageRecievedText += COMPort.ReadExisting();
         }
 
         #region Properties
 
         public string SelectedAvailablePort
         {
-
             get
             {
-                return m_SelectedAvailablePort;
+                return _selectedAvailablePort;
             }
 
             set
             {
-                m_SelectedAvailablePort = value;
+                _selectedAvailablePort = value;
                 OnPropertyChanged("AvailablePorts");
             }
         }
@@ -118,12 +154,12 @@ namespace SerialCommunicator.ViewModel
         {
             get
             {
-                return m_SelectedBaudRate;
+                return _selectedBaudRate;
             }
 
             set
             {
-                m_SelectedBaudRate = value;
+                _selectedBaudRate = value;
                 OnPropertyChanged("BaudRates");
             }
         }
@@ -132,12 +168,13 @@ namespace SerialCommunicator.ViewModel
         {
             get
             {
-                return m_AvailablePorts;
+                return _availablePorts;
             }
             set
             {
-                m_AvailablePorts = value;
+                _availablePorts = value;
                 OnPropertyChanged("AvailablePorts");
+
             }
         }
 
@@ -145,11 +182,11 @@ namespace SerialCommunicator.ViewModel
         {
             get
             {
-                return m_BaudRates;
+                return _baudRates;
             }
             set
             {
-                m_BaudRates = value;
+                _baudRates = value;
                 OnPropertyChanged("BaudRates");
             }
         }
@@ -158,12 +195,41 @@ namespace SerialCommunicator.ViewModel
         {
             get
             {
-                return m_StateOfDevice;
+                return _stateOfDevice;
             }
             set
             {
-                m_StateOfDevice = value;
+                _stateOfDevice = value;
                 OnPropertyChanged("StateOfDevice");
+
+            }
+        }
+
+        public string MessageSendText
+        {
+            get
+            {
+                return _messageSendText;
+            }
+            set
+            {
+                _messageSendText = value;
+                OnPropertyChanged("MessageSendText");
+
+            }
+        }
+
+        
+        public string MessageRecievedText
+        {
+            get
+            {
+                return _messageRecievedText;
+            }
+            set
+            {
+                _messageRecievedText = value;
+                OnPropertyChanged("MessageRecievedText");
 
             }
         }
@@ -172,11 +238,11 @@ namespace SerialCommunicator.ViewModel
         {
             get
             {
-                return m_ConnectButtonIsEnabled; ;
+                return _connectButtonIsEnabled; ;
             }
             set
             {
-                m_ConnectButtonIsEnabled = value;
+                _connectButtonIsEnabled = value;
                 OnPropertyChanged("CmdConnectIsEnabled");
             }
         }
@@ -185,14 +251,15 @@ namespace SerialCommunicator.ViewModel
         {
             get
             {
-                return m_DisConnectButtonIsEnabled; ;
+                return _disConnectButtonIsEnabled; ;
             }
             set
             {
-                m_DisConnectButtonIsEnabled = value;
+                _disConnectButtonIsEnabled = value;
                 OnPropertyChanged("CmdDisConnectIsEnabled");
             }
         }
         #endregion
+
     }
 }

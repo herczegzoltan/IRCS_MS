@@ -8,7 +8,7 @@ using System.IO.Ports;
 
 namespace SerialCommunicator.Infrastructure
 {
-    public class SerialCommunicationSettings
+    public static class SerialCommunicationSettings
     {
         public static List<string> ListOfSerialPorts()
         {
