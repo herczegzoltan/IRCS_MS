@@ -16,9 +16,9 @@ namespace SerialCommunicator.ViewModel
     public class MainViewModel : NotifyViewModel
     {
         #region Variables
-        private ICommand  _connectCommand;
+        private ICommand _connectCommand;
 
-        private ICommand _disConnectCommand; //CmdSendData
+        private ICommand _disConnectCommand;
 
         private ICommand _sendData;
 
@@ -42,9 +42,9 @@ namespace SerialCommunicator.ViewModel
 
         SerialPort COMPort = null;
 
-        private string _stateOfDevice = "State: False";
+        private string _stateOfDevice = "State: Not connected!";
 
-        private bool _connectButtonIsEnabled = true ;
+        private bool _connectButtonIsEnabled = true;
 
         private bool _disConnectButtonIsEnabled = false;
 
@@ -66,7 +66,6 @@ namespace SerialCommunicator.ViewModel
             if (SelectedAvailablePort == null)
             {
                 MessageBox.Show("No selected COM Port!");
-
             }
             else if (SelectedBaudRate == 0)
             {
@@ -96,18 +95,22 @@ namespace SerialCommunicator.ViewModel
             var taskState = Task.Run(() =>
             {
                 _thread = Thread.CurrentThread;
-
                 while (true)
                 {
-                    StateOfDevice = "State: " + COMPort.IsOpen.ToString();
                     Thread.Sleep(100);
                     if (!_runningTask)
+                    {
+                        StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
+
                         _thread.Abort();
+                    }
+                    StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
+
                 }
             });
         }
 
-        private  void DisConnect()
+        private void DisConnect()
         {
             CmdConnectIsEnabled = true;
             CmdDisConnectIsEnabled = false;
@@ -118,16 +121,18 @@ namespace SerialCommunicator.ViewModel
 
         private void SendData()
         {
-            if (COMPort.IsOpen)
+
+            if (COMPort == null)
+            {
+                MessageBox.Show("Serial Port is not active!");
+            }
+            else
             {
                 COMPort.Write(MessageSendText);
 
                 COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
             }
-            else
-            {
-                MessageBox.Show("Serial Port is not active!");
-            }
+
         }
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
@@ -219,7 +224,7 @@ namespace SerialCommunicator.ViewModel
 
             }
         }
-        
+
         public string MessageRecievedText
         {
             get
@@ -260,6 +265,5 @@ namespace SerialCommunicator.ViewModel
             }
         }
         #endregion
-
     }
 }

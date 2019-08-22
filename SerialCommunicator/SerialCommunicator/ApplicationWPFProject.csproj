@@ -65,7 +65,6 @@
     </Compile>
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Infrastructure\SerialCommunicationSettings.cs" />
-    <Compile Include="Infrastructure\SerialCommunication.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
