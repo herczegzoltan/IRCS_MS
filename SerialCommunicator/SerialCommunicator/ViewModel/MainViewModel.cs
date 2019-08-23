@@ -46,7 +46,7 @@ namespace SerialCommunicator.ViewModel
 
         private bool _connectButtonIsEnabled = true;
 
-        private bool _disConnectButtonIsEnabled = false;
+        private bool _disConnectButtonIsEnabled;
 
         private bool _runningTask;
 
@@ -98,14 +98,16 @@ namespace SerialCommunicator.ViewModel
                 while (true)
                 {
                     Thread.Sleep(100);
-                    if (!_runningTask)
+                    if (!_runningTask || !COMPort.IsOpen)
                     {
+                        CmdConnectIsEnabled = true;
+                        CmdDisConnectIsEnabled = false;
+
                         StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
 
                         _thread.Abort();
                     }
                     StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
-
                 }
             });
         }
@@ -121,7 +123,6 @@ namespace SerialCommunicator.ViewModel
 
         private void SendData()
         {
-
             if (COMPort == null)
             {
                 MessageBox.Show("Serial Port is not active!");
@@ -132,7 +133,6 @@ namespace SerialCommunicator.ViewModel
 
                 COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
             }
-
         }
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
