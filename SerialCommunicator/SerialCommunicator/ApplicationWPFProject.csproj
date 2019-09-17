@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Infrastructure\ByteMessageBuilder.cs" />
     <Compile Include="Infrastructure\XmlFilter.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Model\Measure.cs" />

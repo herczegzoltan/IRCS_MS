@@ -28,7 +28,6 @@ namespace SerialCommunicator.ViewModel
 
         private List<int> _baudRates;
 
-
         private string _selectedCardType = "";
 
         private List<string> _cardTypes;
@@ -49,9 +48,6 @@ namespace SerialCommunicator.ViewModel
 
         public ICommand CmdSendData => _sendData;
 
-
-        SerialPort COMPort = null;
-
         private string _stateOfDevice = "State: Not connected!";
 
         private bool _connectButtonIsEnabled = true;
@@ -59,7 +55,9 @@ namespace SerialCommunicator.ViewModel
         private bool _disConnectButtonIsEnabled;
 
         private bool _runningTask;
-        RootObject xmlData = null;
+
+        XmlFilter xmlData = null;
+        SerialPort COMPort = null;
 
         #endregion
 
@@ -70,8 +68,9 @@ namespace SerialCommunicator.ViewModel
             _sendData = new DelegateCommand(SendData);
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
-            xmlData = XmlProcessor.GetXmlContent();
-            CardTypes = XmlFilter.GetCardTypeNames(xmlData);
+
+            xmlData = new XmlFilter();
+            CardTypes = xmlData.GetCardTypeNames();
         }
 
         private void ConnectToDevice()
@@ -221,7 +220,7 @@ namespace SerialCommunicator.ViewModel
             {
                 _selectedCardType = value;
                 OnPropertyChanged("CardTypes");
-                MeasureTypes = XmlFilter.GetMeasurements(xmlData, SelectedCardType);
+                MeasureTypes = xmlData.GetMeasurements(SelectedCardType);
             }
         }
 

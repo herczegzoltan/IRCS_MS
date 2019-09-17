@@ -9,27 +9,39 @@ using System.Xml.Linq;
 
 namespace SerialCommunicator.Infrastructure
 {
-    public static class XmlFilter
+    public sealed class XmlFilter
     {
+        private RootObject _rootOject;
 
-        public static List<string> GetCardTypeNames(RootObject result)
+        public XmlFilter()
         {
-            IEnumerable<String> cardTypes = result.Card.Select(x => x.Name);
+            _rootOject = XmlProcessor.GetXmlContent();
+        }
+
+        private static XmlFilter instance = null;
+
+        public static XmlFilter Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new XmlFilter();
+                }
+                return instance;
+            }
+        }
+
+        public List<string> GetCardTypeNames()
+        {
+            IEnumerable<String> cardTypes = _rootOject.Card.Select(x => x.Name);
 
             return new List<string>(cardTypes);
         }
 
-        public static string GetSelectedCardTypeValue(RootObject result, string cardType)
+        public List<string> GetMeasurements(string cardType)
         {
-            string singleCardTypeValue = result.Card.Where(x => x.Name == cardType)
-                                        .Select(n => n.Value).First();
-
-            return singleCardTypeValue;
-        }
-
-        public static List<string> GetMeasurements(RootObject result, string cardType)
-        {
-            IEnumerable<IEnumerable<String>> measure = result.Card.Where(x => x.Name == cardType)
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => x.Name == cardType)
                                          .Select(m => m.Measure.Select(l => l.Name));
 
             IEnumerable<String> measureList = measure.SelectMany(s => s);
@@ -37,10 +49,18 @@ namespace SerialCommunicator.Infrastructure
             return new List<string>(measureList);
         }
 
-        public static string GetSelectedMeasurementValue(RootObject result, string cardType, string measurement)
+        private string GetSelectedCardTypeValue(string cardType)
+        {
+            string singleCardTypeValue = _rootOject.Card.Where(x => x.Name == cardType)
+                                        .Select(n => n.Value).First();
+
+            return singleCardTypeValue;
+        }
+
+        private string GetSelectedMeasurementValue(string cardType, string measurement)
         {
 
-            string singleMeasureValue = result.Card.Where(x => x.Name == cardType)
+            string singleMeasureValue = _rootOject.Card.Where(x => x.Name == cardType)
                                        .Select(n => n.Measure).First()
                                        .Where(l => l.Name == measurement)
                                        .Select(k => k.Value).First();

@@ -13,7 +13,7 @@ namespace SerialCommunicator.Resource
 {
     static public class XmlProcessor
     {
-        public static SerialCommunicator.Model.RootObject GetXmlContent()
+        public static RootObject GetXmlContent()
         {
 
             XmlSerializer serializer = new XmlSerializer(typeof(RootObject));
