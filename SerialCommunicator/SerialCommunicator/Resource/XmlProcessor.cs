@@ -18,7 +18,6 @@ namespace SerialCommunicator.Resource
 
             XmlSerializer serializer = new XmlSerializer(typeof(RootObject));
 
-
             Assembly assembly = Assembly.GetExecutingAssembly();
 
             const string xmlRead = "SerialCommunicator.Resource.functionsTable.xml";

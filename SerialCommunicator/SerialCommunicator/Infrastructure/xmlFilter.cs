@@ -13,8 +13,6 @@ namespace SerialCommunicator.Infrastructure
     {
         private RootObject _rootOject;
 
-      //  ByteMessageBuilder bmb = new ByteMessageBuilder();
-
         public XmlFilter()
         {
             _rootOject = XmlProcessor.GetXmlContent();

@@ -113,7 +113,18 @@
                   Grid.ColumnSpan="2"
                   Grid.Row="11"/>
 
-        <TextBlock Text="{Binding CurrentDateTime}" Grid.Row="12" Grid.Column="1" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox  Text="{Binding MessageRecievedText}"
+                  Grid.Column="5"
+                  Margin="10"
+                  Grid.ColumnSpan="3"
+                  Grid.Row="11"
+                  Grid.RowSpan="3"
+                  TextWrapping="Wrap"
+                  Background="Black"
+                  Foreground="White"/>
+
+
+        <TextBlock Text="{Binding CurrentDateTime}" Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 
         <Button Command="{Binding CmdMeasureOn}"  IsEnabled="{Binding CmdMeasureOnIsEnabled}" Content="Measure ON" Margin="10" Grid.Row="6"  Grid.Column="6" FontSize="30"/>

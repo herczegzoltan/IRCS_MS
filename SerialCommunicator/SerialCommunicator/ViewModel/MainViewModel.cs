@@ -12,6 +12,7 @@ using System.Windows;
 using System.Threading;
 using SerialCommunicator.Resource;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace SerialCommunicator.ViewModel
 {
@@ -59,6 +60,7 @@ namespace SerialCommunicator.ViewModel
 
         XmlFilter xmlData = null;
         SerialPort COMPort = null;
+        private DateTime _currentDateTime;
 
         #endregion
 
@@ -74,6 +76,26 @@ namespace SerialCommunicator.ViewModel
 
             xmlData = new XmlFilter();
             CardTypes = xmlData.GetCardTypeNames();
+
+            UpdateTimeUI();
+        }
+
+        private void UpdateTimeUI() {
+
+            Thread _thread = null;
+            var taskState = Task.Run(() =>
+            {
+                _thread = Thread.CurrentThread;
+                while (true)
+                {
+                    Thread.Sleep(100);
+
+                    CurrentDateTime = DateTime.Now;
+                }
+            });
+            
+        
+                
         }
 
         private void ConnectToDevice()
@@ -142,13 +164,28 @@ namespace SerialCommunicator.ViewModel
 
             xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType);
 
+            //connect FIX
+            SendData(0x01); //connect
+            SendData(0x00); //connect
+            SendData(0x00); //connect
+            SendData(0x00); //connect
+            SendData(0x0D); //connect
+            //connect
+
+            SendData(0x03); // measure on
             foreach (byte item in ByteMessageBuilder.GetByteList())
             {
                 SendData(item);
             }
-
+            SendData(0x05); //run
+            SendData(0x0D); //eof
 
             ByteMessageBuilder.ClearByteList();
+            //SendData(0x07);
+            //SendData(0x02);
+            //SendData(0x01);
+            //SendData(0x03);
+            //SendData(0x0D);
 
         }
 
@@ -171,7 +208,7 @@ namespace SerialCommunicator.ViewModel
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            MessageRecievedText += COMPort.ReadExisting();
+            MessageRecievedText += (COMPort.ReadByte()).ToString()+"\n";
         }
 
         #region Properties
@@ -288,7 +325,6 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-
         public string StateOfDevice
         {
             get
@@ -299,6 +335,21 @@ namespace SerialCommunicator.ViewModel
             {
                 _stateOfDevice = value;
                 OnPropertyChanged("StateOfDevice");
+
+            }
+        }
+
+
+        public DateTime CurrentDateTime
+        {
+            get
+            {
+                return _currentDateTime;
+            }
+            set
+            {
+                _currentDateTime = value;
+                OnPropertyChanged("CurrentDateTime");
 
             }
         }
