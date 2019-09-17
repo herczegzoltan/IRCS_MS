@@ -19,6 +19,14 @@ namespace SerialCommunicator.Infrastructure
             return new List<string>(cardTypes);
         }
 
+        public static string GetSelectedCardTypeValue(RootObject result, string cardType)
+        {
+            string singleCardTypeValue = result.Card.Where(x => x.Name == cardType)
+                                        .Select(n => n.Value).First();
+
+            return singleCardTypeValue;
+        }
+
         public static List<string> GetMeasurements(RootObject result, string cardType)
         {
             IEnumerable<IEnumerable<String>> measure = result.Card.Where(x => x.Name == cardType)
@@ -27,7 +35,17 @@ namespace SerialCommunicator.Infrastructure
             IEnumerable<String> measureList = measure.SelectMany(s => s);
 
             return new List<string>(measureList);
+        }
 
+        public static string GetSelectedMeasurementValue(RootObject result, string cardType, string measurement)
+        {
+
+            string singleMeasureValue = result.Card.Where(x => x.Name == cardType)
+                                       .Select(n => n.Measure).First()
+                                       .Where(l => l.Name == measurement)
+                                       .Select(k => k.Value).First();
+
+            return singleMeasureValue;
         }
     }
 }
