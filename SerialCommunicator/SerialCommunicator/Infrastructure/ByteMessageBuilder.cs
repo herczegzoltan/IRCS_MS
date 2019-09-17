@@ -6,44 +6,31 @@ using System.Threading.Tasks;
 
 namespace SerialCommunicator.Infrastructure
 {
-    public sealed class ByteMessageBuilder
+    public static class ByteMessageBuilder
     {
-        public ByteMessageBuilder()
-        {
-        }
+        private static List<byte> listOfBytes = new List<byte>() { };
 
-        private static ByteMessageBuilder instance = null;
-
-        public static ByteMessageBuilder Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new ByteMessageBuilder();
-                }
-                return instance;
-            }
-        }
-
-
-        private List<byte> listOfBytes = new List<byte>() { };
-
-        public void AddNewToByteList(byte newByte)
+        public static void AddNewToByteList(byte newByte)
         {
             listOfBytes.Add(newByte);
         }
 
-        public void ClearByteList(byte newByte)
+        public static void ClearByteList()
         {
             listOfBytes.Clear();
         }
 
-        public List<byte> GetByteList()
+        public static List<byte> GetByteList()
         {
-          
             return listOfBytes;
         }
 
+        public static byte ConvertStringToByte(string strByte)
+        {
+            int value = Convert.ToInt32(strByte, 16);
+            byte byteVal = Convert.ToByte(value);
+
+            return byteVal;
+        }
     }
 }

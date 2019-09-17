@@ -22,13 +22,14 @@ namespace SerialCommunicator.ViewModel
 
         private ICommand _disConnectCommand;
 
-        private ICommand _sendData;
+        private ICommand _measureOn;
 
         private List<string> _availablePorts;
 
         private List<int> _baudRates;
 
         private string _selectedCardType = "";
+        private string _selectedMeasureType = "";
 
         private List<string> _cardTypes;
 
@@ -46,7 +47,7 @@ namespace SerialCommunicator.ViewModel
 
         public ICommand CmdDisConnect => _disConnectCommand;
 
-        public ICommand CmdSendData => _sendData;
+        public ICommand CmdMeasureOn => _measureOn;
 
         private string _stateOfDevice = "State: Not connected!";
 
@@ -65,7 +66,9 @@ namespace SerialCommunicator.ViewModel
         {
             _connectCommand = new DelegateCommand(ConnectToDevice);
             _disConnectCommand = new DelegateCommand(DisConnect);
-            _sendData = new DelegateCommand(SendData);
+            _measureOn = new DelegateCommand(SendMeasureOn);
+
+
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
 
@@ -133,19 +136,38 @@ namespace SerialCommunicator.ViewModel
             COMPort.Close();
         }
 
-        private void SendData()
+        private void SendMeasureOn()
         {
+            xmlData.GetSelectedCardTypeValue(SelectedCardType);
+
+            xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType);
+
+            foreach (byte item in ByteMessageBuilder.GetByteList())
+            {
+                SendData(item);
+            }
+
+
+            ByteMessageBuilder.ClearByteList();
+
+        }
+
+
+        private void SendData(byte data)
+        {
+            var dataArray = new byte[] { data };
             if (COMPort == null)
             {
                 MessageBox.Show("Serial Port is not active!");
             }
             else
             {
-                COMPort.Write(MessageSendText);
-
+                COMPort.Write(dataArray,0,1);
                 COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
             }
         }
+
+        
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
@@ -235,6 +257,21 @@ namespace SerialCommunicator.ViewModel
             {
                 _cardTypes = value;
                 OnPropertyChanged("CardTypes");
+            }
+        }
+
+
+        public string SelectedMeasureType
+        {
+            get
+            {
+                return _selectedMeasureType;
+            }
+
+            set
+            {
+                _selectedMeasureType = value;
+                OnPropertyChanged("MeasureTypes");
             }
         }
 

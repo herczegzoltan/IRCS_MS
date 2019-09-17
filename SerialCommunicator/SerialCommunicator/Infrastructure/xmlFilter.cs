@@ -13,6 +13,8 @@ namespace SerialCommunicator.Infrastructure
     {
         private RootObject _rootOject;
 
+      //  ByteMessageBuilder bmb = new ByteMessageBuilder();
+
         public XmlFilter()
         {
             _rootOject = XmlProcessor.GetXmlContent();
@@ -49,15 +51,19 @@ namespace SerialCommunicator.Infrastructure
             return new List<string>(measureList);
         }
 
-        private string GetSelectedCardTypeValue(string cardType)
+        public void GetSelectedCardTypeValue(string cardType)
         {
             string singleCardTypeValue = _rootOject.Card.Where(x => x.Name == cardType)
                                         .Select(n => n.Value).First();
 
-            return singleCardTypeValue;
+            byte temp = ByteMessageBuilder.ConvertStringToByte(singleCardTypeValue);
+
+            ByteMessageBuilder.AddNewToByteList(temp);
+
+           // return singleCardTypeValue;
         }
 
-        private string GetSelectedMeasurementValue(string cardType, string measurement)
+        public void GetSelectedMeasurementValue(string cardType, string measurement)
         {
 
             string singleMeasureValue = _rootOject.Card.Where(x => x.Name == cardType)
@@ -65,7 +71,11 @@ namespace SerialCommunicator.Infrastructure
                                        .Where(l => l.Name == measurement)
                                        .Select(k => k.Value).First();
 
-            return singleMeasureValue;
+            byte temp = ByteMessageBuilder.ConvertStringToByte(singleMeasureValue);
+
+            ByteMessageBuilder.AddNewToByteList(temp);
+
+            //return singleMeasureValue;
         }
     }
 }
