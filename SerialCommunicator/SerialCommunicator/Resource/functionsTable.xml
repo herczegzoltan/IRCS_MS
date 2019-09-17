@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<RootObject>
+    <Card name="Common" value="0x07">
+        <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Current" value="0x02" />
+        <Measure name = "Data Bus" value="0x03" />
+        <Measure name = "Sound Bus" value="0x04" />
+    </Card>
+    <Card name="Dispatcher" value="0x02">
+        <Measure name = "AutoMeasure"    value="0x01" />
+        <Measure name = "I2C_Stuck at"   value="0x20" />
+        <Measure name = "Optocouplers"   value="0x21" />
+        <Measure name = "AD converters"  value="0x22" />
+        <Measure name = "Microphon Loudspeaker Loop" value="0x23" />
+        <Measure name = "Amplifier 1" value="0x24" />
+        <Measure name = "Amplifier 2" value="0x25" />
+        <Measure name = "Amplifier 3" value="0x26" />
+        <Measure name = "Phone Office DC Ohm" value="0x27" />
+        <Measure name = "Phone Office Sound"  value="0x28" />
+    </Card>
+    <Card name="Intercom" value="0x03">
+        <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Line1" value="0x30" />
+        <Measure name = "Line2" value="0x31" />
+        <Measure name = "Line3" value="0x32" />
+        <Measure name = "Line4" value="0x33" />
+        <Measure name = "Input sense" value="0x34" />
+        <Measure name = "Output load" value="0x35" />
+    </Card>
+    <Card name="CBLB" value="0x04">
+        <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Line1" value="0x40" />
+        <Measure name = "Line2" value="0x41" />
+        <Measure name = "Line3" value="0x42" />
+        <Measure name = "Line4" value="0x43" />
+        <Measure name = "Line5" value="0x44" />
+        <Measure name = "Line6" value="0x45" />
+    </Card>
+    <Card name="Rele3er" value="0x05">
+        <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "I2C" value="0x50" />
+        <Measure name = "Relay Zones" value="0x51" />
+    </Card>
+    <Card name="AMP100" value="0x06">
+        <Measure name = "AutoMeasure" value="0x01" />
+    </Card>
+</RootObject>

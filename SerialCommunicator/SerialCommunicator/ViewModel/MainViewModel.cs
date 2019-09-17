@@ -10,6 +10,8 @@ using SerialCommunicator.Infrastructure;
 using System.IO.Ports;
 using System.Windows;
 using System.Threading;
+using SerialCommunicator.Resource;
+using System.Xml.Linq;
 
 namespace SerialCommunicator.ViewModel
 {
@@ -26,6 +28,13 @@ namespace SerialCommunicator.ViewModel
 
         private List<int> _baudRates;
 
+
+        private string _selectedCardType = "";
+
+        private List<string> _cardTypes;
+
+        private List<string> _measureTypes;
+
         private string _selectedAvailablePort = null;
 
         private string _messageSendText;
@@ -40,6 +49,7 @@ namespace SerialCommunicator.ViewModel
 
         public ICommand CmdSendData => _sendData;
 
+
         SerialPort COMPort = null;
 
         private string _stateOfDevice = "State: Not connected!";
@@ -49,6 +59,7 @@ namespace SerialCommunicator.ViewModel
         private bool _disConnectButtonIsEnabled;
 
         private bool _runningTask;
+        RootObject xmlData = null;
 
         #endregion
 
@@ -59,6 +70,8 @@ namespace SerialCommunicator.ViewModel
             _sendData = new DelegateCommand(SendData);
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
+            xmlData = XmlProcessor.GetXmlContent();
+            CardTypes = XmlFilter.GetCardTypeNames(xmlData);
         }
 
         private void ConnectToDevice()
@@ -196,6 +209,49 @@ namespace SerialCommunicator.ViewModel
                 OnPropertyChanged("BaudRates");
             }
         }
+
+        public string SelectedCardType
+        {
+            get
+            {
+                return _selectedCardType;
+            }
+
+            set
+            {
+                _selectedCardType = value;
+                OnPropertyChanged("CardTypes");
+                MeasureTypes = XmlFilter.GetMeasurements(xmlData, SelectedCardType);
+            }
+        }
+
+
+        public List<string> CardTypes
+        {
+            get
+            {
+                return _cardTypes;
+            }
+            set
+            {
+                _cardTypes = value;
+                OnPropertyChanged("CardTypes");
+            }
+        }
+
+        public List<string> MeasureTypes
+        {
+            get
+            {
+                return _measureTypes;
+            }
+            set
+            {
+                _measureTypes = value;
+                OnPropertyChanged("MeasureTypes");
+            }
+        }
+
 
         public string StateOfDevice
         {

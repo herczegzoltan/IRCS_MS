@@ -63,6 +63,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Infrastructure\XmlFilter.cs" />
+    <Compile Include="Model\Card.cs" />
+    <Compile Include="Model\Measure.cs" />
+    <Compile Include="Model\RootObject.cs" />
+    <Compile Include="Resource\XmlProcessor.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Infrastructure\SerialCommunicationSettings.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -97,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\functionsTable.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
