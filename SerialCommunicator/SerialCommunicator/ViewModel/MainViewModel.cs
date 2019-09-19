@@ -90,12 +90,9 @@ namespace SerialCommunicator.ViewModel
                 {
                     Thread.Sleep(100);
 
-                    CurrentDateTime = DateTime.Now;
+                    CurrentDateTime = DateTime.UtcNow;
                 }
             });
-            
-        
-                
         }
 
         private void ConnectToDevice()
@@ -118,6 +115,7 @@ namespace SerialCommunicator.ViewModel
                     CmdDisConnectIsEnabled = true;
                     _runningTask = true;
                     ReadingSerialState();
+                    ConfigureDevice();
                 }
                 catch (Exception e)
                 {
@@ -158,12 +156,8 @@ namespace SerialCommunicator.ViewModel
             COMPort.Close();
         }
 
-        private void SendMeasureOn()
+        private void ConfigureDevice()
         {
-            xmlData.GetSelectedCardTypeValue(SelectedCardType);
-
-            xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType);
-
             //connect FIX
             SendData(0x01); //connect
             SendData(0x00); //connect
@@ -171,16 +165,23 @@ namespace SerialCommunicator.ViewModel
             SendData(0x00); //connect
             SendData(0x0D); //connect
             //connect
+        }
 
+        private void SendMeasureOn()
+        {
+            xmlData.GetSelectedCardTypeValue(SelectedCardType);
+
+            xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType);
+
+           
             SendData(0x03); // measure on
             foreach (byte item in ByteMessageBuilder.GetByteList())
             {
                 SendData(item);
             }
-            SendData(0x05); //run
+            SendData(0x05); //run no need -> 0x00
             SendData(0x0D); //eof
 
-            ByteMessageBuilder.ClearByteList();
             //SendData(0x07);
             //SendData(0x02);
             //SendData(0x01);
@@ -192,7 +193,7 @@ namespace SerialCommunicator.ViewModel
 
         private void SendData(byte data)
         {
-            var dataArray = new byte[] { data };
+            var dataArray = new byte[] { data , 0x01,0x02};
             if (COMPort == null)
             {
                 MessageBox.Show("Serial Port is not active!");
@@ -208,7 +209,10 @@ namespace SerialCommunicator.ViewModel
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            MessageRecievedText += (COMPort.ReadByte()).ToString()+"\n";
+            if (COMPort.IsOpen)
+            {
+                MessageRecievedText += (COMPort.ReadByte()).ToString() + "\n";
+            }
         }
 
         #region Properties

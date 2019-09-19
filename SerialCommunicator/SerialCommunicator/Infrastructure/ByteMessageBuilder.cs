@@ -10,6 +10,8 @@ namespace SerialCommunicator.Infrastructure
     {
         private static List<byte> listOfBytes = new List<byte>() { };
 
+        private static byte[] bytesArry = new byte[] { };
+
         public static void AddNewToByteList(byte newByte)
         {
             listOfBytes.Add(newByte);
