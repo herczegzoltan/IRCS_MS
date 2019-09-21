@@ -15,12 +15,11 @@ namespace SerialCommunicator.Resource
     {
         public static RootObject GetXmlContent()
         {
-
             XmlSerializer serializer = new XmlSerializer(typeof(RootObject));
 
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            const string xmlRead = "SerialCommunicator.Resource.functionsTable.xml";
+            const string xmlRead = "SerialCommunicator.Resource.commandsTable.xml";
 
             using (Stream stream = assembly.GetManifestResourceStream(xmlRead))
             {

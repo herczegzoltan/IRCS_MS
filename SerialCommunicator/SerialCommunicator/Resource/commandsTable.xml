@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <RootObject>
+    <DefaultValues> 
+      <Record name = "EOF"        value = "0x0D"/>
+      <Record name = "Connect"    value = "0X01"/>
+      <Record name = "DisConnect" value = "0X02"/>
+      <Record name = "MeasureOn"  value = "0X03"/>
+      <Record name = "MeasureOff" value = "0X04"/>
+      <Record name = "Run" value = "0X05"/>
+    </DefaultValues>
     <Card name="Common" value="0x07">
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "Current" value="0x02" />

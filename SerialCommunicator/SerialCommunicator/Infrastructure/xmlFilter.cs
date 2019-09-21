@@ -16,6 +16,8 @@ namespace SerialCommunicator.Infrastructure
         public XmlFilter()
         {
             _rootOject = XmlProcessor.GetXmlContent();
+
+            GetEOF();
         }
 
         private static XmlFilter instance = null;
@@ -49,19 +51,18 @@ namespace SerialCommunicator.Infrastructure
             return new List<string>(measureList);
         }
 
-        public void GetSelectedCardTypeValue(string cardType)
+        public string GetSelectedCardTypeValue(string cardType)
         {
             string singleCardTypeValue = _rootOject.Card.Where(x => x.Name == cardType)
                                         .Select(n => n.Value).First();
 
-            byte temp = ByteMessageBuilder.ConvertStringToByte(singleCardTypeValue);
+            return singleCardTypeValue;
+            //byte temp = ByteMessageBuilder.ConvertStringToByte(singleCardTypeValue);
 
-            ByteMessageBuilder.AddNewToByteList(temp);
-
-           // return singleCardTypeValue;
+            //ByteMessageBuilder.SetByteArray(1,temp);
         }
 
-        public void GetSelectedMeasurementValue(string cardType, string measurement)
+        public string GetSelectedMeasurementValue(string cardType, string measurement)
         {
 
             string singleMeasureValue = _rootOject.Card.Where(x => x.Name == cardType)
@@ -69,11 +70,54 @@ namespace SerialCommunicator.Infrastructure
                                        .Where(l => l.Name == measurement)
                                        .Select(k => k.Value).First();
 
-            byte temp = ByteMessageBuilder.ConvertStringToByte(singleMeasureValue);
+            return singleMeasureValue;
 
-            ByteMessageBuilder.AddNewToByteList(temp);
+            // byte temp = ByteMessageBuilder.ConvertStringToByte(singleMeasureValue);
 
-            //return singleMeasureValue;
+            //    ByteMessageBuilder.SetByteArray(2, temp);
         }
+
+        public void GetClosingByte()
+        {
+            //string singleCloseCharacter = _rootOject.
+        }
+
+        public string GetEOF()
+        {
+            string singleEof = _rootOject.ValuesCommands.Record.Where(x => x.Name == "EOF")
+                .Select(n => n.Value).First();
+            return singleEof;
+        }
+
+        public string GetMeasureOn()
+        {
+            string singleMeasureOn = _rootOject.ValuesCommands.Record.Where(x => x.Name == "MeasureOn")
+                .Select(n => n.Value).First();
+            return singleMeasureOn;
+        }
+
+
+        public string GetMeasureOff()
+        {
+            string singleMeasureOff = _rootOject.ValuesCommands.Record.Where(x => x.Name == "MeasureOff")
+                .Select(n => n.Value).First();
+            return singleMeasureOff;
+        }
+
+
+        public string GetConnect()
+        {
+            string singleConnect = _rootOject.ValuesCommands.Record.Where(x => x.Name == "Connect")
+                .Select(n => n.Value).First();
+            return singleConnect;
+        }
+
+        public string GetRun()
+        {
+            string singleRun = _rootOject.ValuesCommands.Record.Where(x => x.Name == "Run")
+                .Select(n => n.Value).First();
+            return singleRun;
+        }
+
     }
 }

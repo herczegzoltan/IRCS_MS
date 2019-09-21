@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SerialCommunicator"
         mc:Ignorable="d"
-        Title="Serial Communicator" Height="1000" Width="2000">
-    <Grid Margin="10">
 
-        <Grid.ColumnDefinitions>
+        Title="Serial Communicator" Height="1000" Width="2000">
+
+    <Grid >
+
+        <Grid.ColumnDefinitions >
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="4*"/>
             <ColumnDefinition Width="4*"/>
@@ -20,7 +22,8 @@
             <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
+
+        <Grid.RowDefinitions >
             <RowDefinition Height="30"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="10*"/>
@@ -52,13 +55,26 @@
                   Grid.Row="2"
                   FontSize="16"/>
 
+        <Button IsEnabled="{Binding CmdConnectIsEnabled}" 
+                Command="{Binding CmdConnect}" 
+                Content="Connect" 
+                Grid.Row="3"
+                Grid.Column="2" 
+                FontSize="30" />
 
-        <Button IsEnabled="{Binding CmdConnectIsEnabled}" Command="{Binding CmdConnect}"  Content="Connect" Margin="10" Grid.Row="3" Grid.Column="2" FontSize="30"/>
         <Label IsEnabled="{Binding IsConnectedState}" Content="Connected" Background="Green"  FontSize="24" Grid.Column="3" Margin="10" Grid.Row="3" />
 
 
         <TextBlock Text="Baudrate" Grid.Row="2" Grid.Column="5" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button IsEnabled="{Binding CmdDisConnectIsEnabled}" Command="{Binding CmdDisConnect}"   Content="Disconnect" Margin="10" Grid.Row="3" Grid.Column="6" FontSize="30"/>
+
+        <Button IsEnabled="{Binding CmdDisConnectIsEnabled}"
+                Command="{Binding CmdDisConnect}" 
+                Content="Disconnect" 
+                Grid.Row="3" Grid.Column="6" 
+                FontSize="30" 
+
+
+            />
         <Label IsEnabled="{Binding IsDisConnectedState}" Content="Disconnected" Background="Red"  FontSize="24" Grid.Column="7" Margin="10" Grid.Row="3" />
 
         <ComboBox SelectedItem="{Binding Path=SelectedBaudRate,
@@ -130,6 +146,6 @@
         <Button Command="{Binding CmdMeasureOn}"  IsEnabled="{Binding CmdMeasureOnIsEnabled}" Content="Measure ON" Margin="10" Grid.Row="6"  Grid.Column="6" FontSize="30"/>
         <Button Command="{Binding CmdMeasureOff}" IsEnabled="{Binding CmdMeasureOffIsEnabled}" Content="Measure OFF" Margin="10" Grid.Row="7" Grid.Column="6" FontSize="30"/>
         <Button Command="{Binding CmdRun}"        IsEnabled="{Binding CmdRunIsEnabled}" Content="Run" Margin="10" Grid.Row="8"         Grid.Column="6" FontSize="30"/>
-      
+
     </Grid>
 </Window>

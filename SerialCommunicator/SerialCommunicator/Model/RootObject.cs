@@ -12,5 +12,8 @@ namespace SerialCommunicator.Model
     {
         [XmlElement("Card")]
         public List<Card> Card { get; set; }
+
+        [XmlElement("DefaultValues")]
+        public DefaultValues ValuesCommands { get; set;}
     }
 }

@@ -25,6 +25,11 @@ namespace SerialCommunicator.ViewModel
 
         private ICommand _measureOn;
 
+
+        private ICommand _measureOff;
+
+        private ICommand _run;
+
         private List<string> _availablePorts;
 
         private List<int> _baudRates;
@@ -50,17 +55,25 @@ namespace SerialCommunicator.ViewModel
 
         public ICommand CmdMeasureOn => _measureOn;
 
+        public ICommand CmdMeasureOff => _measureOff;
+
+        public ICommand CmdRun => _run;
+
+
         private string _stateOfDevice = "State: Not connected!";
 
         private bool _connectButtonIsEnabled = true;
 
         private bool _disConnectButtonIsEnabled;
+        private bool _measureOffButtonIsEnabled;
+        private bool _runButtonIsEnabled;
 
         private bool _runningTask;
 
         XmlFilter xmlData = null;
         SerialPort COMPort = null;
         private DateTime _currentDateTime;
+        private bool _measureOnButtonIsEnabled;
 
         #endregion
 
@@ -69,7 +82,8 @@ namespace SerialCommunicator.ViewModel
             _connectCommand = new DelegateCommand(ConnectToDevice);
             _disConnectCommand = new DelegateCommand(DisConnect);
             _measureOn = new DelegateCommand(SendMeasureOn);
-
+            _measureOff = new DelegateCommand(SendMeasureOff);
+            _run = new DelegateCommand(SendRun);
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
@@ -78,6 +92,10 @@ namespace SerialCommunicator.ViewModel
             CardTypes = xmlData.GetCardTypeNames();
 
             UpdateTimeUI();
+
+            CmdRunIsEnabled = false;
+            CmdMeasureOffIsEnabled = false;
+            CmdMeasureOnIsEnabled = false;
         }
 
         private void UpdateTimeUI() {
@@ -110,6 +128,7 @@ namespace SerialCommunicator.ViewModel
                 COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
+                    COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
                     COMPort.Open();
                     CmdConnectIsEnabled = false;
                     CmdDisConnectIsEnabled = true;
@@ -153,13 +172,107 @@ namespace SerialCommunicator.ViewModel
             CmdDisConnectIsEnabled = false;
             _runningTask = false;
             ReadingSerialState();
-            COMPort.Close();
+            DisConfigureDevice();
+            //34,0,13
+
+
+            //while (true)
+            //{
+            //    try
+            //    {
+            //        COMPort.DataReceived -= new SerialDataReceivedEventHandler(DataRecieved);
+            //        COMPort.Close();
+
+            //        break;
+            //    }
+            //    catch (Exception)
+            //    {
+
+            //        throw;
+            //    }
+
+            //}
+
         }
 
         private void ConfigureDevice()
         {
-            //connect FIX
-            SendData(0x01); //connect
+
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
+            ByteMessageBuilder.SetByteArray(1, 0x00);
+            ByteMessageBuilder.SetByteArray(2, 0x00);
+            ByteMessageBuilder.SetByteArray(3, 0x00);
+            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            LoopMessagesArrayToSend();
+        }
+
+        private void SendMeasureOn()
+        {
+
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
+            ByteMessageBuilder.SetByteArray(1, 0x00);
+            ByteMessageBuilder.SetByteArray(2, 0x00);
+            ByteMessageBuilder.SetByteArray(3, 0x00);
+            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            LoopMessagesArrayToSend();
+
+            CmdMeasureOffIsEnabled = true;
+            CmdMeasureOnIsEnabled = false;
+            CmdRunIsEnabled = true;
+
+        }
+
+        private void SendMeasureOff()
+        {
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
+            ByteMessageBuilder.SetByteArray(1, 0x00);
+            ByteMessageBuilder.SetByteArray(2, 0x00);
+            ByteMessageBuilder.SetByteArray(3, 0x00);
+            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            LoopMessagesArrayToSend();
+
+            CmdMeasureOffIsEnabled = false;
+            CmdMeasureOnIsEnabled = true;
+            CmdRunIsEnabled = false;
+        }
+
+        private void SendRun()
+        {
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
+            ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
+            ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType,SelectedMeasureType));
+            ByteMessageBuilder.SetByteArray(3, xmlData.GetRun());
+            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            LoopMessagesArrayToSend();
+
+
+            ///*
+            //foreach (byte item in ByteMessageBuilder.GetByteList())
+            //{
+            //    SendData(item);
+            //}*/
+            //SendData(0x07);
+            //SendData(0x03);
+            //SendData(0x05); //run on
+            //SendData(0x0D); //eof
+        }
+
+        private void LoopMessagesArrayToSend()
+        {
+            for (int i = 0; i < ByteMessageBuilder.GetByteArray().Length; i++)
+            {
+                SendData(ByteMessageBuilder.GetByteArray()[i]);
+            }
+        }
+
+        private void DisConfigureDevice()
+        {
+            //Disconnect FIX
+            SendData(0x02); //connect
             SendData(0x00); //connect
             SendData(0x00); //connect
             SendData(0x00); //connect
@@ -167,33 +280,9 @@ namespace SerialCommunicator.ViewModel
             //connect
         }
 
-        private void SendMeasureOn()
-        {
-            xmlData.GetSelectedCardTypeValue(SelectedCardType);
-
-            xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType);
-
-           
-            SendData(0x03); // measure on
-            foreach (byte item in ByteMessageBuilder.GetByteList())
-            {
-                SendData(item);
-            }
-            SendData(0x05); //run no need -> 0x00
-            SendData(0x0D); //eof
-
-            //SendData(0x07);
-            //SendData(0x02);
-            //SendData(0x01);
-            //SendData(0x03);
-            //SendData(0x0D);
-
-        }
-
-
         private void SendData(byte data)
         {
-            var dataArray = new byte[] { data , 0x01,0x02};
+            var dataArray = new byte[] { data };
             if (COMPort == null)
             {
                 MessageBox.Show("Serial Port is not active!");
@@ -202,18 +291,22 @@ namespace SerialCommunicator.ViewModel
             {
                 COMPort.Write(dataArray,0,1);
                 COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+
             }
         }
 
-        
-
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
+
+            SerialPort sp = (SerialPort)sender;
+            
             if (COMPort.IsOpen)
             {
                 MessageRecievedText += (COMPort.ReadByte()).ToString() + "\n";
             }
         }
+
+  
 
         #region Properties
 
@@ -284,9 +377,9 @@ namespace SerialCommunicator.ViewModel
                 _selectedCardType = value;
                 OnPropertyChanged("CardTypes");
                 MeasureTypes = xmlData.GetMeasurements(SelectedCardType);
+       
             }
         }
-
 
         public List<string> CardTypes
         {
@@ -301,7 +394,6 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-
         public string SelectedMeasureType
         {
             get
@@ -313,6 +405,11 @@ namespace SerialCommunicator.ViewModel
             {
                 _selectedMeasureType = value;
                 OnPropertyChanged("MeasureTypes");
+
+                if (value != null)
+                {
+                    CmdMeasureOnIsEnabled = true;
+                }
             }
         }
 
@@ -342,7 +439,6 @@ namespace SerialCommunicator.ViewModel
 
             }
         }
-
 
         public DateTime CurrentDateTime
         {
@@ -409,6 +505,47 @@ namespace SerialCommunicator.ViewModel
             {
                 _disConnectButtonIsEnabled = value;
                 OnPropertyChanged("CmdDisConnectIsEnabled");
+            }
+        }
+
+        /// 
+
+        public bool CmdMeasureOnIsEnabled
+        {
+
+            get
+            {
+                return _measureOnButtonIsEnabled; ;
+            }
+            set
+            {
+                _measureOnButtonIsEnabled = value;
+                OnPropertyChanged("CmdMeasureOnIsEnabled");
+            }
+        }
+        public bool CmdMeasureOffIsEnabled
+        {
+
+            get
+            {
+                return _measureOffButtonIsEnabled; ;
+            }
+            set
+            {
+                _measureOffButtonIsEnabled = value;
+                OnPropertyChanged("CmdMeasureOffIsEnabled");
+            }
+        }
+        public bool CmdRunIsEnabled
+        {
+            get
+            {
+                return _runButtonIsEnabled; ;
+            }
+            set
+            {
+                _runButtonIsEnabled = value;
+                OnPropertyChanged("CmdRunIsEnabled");
             }
         }
         #endregion

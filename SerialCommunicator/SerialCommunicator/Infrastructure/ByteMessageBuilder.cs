@@ -6,26 +6,45 @@ using System.Threading.Tasks;
 
 namespace SerialCommunicator.Infrastructure
 {
+
     public static class ByteMessageBuilder
     {
         private static List<byte> listOfBytes = new List<byte>() { };
 
-        private static byte[] bytesArry = new byte[] { };
+        private static byte[] _arrayByteOutgoing = new byte[5] { 0x00, 0x00, 0x00, 0x00,0x00  };
 
-        public static void AddNewToByteList(byte newByte)
+        private static byte[] _arrayByteIncoming = new byte[3] { 0x00, 0x00, 0x00 };
+
+        public static void SetByteArray(int index, byte inputByte)
         {
-            listOfBytes.Add(newByte);
+
+            _arrayByteOutgoing[index] = inputByte;
         }
 
-        public static void ClearByteList()
+        public static void SetByteArray(int index, string inputByte)
         {
-            listOfBytes.Clear();
+            _arrayByteOutgoing[index] = ConvertStringToByte(inputByte);
         }
 
-        public static List<byte> GetByteList()
+        public static byte[] GetByteArray()
         {
-            return listOfBytes;
+            return _arrayByteOutgoing;
         }
+
+        //public static void AddNewToByteList(byte newByte)
+        //{
+        //    listOfBytes.Add(newByte);
+        //}
+
+        //public static void ClearByteList()
+        //{
+        //    listOfBytes.Clear();
+        //}
+
+        //public static List<byte> GetByteList()
+        //{
+        //    return listOfBytes;
+        //}
 
         public static byte ConvertStringToByte(string strByte)
         {
