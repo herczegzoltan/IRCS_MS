@@ -173,25 +173,32 @@ namespace SerialCommunicator.ViewModel
             _runningTask = false;
             ReadingSerialState();
             DisConfigureDevice();
-            //34,0,13
 
+            //change to read from xml
+            Thread _thread = null;
+            var taskState = Task.Run(() =>
+            {
+                _thread = Thread.CurrentThread;
+                while (true)
+                {
+                    Thread.Sleep(100);
+                    while (true)
+                    {
+                        if ((ByteMessageBuilder.GetByteIncomingArray()[2].ToString() ==  "13"
+                            && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34"))
+                        {
+                            COMPort.Close();
+                            _thread.Abort();
 
-            //while (true)
-            //{
-            //    try
-            //    {
-            //        COMPort.DataReceived -= new SerialDataReceivedEventHandler(DataRecieved);
-            //        COMPort.Close();
+                            break;
+                        }
+                        else
+                        {
 
-            //        break;
-            //    }
-            //    catch (Exception)
-            //    {
-
-            //        throw;
-            //    }
-
-            //}
+                        }
+                    }
+                }
+            });
 
         }
 
@@ -248,17 +255,6 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
 
             LoopMessagesArrayToSend();
-
-
-            ///*
-            //foreach (byte item in ByteMessageBuilder.GetByteList())
-            //{
-            //    SendData(item);
-            //}*/
-            //SendData(0x07);
-            //SendData(0x03);
-            //SendData(0x05); //run on
-            //SendData(0x0D); //eof
         }
 
         private void LoopMessagesArrayToSend()
@@ -271,12 +267,20 @@ namespace SerialCommunicator.ViewModel
 
         private void DisConfigureDevice()
         {
+
+            ByteMessageBuilder.SetByteArray(0, 0x02);
+            ByteMessageBuilder.SetByteArray(1, 0x00);
+            ByteMessageBuilder.SetByteArray(2, 0x00);
+            ByteMessageBuilder.SetByteArray(3, 0x00);
+            ByteMessageBuilder.SetByteArray(4, 0x0D);
+
+            LoopMessagesArrayToSend();
             //Disconnect FIX
-            SendData(0x02); //connect
-            SendData(0x00); //connect
-            SendData(0x00); //connect
-            SendData(0x00); //connect
-            SendData(0x0D); //connect
+            //SendData(0x02); //connect
+            //SendData(0x00); //connect
+            //SendData(0x00); //connect
+            //SendData(0x00); //connect
+            //SendData(0x0D); //connect
             //connect
         }
 
@@ -291,22 +295,30 @@ namespace SerialCommunicator.ViewModel
             {
                 COMPort.Write(dataArray,0,1);
                 COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-
             }
         }
+        int countBytes = 0;
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-
-            SerialPort sp = (SerialPort)sender;
-            
             if (COMPort.IsOpen)
             {
-                MessageRecievedText += (COMPort.ReadByte()).ToString() + "\n";
+                string incomingByte = (COMPort.ReadByte()).ToString();
+                MessageRecievedText += countBytes.ToString() + " :" +  incomingByte + "\n";
+                ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+                if (countBytes == 2)
+                {
+                    MessageRecievedText += xmlData.GetResponseTranslate(ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                                                        ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                                                                        ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) + "\n";
+                    countBytes = 0;
+                }
+                else
+                {
+                    countBytes++;
+                }
             }
         }
-
-  
 
         #region Properties
 
@@ -508,11 +520,8 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-        /// 
-
         public bool CmdMeasureOnIsEnabled
         {
-
             get
             {
                 return _measureOnButtonIsEnabled; ;

@@ -11,9 +11,9 @@ using SerialCommunicator.Model;
 
 namespace SerialCommunicator.Resource
 {
-    static public class XmlProcessor
+    public static class XmlProcessor
     {
-        public static RootObject GetXmlContent()
+        public static RootObject GetXmlRootObjectCommands()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(RootObject));
 
@@ -28,6 +28,25 @@ namespace SerialCommunicator.Resource
                     RootObject result = (RootObject)serializer.Deserialize(reader);
 
                     return result ;
+                }
+            }
+        }
+
+        public static RootObjectResponse GetXmlRootObjectResponse()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(RootObjectResponse));
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            const string xmlRead = "SerialCommunicator.Resource.responsesTable.xml";
+
+            using (Stream stream = assembly.GetManifestResourceStream(xmlRead))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    RootObjectResponse result = (RootObjectResponse)serializer.Deserialize(reader);
+
+                    return result;
                 }
             }
         }

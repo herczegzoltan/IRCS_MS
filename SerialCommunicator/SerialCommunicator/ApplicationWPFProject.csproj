@@ -80,10 +80,12 @@
     </Compile>
     <Compile Include="Infrastructure\ByteMessageBuilder.cs" />
     <Compile Include="Infrastructure\XmlFilter.cs" />
+    <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\Card.cs" />
-    <Compile Include="Model\Record.cs" />
     <Compile Include="Model\DefaultValues.cs" />
     <Compile Include="Model\Measure.cs" />
+    <Compile Include="Model\Record.cs" />
+    <Compile Include="Model\RootObjectResponse.cs" />
     <Compile Include="Model\RootObject.cs" />
     <Compile Include="Resource\XmlProcessor.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />

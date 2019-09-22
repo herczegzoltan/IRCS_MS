@@ -13,9 +13,15 @@ namespace SerialCommunicator.Infrastructure
     {
         private RootObject _rootOject;
 
+        private RootObjectResponse _rootOjectResponse;
+
+
         public XmlFilter()
         {
-            _rootOject = XmlProcessor.GetXmlContent();
+            _rootOject = XmlProcessor.GetXmlRootObjectCommands();
+
+            _rootOjectResponse = XmlProcessor.GetXmlRootObjectResponse();
+
 
             GetEOF();
         }
@@ -57,9 +63,7 @@ namespace SerialCommunicator.Infrastructure
                                         .Select(n => n.Value).First();
 
             return singleCardTypeValue;
-            //byte temp = ByteMessageBuilder.ConvertStringToByte(singleCardTypeValue);
-
-            //ByteMessageBuilder.SetByteArray(1,temp);
+           
         }
 
         public string GetSelectedMeasurementValue(string cardType, string measurement)
@@ -71,10 +75,6 @@ namespace SerialCommunicator.Infrastructure
                                        .Select(k => k.Value).First();
 
             return singleMeasureValue;
-
-            // byte temp = ByteMessageBuilder.ConvertStringToByte(singleMeasureValue);
-
-            //    ByteMessageBuilder.SetByteArray(2, temp);
         }
 
         public void GetClosingByte()
@@ -96,7 +96,6 @@ namespace SerialCommunicator.Infrastructure
             return singleMeasureOn;
         }
 
-
         public string GetMeasureOff()
         {
             string singleMeasureOff = _rootOject.ValuesCommands.Record.Where(x => x.Name == "MeasureOff")
@@ -104,12 +103,18 @@ namespace SerialCommunicator.Infrastructure
             return singleMeasureOff;
         }
 
-
         public string GetConnect()
         {
             string singleConnect = _rootOject.ValuesCommands.Record.Where(x => x.Name == "Connect")
                 .Select(n => n.Value).First();
             return singleConnect;
+        }
+
+        public string GetDisConnect()
+        {
+            string singleDisConnect = _rootOject.ValuesCommands.Record.Where(x => x.Name == "DisConnect")
+                .Select(n => n.Value).First();
+            return singleDisConnect;
         }
 
         public string GetRun()
@@ -119,5 +124,17 @@ namespace SerialCommunicator.Infrastructure
             return singleRun;
         }
 
+        public string GetResponseTranslate(string command, string data, string eof)
+        {
+            command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
+            data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
+            eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
+
+            string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (x.Data.ToUpper() == data.ToUpper()) 
+                                             && (x.Command.ToUpper() == command.ToUpper())
+                                             && (x.Eof.ToUpper() == eof.ToUpper()))
+               .Select(n => n.Translate).FirstOrDefault();
+            return singleResponseTranslate;
+        }
     }
 }
