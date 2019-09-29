@@ -1,6 +1,5 @@
 ﻿using SerialCommunicator.Model;
 using System.Windows.Input;
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +12,8 @@ using System.Threading;
 using SerialCommunicator.Resource;
 using System.Xml.Linq;
 using System.Diagnostics;
+using System.IO;
+using System.Globalization;
 
 namespace SerialCommunicator.ViewModel
 {
@@ -72,6 +73,7 @@ namespace SerialCommunicator.ViewModel
 
         XmlFilter xmlData = null;
         SerialPort COMPort = null;
+        
         private DateTime _currentDateTime;
         private bool _measureOnButtonIsEnabled;
 
@@ -79,6 +81,7 @@ namespace SerialCommunicator.ViewModel
 
         public MainViewModel()
         {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
             _connectCommand = new DelegateCommand(ConnectToDevice);
             _disConnectCommand = new DelegateCommand(DisConnect);
             _measureOn = new DelegateCommand(SendMeasureOn);
@@ -128,8 +131,10 @@ namespace SerialCommunicator.ViewModel
                 COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
-                    COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                    //COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+
                     COMPort.Open();
+
                     CmdConnectIsEnabled = false;
                     CmdDisConnectIsEnabled = true;
                     _runningTask = true;
@@ -171,35 +176,9 @@ namespace SerialCommunicator.ViewModel
             CmdConnectIsEnabled = true;
             CmdDisConnectIsEnabled = false;
             _runningTask = false;
-            ReadingSerialState();
+
+            //ReadingSerialState();
             DisConfigureDevice();
-
-            //change to read from xml
-            Thread _thread = null;
-            var taskState = Task.Run(() =>
-            {
-                _thread = Thread.CurrentThread;
-                while (true)
-                {
-                    Thread.Sleep(100);
-                    while (true)
-                    {
-                        if ((ByteMessageBuilder.GetByteIncomingArray()[2].ToString() ==  "13"
-                            && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34"))
-                        {
-                            COMPort.Close();
-                            _thread.Abort();
-
-                            break;
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                }
-            });
-
         }
 
         private void ConfigureDevice()
@@ -259,6 +238,10 @@ namespace SerialCommunicator.ViewModel
 
         private void LoopMessagesArrayToSend()
         {
+            ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
+            ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
+            ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
+
             for (int i = 0; i < ByteMessageBuilder.GetByteArray().Length; i++)
             {
                 SendData(ByteMessageBuilder.GetByteArray()[i]);
@@ -286,6 +269,7 @@ namespace SerialCommunicator.ViewModel
 
         private void SendData(byte data)
         {
+            
             var dataArray = new byte[] { data };
             if (COMPort == null)
             {
@@ -293,25 +277,34 @@ namespace SerialCommunicator.ViewModel
             }
             else
             {
-                COMPort.Write(dataArray,0,1);
                 COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                COMPort.Write(dataArray,0,1);
             }
         }
-        int countBytes = 0;
+     
+        private int countBytes = 0;
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             if (COMPort.IsOpen)
             {
-                string incomingByte = (COMPort.ReadByte()).ToString();
-                MessageRecievedText += countBytes.ToString() + " :" +  incomingByte + "\n";
+                string incomingByte = COMPort.ReadByte().ToString();
+
+                MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+
                 if (countBytes == 2)
                 {
                     MessageRecievedText += xmlData.GetResponseTranslate(ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                                                        ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-                                                                        ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) + "\n";
+                                                                         ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                        
+                                                                         ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) + "\n";
                     countBytes = 0;
+
+                    //disconnecting
+                    IsReadyToDisconnect();
+                    ByteMessageBuilder.ResetByteIncomingArray();
+
                 }
                 else
                 {
@@ -320,6 +313,16 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
+        private void IsReadyToDisconnect()
+        {
+            if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == "13"
+                                            && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "0"
+                                            && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34")
+            {
+                COMPort.Close();
+                COMPort.Dispose();
+            }
+        }
         #region Properties
 
         public string SelectedAvailablePort

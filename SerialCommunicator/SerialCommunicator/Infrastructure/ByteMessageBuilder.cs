@@ -31,6 +31,12 @@ namespace SerialCommunicator.Infrastructure
             _arrayByteIncoming[index] = inputByte;
         }
 
+        public static void ResetByteIncomingArray()
+        {
+            Array.Clear(_arrayByteIncoming, 0, _arrayByteIncoming.Length);
+
+        }
+
         public static string[] GetByteIncomingArray()
         {
             return _arrayByteIncoming;
