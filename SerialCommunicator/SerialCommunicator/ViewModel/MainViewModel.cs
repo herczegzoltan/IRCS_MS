@@ -101,6 +101,9 @@ namespace SerialCommunicator.ViewModel
             CmdRunIsEnabled = false;
             CmdMeasureOffIsEnabled = false;
             CmdMeasureOnIsEnabled = false;
+
+            ReadingSerialState();
+
         }
 
         private void UpdateTimeUI() {
@@ -140,7 +143,6 @@ namespace SerialCommunicator.ViewModel
                     CmdConnectIsEnabled = false;
                     CmdDisConnectIsEnabled = true;
                     _runningTask = true;
-                    ReadingSerialState();
                     ConfigureDevice();
                 }
                 catch (Exception e)
@@ -159,18 +161,15 @@ namespace SerialCommunicator.ViewModel
                 while (true)
                 {
                     Thread.Sleep(100);
-                    if (!_runningTask || !COMPort.IsOpen)
+
+                    if (_runningTask)
                     {
-                        CmdConnectIsEnabled = true;
-                        CmdDisConnectIsEnabled = false;
-
-                        StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
+                        //CmdConnectIsEnabled = true;
+                        //CmdDisConnectIsEnabled = false;
                         StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
-
-                        _thread.Abort();
+                        StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
                     }
-                    StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
-                    StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
+
                 }
             });
         }
@@ -179,7 +178,7 @@ namespace SerialCommunicator.ViewModel
         {
             CmdConnectIsEnabled = true;
             CmdDisConnectIsEnabled = false;
-            _runningTask = false;
+            //_runningTask = false;
 
             //ReadingSerialState();
             DisConfigureDevice();
