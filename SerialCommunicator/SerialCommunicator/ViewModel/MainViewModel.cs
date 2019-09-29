@@ -62,6 +62,8 @@ namespace SerialCommunicator.ViewModel
 
 
         private string _stateOfDevice = "State: Not connected!";
+        private string _stateOfDeviceColor = "Red";
+
 
         private bool _connectButtonIsEnabled = true;
 
@@ -162,11 +164,13 @@ namespace SerialCommunicator.ViewModel
                         CmdConnectIsEnabled = true;
                         CmdDisConnectIsEnabled = false;
 
+                        StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
                         StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
 
                         _thread.Abort();
                     }
                     StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
+                    StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
                 }
             });
         }
@@ -312,7 +316,7 @@ namespace SerialCommunicator.ViewModel
                 }
             }
         }
-
+        //temp solution values shall be from xml
         private void IsReadyToDisconnect()
         {
             if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == "13"
@@ -454,6 +458,22 @@ namespace SerialCommunicator.ViewModel
 
             }
         }
+
+        public string StateOfDeviceColor
+        {
+            get
+            {
+                return _stateOfDeviceColor;
+            }
+            set
+            {
+                _stateOfDeviceColor = value;
+                OnPropertyChanged("StateOfDeviceColor");
+
+            }
+        }
+
+        
 
         public DateTime CurrentDateTime
         {

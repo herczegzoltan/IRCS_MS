@@ -63,7 +63,13 @@
                 FontSize="30" Height="Auto"
                 Margin="5,5,5,5" />
 
-        <Label IsEnabled="{Binding IsConnectedState}" Content="Connected" Background="Green"  FontSize="24" Grid.Column="3" Margin="10" Grid.Row="3" />
+        <Label IsEnabled="{Binding IsConnectedState}"
+               Content="{Binding StateOfDevice}"
+               Foreground ="{Binding StateOfDeviceColor}"
+               FontSize="24" Grid.Column="7" Grid.Row="1" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               FontWeight="Bold"/>
 
 
         <TextBlock Text="Baudrate" Grid.Row="2" Grid.Column="5" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -74,9 +80,7 @@
                 Grid.Row="3" Grid.Column="6" 
                 FontSize="30" Height="Auto" Margin="5,5,5,5" 
 
-
             />
-        <Label IsEnabled="{Binding IsDisConnectedState}" Content="Disconnected" Background="Red"  FontSize="24" Grid.Column="7" Margin="10" Grid.Row="3" />
 
         <ComboBox SelectedItem="{Binding Path=SelectedBaudRate,
                   Mode=OneWayToSource}" 
