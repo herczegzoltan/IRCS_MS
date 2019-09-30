@@ -154,13 +154,13 @@ namespace SerialCommunicator.ViewModel
 
         private void ReadingSerialState()
         {
-            Thread _thread = null;
+            //Thread _thread = null;
             var taskState = Task.Run(() =>
             {
-                _thread = Thread.CurrentThread;
+                //_thread = Thread.CurrentThread;
                 while (true)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(500);
 
                     if (_runningTask)
                     {
@@ -305,7 +305,7 @@ namespace SerialCommunicator.ViewModel
                     countBytes = 0;
 
                     //disconnecting
-                    IsReadyToDisconnect();
+                    WasItDisconnect();
                     ByteMessageBuilder.ResetByteIncomingArray();
 
                 }
@@ -316,7 +316,7 @@ namespace SerialCommunicator.ViewModel
             }
         }
         //temp solution values shall be from xml
-        private void IsReadyToDisconnect()
+        private void WasItDisconnect()
         {
             if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == "13"
                                             && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "0"
