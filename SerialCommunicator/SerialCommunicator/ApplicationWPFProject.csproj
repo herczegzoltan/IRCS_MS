@@ -131,9 +131,9 @@
     <EmbeddedResource Include="Resource\responsesTable.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resource\logo_0.png">
+    <Resource Include="Resource\logo_0.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
