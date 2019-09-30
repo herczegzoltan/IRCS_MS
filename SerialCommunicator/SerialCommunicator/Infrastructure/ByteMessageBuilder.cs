@@ -47,7 +47,6 @@ namespace SerialCommunicator.Infrastructure
             return _arrayByteOutgoing;
         }
 
-       
         public static byte ConvertStringToByte(string strByte)
         {
             int value = Convert.ToInt32(strByte, 16);

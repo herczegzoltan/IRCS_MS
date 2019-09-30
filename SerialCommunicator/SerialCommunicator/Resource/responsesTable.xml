@@ -3,7 +3,7 @@
     <Answer translate="Connected" command="0x11" data="0x00" eof="0x0D"/>
     <Answer translate="Disconnected" command="0x22" data="0x00" eof="0x0D"/>
     <Answer translate="Measure_OK" command="0x00" data="0x00" eof="0x0D"/>
-    <Answer translate="measureOFF" command="0x44" data="0x00" eof="0x0D"/>
+    <Answer translate="Measure_OFF" command="0x44" data="0x00" eof="0x0D"/>
     <Answer translate="Error_48" command="0x07" data="0x01" eof="0x0D"/>
     <Answer translate="Error_48i" command="0x07" data="0x02" eof="0x0D"/>
     <Answer translate="Error_p12" command="0x07" data="0x03" eof="0x0D"/>
