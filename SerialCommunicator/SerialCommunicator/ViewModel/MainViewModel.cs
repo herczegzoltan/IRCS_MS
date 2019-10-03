@@ -70,6 +70,8 @@ namespace SerialCommunicator.ViewModel
 
         private bool _measureOffButtonIsEnabled;
 
+        private bool _measureOnButtonIsEnabled;
+
         private bool _runButtonIsEnabled;
 
         private bool _runningTask;
@@ -79,7 +81,7 @@ namespace SerialCommunicator.ViewModel
 
         private DateTime _currentDateTime;
 
-        private bool _measureOnButtonIsEnabled;
+        private bool WasItRun = false;
 
         #endregion
 
@@ -240,6 +242,7 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(3, xmlData.GetRun());
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
 
+            WasItRun = true;
             LoopMessagesArrayToSend();
         }
 
@@ -297,15 +300,28 @@ namespace SerialCommunicator.ViewModel
             {
                 string incomingByte = COMPort.ReadByte().ToString();
 
-                MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+                //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
                 if (countBytes == 2)
                 {
-                    MessageRecievedText += xmlData.GetResponseTranslate(ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                                                         ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                    if (WasItRun)
+                    {
+                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() +"-> "+ xmlData.GetSelectedCardTypeName(ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString())) + "\n" + MessageRecievedText +  "\n";
 
-                                                                         ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) + "\n";
+                        WasItRun = false;
+                    }
+                    else
+                    {
+
+                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " + xmlData.GetResponseTranslate(ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                                                             ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+
+                                                                             ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) + "\n" + MessageRecievedText + "\n";
+
+                    }
+
+
                     countBytes = 0;
 
                     //disconnecting

@@ -57,6 +57,7 @@ namespace SerialCommunicator.Infrastructure
             return new List<string>(measureList);
         }
 
+ 
         public string GetSelectedCardTypeValue(string cardType)
         {
             string singleCardTypeValue = _rootOject.Card.Where(x => x.Name == cardType)
@@ -64,6 +65,15 @@ namespace SerialCommunicator.Infrastructure
 
             return singleCardTypeValue;
            
+        }
+
+        public string GetSelectedCardTypeName(string cardValue)
+        {
+            string singleCardTypeName = _rootOject.Card.Where(x => x.Value == cardValue)
+                                        .Select(n => n.Name).First();
+
+            return singleCardTypeName;
+
         }
 
         public string GetSelectedMeasurementValue(string cardType, string measurement)
