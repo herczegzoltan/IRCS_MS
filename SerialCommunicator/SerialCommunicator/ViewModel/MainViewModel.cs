@@ -71,6 +71,9 @@ namespace SerialCommunicator.ViewModel
         private bool _measureOffButtonIsEnabled;
 
         private bool _measureOnButtonIsEnabled;
+        private bool _cmdIsEnabled;
+
+        
 
         private bool _runButtonIsEnabled;
 
@@ -102,12 +105,19 @@ namespace SerialCommunicator.ViewModel
 
             UpdateTimeUI();
 
-            CmdRunIsEnabled = false;
-            CmdMeasureOffIsEnabled = false;
-            CmdMeasureOnIsEnabled = false;
+            AllUIElement(false);
+           
 
             ReadingSerialState();
 
+        }
+
+        private void AllUIElement(bool _state)
+        {
+            CmdRunIsEnabled = _state;
+            CmdMeasureOffIsEnabled = _state;
+            CmdMeasureOnIsEnabled = _state;
+            CmdIsEnabled = _state;
         }
 
         private void UpdateTimeUI()
@@ -149,6 +159,7 @@ namespace SerialCommunicator.ViewModel
                     CmdDisConnectIsEnabled = true;
                     _runningTask = true;
                     ConfigureDevice();
+                    AllUIElement(true);
                 }
                 catch (Exception e)
                 {
@@ -188,6 +199,7 @@ namespace SerialCommunicator.ViewModel
 
             //ReadingSerialState();
             DisConfigureDevice();
+            AllUIElement(false);
         }
 
         private void ConfigureDevice()
@@ -572,6 +584,25 @@ namespace SerialCommunicator.ViewModel
                 OnPropertyChanged("CmdMeasureOnIsEnabled");
             }
         }
+
+        //public bool CmdIsEnabled
+        //{
+        //    get
+        //    {
+        //        return _cmdIsEnabled; ;
+        //    }
+        //    set
+        //    {
+        //        _cmdIsEnabled = value;
+
+        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
+        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
+        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
+        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
+        //    }
+        //}
+
+        
 
         public bool CmdMeasureOffIsEnabled
         {

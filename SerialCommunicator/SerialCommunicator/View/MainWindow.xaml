@@ -118,6 +118,8 @@
                   Grid.ColumnSpan="2"
                   Grid.Row="6"
                   FontSize="16"
+                  IsEnabled="{Binding CmdCardTypeIsEnabled}"
+                  
                   />
 
         <TextBlock Text="Measure type" Grid.Row="7" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -129,7 +131,9 @@
                   Grid.Column="2"
                   Grid.ColumnSpan="2"
                   Grid.Row="7"
-                  FontSize="16"/>
+                  FontSize="16"
+                  IsEnabled="{Binding CmdMeasureTypeIsEnabled}"
+                  />
 
 
         <TextBlock Text="Report data type" Grid.Row="9" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -140,13 +144,19 @@
                   Grid.Column="2"
                   Margin="10"
                   Grid.ColumnSpan="2"
-                  Grid.Row="10" />
+                  Grid.Row="10" 
+                  IsEnabled="{Binding CmdSchauerNumberIsEnabled}"
+
+                  
+                  />
 
         <TextBox  Text="{Binding Name}"
                   Grid.Column="2"
                   Margin="10"
                   Grid.ColumnSpan="2"
-                  Grid.Row="11"/>
+                  Grid.Row="11"
+                  IsEnabled="{Binding CmdNameIsEnabled}"
+                  />
 
         <ScrollViewer 
             Margin="10"
@@ -161,6 +171,7 @@
                 Background="Black"
                 Foreground="White"
                 FontSize="20"
+                IsEnabled="{Binding CmdConsoleIsEnabled}"
             />
         </ScrollViewer>
         <TextBlock Text="{Binding CurrentDateTime}" Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
