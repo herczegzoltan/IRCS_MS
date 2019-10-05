@@ -117,7 +117,6 @@ namespace SerialCommunicator.ViewModel
             CmdRunIsEnabled = _state;
             CmdMeasureOffIsEnabled = _state;
             CmdMeasureOnIsEnabled = _state;
-            CmdIsEnabled = _state;
         }
 
         private void UpdateTimeUI()
@@ -319,18 +318,23 @@ namespace SerialCommunicator.ViewModel
                 {
                     if (WasItRun)
                     {
-                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() +"-> "+ xmlData.GetSelectedCardTypeName(ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString())) + "\n" + MessageRecievedText +  "\n";
-
+                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " + 
+                                               xmlData.GetSelectedCardTypeName
+                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString())) 
+                                               + " -> " +
+                                               xmlData.GetResponseData
+                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
+                                               + "\n" + MessageRecievedText +  "\n";
                         WasItRun = false;
                     }
                     else
                     {
-
-                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " + xmlData.GetResponseTranslate(ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                                                             ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-
-                                                                             ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) + "\n" + MessageRecievedText + "\n";
-
+                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " + 
+                                               xmlData.GetResponseTranslate
+                                               (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                               ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                                               ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
+                                               + "\n" + MessageRecievedText + "\n";
                     }
 
 

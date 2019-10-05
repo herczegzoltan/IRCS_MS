@@ -1,20 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <RootObjectResponse>
-    <Answer translate="Connected" command="0x11" data="0x00" eof="0x0D"/>
-    <Answer translate="Disconnected" command="0x22" data="0x00" eof="0x0D"/>
+    <Answer translate="Connected" command="0x11" data="0x70" eof="0x0D"/>
+    <Answer translate="Disconnected" command="0x22" data="0x71" eof="0x0D"/>
     <Answer translate="Measure_OK" command="0x00" data="0x00" eof="0x0D"/>
-    <Answer translate="Measure_OFF" command="0x44" data="0x00" eof="0x0D"/>
-    <Answer translate="Error_48" command="0x07" data="0x01" eof="0x0D"/>
-    <Answer translate="Error_48i" command="0x07" data="0x02" eof="0x0D"/>
-    <Answer translate="Error_p12" command="0x07" data="0x03" eof="0x0D"/>
-    <Answer translate="Error_n12" command="0x07" data="0x04" eof="0x0D"/>
-    <Answer translate="Error_p7" command="0x07" data="0x05" eof="0x0D"/>
-    <Answer translate="Error_n7" command="0x07" data="0x06" eof="0x0D"/>
-    <Answer translate="Error_p5" command="0x07" data="0x07" eof="0x0D"/>
-    <Answer translate="Error_sp" command="0x07" data="0x08" eof="0x0D"/>
-    <Answer translate="Data Bus Error" command="0x07" data="0x09" eof="0x0D"/>
-    <Answer translate="Soundbus Error" command="0x07" data="0x0A" eof="0x0D"/>
-    <Answer translate="Disp_i2c_e" command="0x02" data="0x20" eof="0x0D"/>
+    <Answer translate="Measure_OFF" command="0x44" data="0x72" eof="0x0D"/>
+    <Answer translate="Error_48" command="0x07" data="0x73" eof="0x0D"/>
+    <Answer translate="Error_48i" command="0x07" data="0x74" eof="0x0D"/>
+    <Answer translate="Error_p12" command="0x07" data="0x75" eof="0x0D"/>
+    <Answer translate="Error_n12" command="0x07" data="0x76" eof="0x0D"/>
+    <Answer translate="Error_p7" command="0x07" data="0x77" eof="0x0D"/>
+    <Answer translate="Error_n7" command="0x07" data="0x78" eof="0x0D"/>
+    <Answer translate="Error_p5" command="0x07" data="0x79" eof="0x0D"/>
+    <Answer translate="Error_sp" command="0x07" data="0x7A" eof="0x0D"/>
+    <Answer translate="Data Bus Error" command="0x07" data="0x7B" eof="0x0D"/>
+    <Answer translate="Soundbus Error" command="0x07" data="0x7C" eof="0x0D"/>
+  
+  <Answer translate="Disp_i2c_e" command="0x02" data="0x20" eof="0x0D"/>
     <Answer translate="Disp_opto_e" command="0x02" data="0x21" eof="0x0D"/>
     <Answer translate="Disp_AD_e" command="0x02" data="0x22" eof="0x0D"/>
     <Answer translate="Disp_Mic_ls_e" command="0x02" data="0x23" eof="0x0D"/>

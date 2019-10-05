@@ -15,7 +15,6 @@ namespace SerialCommunicator.Infrastructure
 
         private RootObjectResponse _rootOjectResponse;
 
-
         public XmlFilter()
         {
             _rootOject = XmlProcessor.GetXmlRootObjectCommands();
@@ -56,7 +55,6 @@ namespace SerialCommunicator.Infrastructure
 
             return new List<string>(measureList);
         }
-
  
         public string GetSelectedCardTypeValue(string cardType)
         {
@@ -145,6 +143,14 @@ namespace SerialCommunicator.Infrastructure
                                              && (x.Eof.ToUpper() == eof.ToUpper()))
                .Select(n => n.Translate).FirstOrDefault();
             return singleResponseTranslate;
+        }
+
+        public string GetResponseData(string data)
+        {
+            string singleResponseTranslateByData = _rootOjectResponse.Answer.Where(x => x.Data.ToUpper() == data.ToUpper())
+                                                   .Select(h => h.Translate).FirstOrDefault();
+
+            return singleResponseTranslateByData;
         }
     }
 }
