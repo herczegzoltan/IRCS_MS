@@ -71,15 +71,13 @@ namespace SerialCommunicator.ViewModel
         private bool _measureOffButtonIsEnabled;
 
         private bool _measureOnButtonIsEnabled;
-        private bool _cmdIsEnabled;
-
-        
 
         private bool _runButtonIsEnabled;
 
         private bool _runningTask;
 
         XmlFilter xmlData = null;
+
         SerialPort COMPort = null;
 
         private DateTime _currentDateTime;
@@ -105,18 +103,52 @@ namespace SerialCommunicator.ViewModel
 
             UpdateTimeUI();
 
-            AllUIElement(false);
-           
-
+            UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
-
         }
 
-        private void AllUIElement(bool _state)
+        private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
+
+
+        private void UIElementUpdater(UIElementStateVariations uev)
         {
-            CmdRunIsEnabled = _state;
-            CmdMeasureOffIsEnabled = _state;
-            CmdMeasureOnIsEnabled = _state;
+            switch (uev)
+            {
+                case UIElementStateVariations.ConnectBeforeClick:
+                    UIElementUpdaterHelper(true, false, false, false, false, false);
+                    break;
+                case UIElementStateVariations.ConnectAfterClick:
+                    UIElementUpdaterHelper(false, true, false, false, false, true);
+                    break;
+                case UIElementStateVariations.DisConnectBase:
+                    UIElementUpdaterHelper(false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.CardAndMeasureSelected:
+                    UIElementUpdaterHelper(false, true, true, false, false,true);
+                    break;
+                case UIElementStateVariations.MeasureOffClick:
+                    UIElementUpdaterHelper(false, true, true, false, false, true);
+                    break;
+                case UIElementStateVariations.MeasureOnAfterClick:
+                    UIElementUpdaterHelper(false, true, false, true, true, true);
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void UIElementUpdaterHelper(
+            bool connectButton, bool disconnectButton, 
+            bool measureOnButton,bool measureOffButton,
+            bool runButton, bool cardAndMeasureType)
+        {
+            CmdConnectIsEnabled = connectButton;
+            CmdDisConnectIsEnabled = disconnectButton;
+            CmdMeasureOnIsEnabled = measureOnButton;
+            CmdMeasureOffIsEnabled = measureOffButton;
+            CmdRunIsEnabled = runButton;
+            CmdCardTypeIsEnabled = cardAndMeasureType;
+            CmdMeasureTypeIsEnabled = cardAndMeasureType;
+
         }
 
         private void UpdateTimeUI()
@@ -153,12 +185,9 @@ namespace SerialCommunicator.ViewModel
                     //COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
 
                     COMPort.Open();
-
-                    CmdConnectIsEnabled = false;
-                    CmdDisConnectIsEnabled = true;
+                    UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
-                    AllUIElement(true);
                 }
                 catch (Exception e)
                 {
@@ -175,13 +204,10 @@ namespace SerialCommunicator.ViewModel
                 //_thread = Thread.CurrentThread;
                 while (true)
                 {
-                    
                     Thread.Sleep(500);
 
                     if (_runningTask)
                     {
-                        //CmdConnectIsEnabled = true;
-                        //CmdDisConnectIsEnabled = false;
                         StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
                         StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
                     }
@@ -192,18 +218,15 @@ namespace SerialCommunicator.ViewModel
 
         private void DisConnect()
         {
-            CmdConnectIsEnabled = true;
-            CmdDisConnectIsEnabled = false;
             //_runningTask = false;
 
             //ReadingSerialState();
             DisConfigureDevice();
-            AllUIElement(false);
+            UIElementUpdater(UIElementStateVariations.DisConnectBase);
         }
 
         private void ConfigureDevice()
         {
-
             ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
@@ -223,11 +246,7 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
 
             LoopMessagesArrayToSend();
-
-            CmdMeasureOffIsEnabled = true;
-            CmdMeasureOnIsEnabled = false;
-            CmdRunIsEnabled = true;
-
+            UIElementUpdater(UIElementStateVariations.MeasureOnAfterClick);
         }
 
         private void SendMeasureOff()
@@ -239,10 +258,7 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
 
             LoopMessagesArrayToSend();
-
-            CmdMeasureOffIsEnabled = false;
-            CmdMeasureOnIsEnabled = true;
-            CmdRunIsEnabled = false;
+            UIElementUpdater(UIElementStateVariations.MeasureOffClick);
         }
 
         private void SendRun()
@@ -279,13 +295,6 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(4, 0x0D);
 
             LoopMessagesArrayToSend();
-            //Disconnect FIX
-            //SendData(0x02); //connect
-            //SendData(0x00); //connect
-            //SendData(0x00); //connect
-            //SendData(0x00); //connect
-            //SendData(0x0D); //connect
-            //connect
         }
 
         private void SendData(byte data)
@@ -304,6 +313,8 @@ namespace SerialCommunicator.ViewModel
         }
 
         private int countBytes = 0;
+        private bool _cmdCardTypeIsEnabled;
+        private bool _cmdMeasureTypeIsEnabled;
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
@@ -462,7 +473,7 @@ namespace SerialCommunicator.ViewModel
 
                 if (value != null)
                 {
-                    CmdMeasureOnIsEnabled = true;
+                    UIElementUpdater(UIElementStateVariations.CardAndMeasureSelected);
                 }
             }
         }
@@ -589,25 +600,6 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-        //public bool CmdIsEnabled
-        //{
-        //    get
-        //    {
-        //        return _cmdIsEnabled; ;
-        //    }
-        //    set
-        //    {
-        //        _cmdIsEnabled = value;
-
-        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
-        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
-        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
-        //        OnPropertyChanged("CmdMeasureOnIsEnabled");
-        //    }
-        //}
-
-        
-
         public bool CmdMeasureOffIsEnabled
         {
 
@@ -634,6 +626,36 @@ namespace SerialCommunicator.ViewModel
                 OnPropertyChanged("CmdRunIsEnabled");
             }
         }
+
+        public bool CmdCardTypeIsEnabled
+        {
+            get
+            {
+                return _cmdCardTypeIsEnabled;
+            }
+            set
+            {
+                _cmdCardTypeIsEnabled = value;
+                OnPropertyChanged("CmdCardTypeIsEnabled");
+            }
+        }
+
+        public bool CmdMeasureTypeIsEnabled
+        {
+            get
+            {
+                return _cmdMeasureTypeIsEnabled;
+            }
+            set
+            {
+                _cmdMeasureTypeIsEnabled = value;
+                OnPropertyChanged("CmdMeasureTypeIsEnabled");
+            }
+        }
+
+
+        
+
         #endregion
     }
 }
