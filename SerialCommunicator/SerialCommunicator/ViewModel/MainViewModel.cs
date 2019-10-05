@@ -355,7 +355,7 @@ namespace SerialCommunicator.ViewModel
         private void WasItDisconnect()
         {
             if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == "13"
-                                            && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "0"
+                                            && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "113"
                                             && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34")
             {
                 COMPort.Close();
