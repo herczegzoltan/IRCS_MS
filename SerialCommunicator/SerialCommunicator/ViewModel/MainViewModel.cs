@@ -14,6 +14,8 @@ using System.Xml.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Globalization;
+using System.Windows.Forms;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace SerialCommunicator.ViewModel
 {
@@ -29,6 +31,10 @@ namespace SerialCommunicator.ViewModel
         private ICommand _measureOff;
 
         private ICommand _run;
+
+        private ICommand _reportSave;
+
+        private ICommand _reportStart;
 
         private List<string> _availablePorts;
 
@@ -60,6 +66,11 @@ namespace SerialCommunicator.ViewModel
 
         public ICommand CmdRun => _run;
 
+        public ICommand CmdReportStart => _reportStart;
+
+        public ICommand CmdReportSave => _reportSave;
+
+
         private string _stateOfDevice = "State: Not connected!";
 
         private string _stateOfDeviceColor = "Red";
@@ -84,6 +95,10 @@ namespace SerialCommunicator.ViewModel
 
         private bool WasItRun = false;
 
+        private string[] saveable = new string[] { };
+        List<string> myCollection = new List<string>();
+
+
         #endregion
 
         public MainViewModel()
@@ -94,6 +109,9 @@ namespace SerialCommunicator.ViewModel
             _measureOn = new DelegateCommand(SendMeasureOn);
             _measureOff = new DelegateCommand(SendMeasureOff);
             _run = new DelegateCommand(SendRun);
+            _reportStart = new DelegateCommand(CreateReport);
+            _reportSave= new DelegateCommand(SaveReport);
+
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
@@ -108,7 +126,6 @@ namespace SerialCommunicator.ViewModel
         }
 
         private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
-
 
         private void UIElementUpdater(UIElementStateVariations uev)
         {
@@ -339,6 +356,9 @@ namespace SerialCommunicator.ViewModel
                                                xmlData.GetResponseData
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                                                + "\n" + MessageRecievedText +  "\n";
+
+                        myCollection.Add(MessageRecievedText);
+
                         WasItRun = false;
                     }
                     else
@@ -350,7 +370,6 @@ namespace SerialCommunicator.ViewModel
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
                                                + "\n" + MessageRecievedText + "\n";
                     }
-
 
                     countBytes = 0;
 
@@ -376,6 +395,45 @@ namespace SerialCommunicator.ViewModel
                 COMPort.Dispose();
             }
         }
+
+        private void CreateReport()
+        {
+            
+        }
+
+        private void SaveReport()
+        {
+            if (myCollection.Count == 0)
+            {
+                MessageBox.Show("No measure so far!");
+            }
+            else
+            {
+                ReportCreator report = new ReportCreator();
+
+                report.FilePath = FolderDialog();
+
+                report.AddNewRow(myCollection.ToArray());
+
+                report.CreateFile();
+
+                MessageBox.Show("File Saved!");
+
+            }
+        }
+    
+        private string FolderDialog()
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.ShowNewFolderButton = true;
+            DialogResult result = fbd.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                return fbd.SelectedPath;
+            }
+            return "";
+        }
+
         #region Properties
 
         public string SelectedAvailablePort
@@ -655,9 +713,6 @@ namespace SerialCommunicator.ViewModel
                 OnPropertyChanged("CmdMeasureTypeIsEnabled");
             }
         }
-
-
-        
 
         #endregion
     }

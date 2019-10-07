@@ -197,6 +197,35 @@
                 Grid.Column="6" 
                 FontSize="30"
                 Height="Auto"/>
+   <!--     
+        <CheckBox Content="Reporting" 
+                  FontSize="30"
+                  Grid.Row="13"  
+                  Grid.Column="2"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Top"
+                  />
+
+        <Button Command="{Binding CmdReportStart}"    
+                Content="Start Report"
+                Background="Yellow"
+                Foreground="Black"
+                Margin="12"
+                Grid.Row="13"
+                Grid.Column="2" 
+                FontSize="30"
+                Height="Auto"/>
+-->
+
+        <Button Command="{Binding CmdReportSave}"    
+                Content="Create Report"
+                Background="Orange"
+                Foreground="Black"
+                Margin="12"
+                Grid.Row="13"
+                Grid.Column="3" 
+                FontSize="30"
+                Height="Auto"/>
 
     </Grid>
 </Window>
