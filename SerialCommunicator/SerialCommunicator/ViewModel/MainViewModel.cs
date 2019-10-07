@@ -83,6 +83,10 @@ namespace SerialCommunicator.ViewModel
 
         private bool _measureOnButtonIsEnabled;
 
+        private bool _cmdCardTypeIsEnabled;
+
+        private bool _cmdMeasureTypeIsEnabled;
+
         private bool _runButtonIsEnabled;
 
         private bool _runningTask;
@@ -98,6 +102,12 @@ namespace SerialCommunicator.ViewModel
         private string[] saveable = new string[] { };
         List<string> myCollection = new List<string>();
 
+        private int countBytes = 0;
+
+        private int _schauerNumber;
+
+        Measurement measurement = null;
+        private string _currentMeasureCount = "Measured data to save: 0";
 
         #endregion
 
@@ -123,6 +133,8 @@ namespace SerialCommunicator.ViewModel
 
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
+
+            measurement = new Measurement();
         }
 
         private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
@@ -332,9 +344,6 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-        private int countBytes = 0;
-        private bool _cmdCardTypeIsEnabled;
-        private bool _cmdMeasureTypeIsEnabled;
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
@@ -357,8 +366,13 @@ namespace SerialCommunicator.ViewModel
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                                                + "\n" + MessageRecievedText +  "\n";
 
-                        myCollection.Add(MessageRecievedText);
+                        string result = xmlData.GetResponseData
+                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
+                        measurement.AddSchauerNumber((SchauerNumber++).ToString());
+                        measurement.AddResultOfMeasurement(result);
+                        measurement.AddMeasureType(SelectedMeasureType);
+                        CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
                         WasItRun = false;
                     }
                     else
@@ -398,28 +412,29 @@ namespace SerialCommunicator.ViewModel
 
         private void CreateReport()
         {
-            
+               
         }
 
         private void SaveReport()
         {
-            if (myCollection.Count == 0)
+            if (measurement.MeasureType.Any())
             {
-                MessageBox.Show("No measure so far!");
+                string FolderPath = FolderDialog();
+                string FileName = $"IRCS_{SelectedCardType}_{measurement.SchauerNumber.First()}_{int.Parse(measurement.SchauerNumber.Last()) - int.Parse(measurement.SchauerNumber.First()) + 1}";
+
+                //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
+                ReportDataHelper.InitializeMeasure(FileName, FolderPath);
+                ReportDataHelper.SetDataForReport(measurement);
+                ReportDataHelper.CreateReportFile();
+
+                MessageBox.Show("File Saved!");
             }
             else
             {
-                ReportCreator report = new ReportCreator();
-
-                report.FilePath = FolderDialog();
-
-                report.AddNewRow(myCollection.ToArray());
-
-                report.CreateFile();
-
-                MessageBox.Show("File Saved!");
-
+                MessageBox.Show("No measurement data!");
             }
+          
+
         }
     
         private string FolderDialog()
@@ -711,6 +726,35 @@ namespace SerialCommunicator.ViewModel
             {
                 _cmdMeasureTypeIsEnabled = value;
                 OnPropertyChanged("CmdMeasureTypeIsEnabled");
+            }
+        }
+
+        public int SchauerNumber
+        {
+            get
+            {
+                return _schauerNumber;
+            }
+            set
+            {
+                _schauerNumber = value;
+                OnPropertyChanged("SchauerNumber");
+
+            }
+        }
+
+
+        public string CurrentMeasureCount
+        {
+            get
+            {
+                return _currentMeasureCount;
+            }
+            set
+            {
+                _currentMeasureCount = value;
+                OnPropertyChanged("CurrentMeasureCount");
+
             }
         }
 

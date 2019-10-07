@@ -85,7 +85,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Infrastructure\ReportDataHelper.cs" />
     <Compile Include="Infrastructure\ByteMessageBuilder.cs" />
+    <Compile Include="Model\Measurement.cs" />
     <Compile Include="Infrastructure\ReportCreator.cs" />
     <Compile Include="Infrastructure\XmlFilter.cs" />
     <Compile Include="Model\Answer.cs" />

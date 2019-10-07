@@ -146,7 +146,6 @@
                   Grid.ColumnSpan="2"
                   Grid.Row="10" 
                   IsEnabled="{Binding CmdSchauerNumberIsEnabled}"
-
                   
                   />
 
@@ -197,35 +196,42 @@
                 Grid.Column="6" 
                 FontSize="30"
                 Height="Auto"/>
-   <!--     
-        <CheckBox Content="Reporting" 
+     
+        <!--<CheckBox Content="Reporting" 
                   FontSize="30"
                   Grid.Row="13"  
                   Grid.Column="2"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  />
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  />-->
 
-        <Button Command="{Binding CmdReportStart}"    
-                Content="Start Report"
+        <!--<Button Command="{Binding CmdReportStart}"    
+                Content="Start Recording"
                 Background="Yellow"
                 Foreground="Black"
                 Margin="12"
                 Grid.Row="13"
                 Grid.Column="2" 
                 FontSize="30"
-                Height="Auto"/>
--->
+                Height="Auto"/>-->
+
 
         <Button Command="{Binding CmdReportSave}"    
-                Content="Create Report"
-                Background="Orange"
+                Content="Create Report to File"
+                Background="Green"
                 Foreground="Black"
-                Margin="12"
+                Margin="5"
                 Grid.Row="13"
-                Grid.Column="3" 
-                FontSize="30"
+                Grid.Column="2" 
+                FontSize="25"
                 Height="Auto"/>
+
+        <Label Content="{Binding CurrentMeasureCount}"
+               Grid.Row="13"
+               Grid.Column="3" 
+               FontSize="20" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center"/>
 
     </Grid>
 </Window>

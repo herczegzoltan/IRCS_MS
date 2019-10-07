@@ -10,7 +10,7 @@ namespace SerialCommunicator.Infrastructure
 {
     public class ReportCreator
     {
-        public string FilePath = "IRCSTest";//IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".
+        public string FilePath { get; set; }
 
         public string FileName { get; set; }
 
@@ -23,9 +23,16 @@ namespace SerialCommunicator.Infrastructure
             HeaderRowInsertable = new List<string[]>() { };
         }
 
-        public void AddNewRow(string[] NewRow)
+        //public void AddNewRow(string[] NewRow)
+        //{
+        //       HeaderRowInsertable.Add(NewRow);
+        //}
+
+        public void AddData(Measurement mt)
         {
-               HeaderRowInsertable.Add(NewRow);
+           HeaderRowInsertable.Add(mt.SchauerNumber.ToArray());
+           HeaderRowInsertable.Add(mt.ResultOfMeasurement.ToArray());
+           HeaderRowInsertable.Add(mt.MeasureType.ToArray());
         }
 
         public void CreateFile()
@@ -37,16 +44,10 @@ namespace SerialCommunicator.Infrastructure
                 var worksheet = excel.Workbook.Worksheets["Worksheet1"];
                 worksheet.Cells[headerRange].LoadFromArrays(HeaderRowInsertable);
 
-                SaveToNewFile();
-
+                FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");//+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
+                excel.SaveAs(excelFile);
             }
         }
 
-
-        public void SaveToNewFile()
-        {
-            FileInfo excelFile = new FileInfo(@""+FilePath +"\\" + "IRCSTest" + ".xlsx");//+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
-            excel.SaveAs(excelFile);
-        }
     }
 }
