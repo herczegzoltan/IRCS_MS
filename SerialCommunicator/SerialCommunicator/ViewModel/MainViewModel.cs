@@ -107,7 +107,7 @@ namespace SerialCommunicator.ViewModel
             ReadingSerialState();
         }
 
-        private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
+        private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
 
 
         private void UIElementUpdater(UIElementStateVariations uev)
@@ -123,6 +123,9 @@ namespace SerialCommunicator.ViewModel
                 case UIElementStateVariations.DisConnectBase:
                     UIElementUpdaterHelper(false, true, false, false, false, false);
                     break;
+                case UIElementStateVariations.DisConnectClick:
+                    UIElementUpdaterHelper(true, false, false, false, false, false);
+                    break;
                 case UIElementStateVariations.CardAndMeasureSelected:
                     UIElementUpdaterHelper(false, true, true, false, false,true);
                     break;
@@ -130,7 +133,7 @@ namespace SerialCommunicator.ViewModel
                     UIElementUpdaterHelper(false, true, true, false, false, true);
                     break;
                 case UIElementStateVariations.MeasureOnAfterClick:
-                    UIElementUpdaterHelper(false, true, false, true, true, true);
+                    UIElementUpdaterHelper(false, true, false, true, true, false);
                     break;
                 default:
                     break;
@@ -222,7 +225,7 @@ namespace SerialCommunicator.ViewModel
 
             //ReadingSerialState();
             DisConfigureDevice();
-            UIElementUpdater(UIElementStateVariations.DisConnectBase);
+            UIElementUpdater(UIElementStateVariations.DisConnectClick);
         }
 
         private void ConfigureDevice()
