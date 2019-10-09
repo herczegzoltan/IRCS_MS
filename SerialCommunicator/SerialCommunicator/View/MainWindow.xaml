@@ -95,14 +95,14 @@
 
             />
 
-        <ComboBox SelectedItem="{Binding Path=SelectedBaudRate,
-                  Mode=OneWayToSource}" 
+        <ComboBox SelectedItem="{Binding SelectedBaudRate,Mode=TwoWay}" 
                   ItemsSource="{Binding BaudRates}"
                   Margin="10"
                   Grid.Column="6"
                   Grid.ColumnSpan="2"
                   Grid.Row="2"
-                  FontSize="16"/>
+                  FontSize="16"
+                  />
 
 
         <TextBlock Text="Measurements" Grid.Row="5" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -205,15 +205,15 @@
                   VerticalAlignment="Center"
                   />-->
 
-        <!--<Button Command="{Binding CmdReportStart}"    
+        <Button Command="{Binding CmdReportStart}"    
                 Content="Start Recording"
                 Background="Yellow"
                 Foreground="Black"
-                Margin="12"
+                Margin="5"
                 Grid.Row="13"
-                Grid.Column="2" 
+                Grid.Column="1" 
                 FontSize="30"
-                Height="Auto"/>-->
+                Height="Auto"/>
 
 
         <Button Command="{Binding CmdReportSave}"    

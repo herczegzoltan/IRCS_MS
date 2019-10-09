@@ -108,6 +108,7 @@ namespace SerialCommunicator.ViewModel
 
         Measurement measurement = null;
         private string _currentMeasureCount = "Measured data to save: 0";
+        private bool _cmdSchauerNumberIsEnabled;
 
         #endregion
 
@@ -135,6 +136,9 @@ namespace SerialCommunicator.ViewModel
             ReadingSerialState();
 
             measurement = new Measurement();
+            SelectedBaudRate = 100;
+            
+
         }
 
         private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
@@ -180,6 +184,9 @@ namespace SerialCommunicator.ViewModel
             CmdRunIsEnabled = runButton;
             CmdCardTypeIsEnabled = cardAndMeasureType;
             CmdMeasureTypeIsEnabled = cardAndMeasureType;
+            CmdSchauerNumberIsEnabled = cardAndMeasureType;
+
+
 
         }
 
@@ -373,7 +380,18 @@ namespace SerialCommunicator.ViewModel
                         measurement.AddResultOfMeasurement(result);
                         measurement.AddMeasureType(SelectedMeasureType);
                         CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
+                        /*-
+                        if (SelectedMeasureType == "AutoMeasure")
+                        {
+                            WasItRun = true;
+                        }
+                        else
+                        {
+                            WasItRun = false;
+                        }
+                        */
                         WasItRun = false;
+
                     }
                     else
                     {
@@ -420,14 +438,20 @@ namespace SerialCommunicator.ViewModel
             if (measurement.MeasureType.Any())
             {
                 string FolderPath = FolderDialog();
-                string FileName = $"IRCS_{SelectedCardType}_{measurement.SchauerNumber.First()}_{int.Parse(measurement.SchauerNumber.Last()) - int.Parse(measurement.SchauerNumber.First()) + 1}";
+                if (FolderPath != "")
+                {
+                    string FileName = $"IRCS_{SelectedCardType}_{measurement.SchauerNumber.First()}_"+
+                      $"{int.Parse(measurement.SchauerNumber.Last()) - int.Parse(measurement.SchauerNumber.First()) + 1}";
 
-                //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
-                ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-                ReportDataHelper.SetDataForReport(measurement);
-                ReportDataHelper.CreateReportFile();
+                    //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
+                    ReportDataHelper.InitializeMeasure(FileName, FolderPath);
+                    //ReportDataHelper.SetDataForReport(measurement);
+                    ReportDataHelper.PassListTOReport(ReportDataHelper.CreateDataMap(measurement));
+                    
+                    ReportDataHelper.CreateReportFile();
 
-                MessageBox.Show("File Saved!");
+                    MessageBox.Show("File Saved!");
+                }
             }
             else
             {
@@ -755,6 +779,20 @@ namespace SerialCommunicator.ViewModel
                 _currentMeasureCount = value;
                 OnPropertyChanged("CurrentMeasureCount");
 
+            }
+        }
+
+        
+        public bool CmdSchauerNumberIsEnabled
+        {
+            get
+            {
+                return _cmdSchauerNumberIsEnabled;
+            }
+            set
+            {
+                _cmdSchauerNumberIsEnabled = value;
+                OnPropertyChanged("CmdSchauerNumberIsEnabled");
             }
         }
 

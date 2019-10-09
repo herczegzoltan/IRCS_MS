@@ -16,24 +16,37 @@ namespace SerialCommunicator.Infrastructure
 
         private List<string[]> HeaderRowInsertable = null;
 
+
         ExcelPackage excel = null;
         public ReportCreator()
         {
             excel = new ExcelPackage();
             HeaderRowInsertable = new List<string[]>() { };
+
         }
 
-        //public void AddNewRow(string[] NewRow)
-        //{
-        //       HeaderRowInsertable.Add(NewRow);
-        //}
 
+        public void AddData(List<string[]> data)
+        {
+            HeaderRowInsertable = data;
+        }
+
+
+        //TODO separate form Measurement class
         public void AddData(Measurement mt)
         {
-           HeaderRowInsertable.Add(mt.SchauerNumber.ToArray());
-           HeaderRowInsertable.Add(mt.ResultOfMeasurement.ToArray());
-           HeaderRowInsertable.Add(mt.MeasureType.ToArray());
+            mt.SchauerNumber.Insert(0," ");
+
+            HeaderRowInsertable.Add(mt.SchauerNumber.ToArray());
+
+            foreach (var item in mt.MeasureType)
+            {
+                HeaderRowInsertable.Add(new string[] { item });
+            }
+            HeaderRowInsertable.Add(mt.ResultOfMeasurement.ToArray());
         }
+
+        
 
         public void CreateFile()
         {

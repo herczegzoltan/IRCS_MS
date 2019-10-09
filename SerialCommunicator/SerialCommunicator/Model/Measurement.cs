@@ -10,7 +10,7 @@ namespace SerialCommunicator.Infrastructure
     {
         public string Name { get; set; }
 
-        public List<string> SchauerNumber = new List<string>() { };
+        public List<string> SchauerNumber = new List<string>() {};
 
         public List<string> ResultOfMeasurement = new List<string>() { };
 
