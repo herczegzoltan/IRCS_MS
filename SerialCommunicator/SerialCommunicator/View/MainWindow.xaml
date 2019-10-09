@@ -96,6 +96,7 @@
             />
 
         <ComboBox SelectedItem="{Binding SelectedBaudRate,Mode=TwoWay}" 
+                  SelectedIndex="10"
                   ItemsSource="{Binding BaudRates}"
                   Margin="10"
                   Grid.Column="6"

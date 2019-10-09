@@ -17,6 +17,7 @@ namespace SerialCommunicator.Infrastructure
         private List<string[]> HeaderRowInsertable = null;
 
 
+        //TODO Constructor DI
         ExcelPackage excel = null;
         public ReportCreator()
         {
@@ -24,7 +25,6 @@ namespace SerialCommunicator.Infrastructure
             HeaderRowInsertable = new List<string[]>() { };
 
         }
-
 
         public void AddData(List<string[]> data)
         {
