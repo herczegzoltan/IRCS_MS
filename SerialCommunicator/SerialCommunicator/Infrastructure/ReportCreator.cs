@@ -16,7 +16,6 @@ namespace SerialCommunicator.Infrastructure
 
         private List<string[]> HeaderRowInsertable = null;
 
-
         //TODO Constructor DI
         ExcelPackage excel = null;
         public ReportCreator()
@@ -30,23 +29,6 @@ namespace SerialCommunicator.Infrastructure
         {
             HeaderRowInsertable = data;
         }
-
-
-        //TODO separate form Measurement class
-        public void AddData(Measurement mt)
-        {
-            mt.SchauerNumber.Insert(0," ");
-
-            HeaderRowInsertable.Add(mt.SchauerNumber.ToArray());
-
-            foreach (var item in mt.MeasureType)
-            {
-                HeaderRowInsertable.Add(new string[] { item });
-            }
-            HeaderRowInsertable.Add(mt.ResultOfMeasurement.ToArray());
-        }
-
-        
 
         public void CreateFile()
         {

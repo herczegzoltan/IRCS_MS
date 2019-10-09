@@ -206,7 +206,7 @@
                   VerticalAlignment="Center"
                   />-->
 
-        <Button Command="{Binding CmdReportStart}"    
+        <!--<Button Command="{Binding CmdReportStart}"    
                 Content="Start Recording"
                 Background="Yellow"
                 Foreground="Black"
@@ -214,7 +214,7 @@
                 Grid.Row="13"
                 Grid.Column="1" 
                 FontSize="30"
-                Height="Auto"/>
+                Height="Auto"/>-->
 
 
         <Button Command="{Binding CmdReportSave}"    

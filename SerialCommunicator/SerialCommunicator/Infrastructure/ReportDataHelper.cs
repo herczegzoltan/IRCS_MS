@@ -18,7 +18,6 @@ namespace SerialCommunicator.Infrastructure
             report.FilePath = _filePath;
         }
 
-
         public static List<string[]> CreateDataMap(Measurement mt)
         {
             List<string[]> rawdata = new List<string[]>() { };
@@ -48,11 +47,11 @@ namespace SerialCommunicator.Infrastructure
             return rawdata;
         }
 
-
         public static void PassListTOReport(List<string[]> input)
         {
             report.AddData(input);
         }
+
         public static void SetDataForReport(Measurement mt)
         {
             report.AddData(mt);

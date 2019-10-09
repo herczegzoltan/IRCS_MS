@@ -135,9 +135,7 @@ namespace SerialCommunicator.ViewModel
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
 
-            measurement = new Measurement();
-            SelectedBaudRate = 100;
-            
+            measurement = new Measurement();            
 
         }
 
@@ -358,7 +356,7 @@ namespace SerialCommunicator.ViewModel
             {
                 string incomingByte = COMPort.ReadByte().ToString();
 
-                //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+                MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
                 if (countBytes == 2)
@@ -419,13 +417,20 @@ namespace SerialCommunicator.ViewModel
         //temp solution values shall be from xml
         private void WasItDisconnect()
         {
-            if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == "13"
-                                            && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "113"
-                                            && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34")
+
+            if(xmlData.GetResponseTranslate
+                                               (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                               ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                                               ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
+
             {
                 COMPort.Close();
                 COMPort.Dispose();
             }
+            //if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == ByteMessageBuilder.ConvertStringToByte(xmlData.GetEOF()).ToString() //"13"
+            //                                && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "113"
+            //                                && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34") //disconnected
+
         }
 
         private void CreateReport()
