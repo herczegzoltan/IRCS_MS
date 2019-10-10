@@ -208,17 +208,6 @@
                   IsEnabled="{Binding ReportCheckBoxEnabled}"
                   />
 
-        <!--<Button Command="{Binding CmdReportStart}"    
-                Content="Start Recording"
-                Background="Yellow"
-                Foreground="Black"
-                Margin="5"
-                Grid.Row="13"
-                Grid.Column="1" 
-                FontSize="30"
-                Height="Auto"/>-->
-
-
         <Button Command="{Binding CmdReportSave}"
                 IsEnabled="{Binding ReportFieldState}"
                 Content="Create Report to File"

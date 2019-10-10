@@ -283,6 +283,7 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(2, 0x00);
             ByteMessageBuilder.SetByteArray(3, 0x00);
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+            WasItRun = false;
 
             LoopMessagesArrayToSend();
         }
@@ -295,7 +296,7 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(2, 0x00);
             ByteMessageBuilder.SetByteArray(3, 0x00);
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-
+            WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementUpdater(UIElementStateVariations.MeasureOnAfterClick);
         }
@@ -307,9 +308,10 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(2, 0x00);
             ByteMessageBuilder.SetByteArray(3, 0x00);
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-
+            WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementUpdater(UIElementStateVariations.MeasureOffClick);
+            
         }
 
         private void SendRun()
@@ -344,7 +346,7 @@ namespace SerialCommunicator.ViewModel
             ByteMessageBuilder.SetByteArray(2, 0x00);
             ByteMessageBuilder.SetByteArray(3, 0x00);
             ByteMessageBuilder.SetByteArray(4, 0x0D);
-
+            WasItRun = false;
             LoopMessagesArrayToSend();
         }
 
@@ -369,10 +371,10 @@ namespace SerialCommunicator.ViewModel
             if (COMPort.IsOpen)
             {
                 string incomingByte = COMPort.ReadByte().ToString();
-
-                //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+            
+                MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
-
+                
                 if (countBytes == 2)
                 {
                     if (WasItRun)
@@ -385,25 +387,14 @@ namespace SerialCommunicator.ViewModel
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                                                + "\n" + MessageRecievedText +  "\n";
 
-                        string result = xmlData.GetResponseData
-                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+                        //string result = xmlData.GetResponseData
+                        //                       (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                        measurement.AddSchauerNumber((SchauerNumber++).ToString());
-                        measurement.AddResultOfMeasurement(result);
-                        measurement.AddMeasureType(SelectedMeasureType);
-                        CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
-                        /*-
-                        if (SelectedMeasureType == "AutoMeasure")
-                        {
-                            WasItRun = true;
-                        }
-                        else
-                        {
-                            WasItRun = false;
-                        }
-                        */
-                        WasItRun = false;
-
+                        //measurement.AddSchauerNumber((SchauerNumber++).ToString());
+                        //measurement.AddResultOfMeasurement(result);
+                        //measurement.AddMeasureType(SelectedMeasureType);
+                        //CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
+                        
                     }
                     else
                     {
