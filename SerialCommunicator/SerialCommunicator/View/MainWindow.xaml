@@ -146,7 +146,7 @@
                   Margin="10"
                   Grid.ColumnSpan="2"
                   Grid.Row="10" 
-                  IsEnabled="{Binding CmdSchauerNumberIsEnabled}"
+                  IsEnabled="{Binding ReportFieldState}"
                   
                   />
 
@@ -155,7 +155,7 @@
                   Margin="10"
                   Grid.ColumnSpan="2"
                   Grid.Row="11"
-                  IsEnabled="{Binding CmdNameIsEnabled}"
+                  IsEnabled="{Binding ReportFieldState}"
                   />
 
         <ScrollViewer 
@@ -198,13 +198,15 @@
                 FontSize="30"
                 Height="Auto"/>
      
-        <!--<CheckBox Content="Reporting" 
+        <CheckBox Content="Reporting" 
                   FontSize="30"
-                  Grid.Row="13"  
+                  Grid.Row="9"  
                   Grid.Column="2"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
-                  />-->
+                  IsChecked="{Binding ReportFieldState}"
+                  IsEnabled="{Binding ReportCheckBoxEnabled}"
+                  />
 
         <!--<Button Command="{Binding CmdReportStart}"    
                 Content="Start Recording"
@@ -217,7 +219,8 @@
                 Height="Auto"/>-->
 
 
-        <Button Command="{Binding CmdReportSave}"    
+        <Button Command="{Binding CmdReportSave}"
+                IsEnabled="{Binding ReportFieldState}"
                 Content="Create Report to File"
                 Background="Green"
                 Foreground="Black"

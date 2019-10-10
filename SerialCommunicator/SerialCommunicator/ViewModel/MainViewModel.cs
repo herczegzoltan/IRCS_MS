@@ -33,8 +33,8 @@ namespace SerialCommunicator.ViewModel
         private ICommand _run;
 
         private ICommand _reportSave;
+        private ICommand _asd;
 
-        private ICommand _reportStart;
 
         private List<string> _availablePorts;
 
@@ -66,9 +66,8 @@ namespace SerialCommunicator.ViewModel
 
         public ICommand CmdRun => _run;
 
-        public ICommand CmdReportStart => _reportStart;
-
         public ICommand CmdReportSave => _reportSave;
+
 
 
         private string _stateOfDevice = "State: Not connected!";
@@ -91,6 +90,8 @@ namespace SerialCommunicator.ViewModel
 
         private bool _runningTask;
 
+
+
         XmlFilter xmlData = null;
 
         SerialPort COMPort = null;
@@ -108,7 +109,8 @@ namespace SerialCommunicator.ViewModel
 
         Measurement measurement = null;
         private string _currentMeasureCount = "Measured data to save: 0";
-        private bool _cmdSchauerNumberIsEnabled;
+        private bool _reportFieldState;
+        private bool _reportCheckBoxEnabled;
 
         #endregion
 
@@ -120,8 +122,7 @@ namespace SerialCommunicator.ViewModel
             _measureOn = new DelegateCommand(SendMeasureOn);
             _measureOff = new DelegateCommand(SendMeasureOff);
             _run = new DelegateCommand(SendRun);
-            _reportStart = new DelegateCommand(CreateReport);
-            _reportSave= new DelegateCommand(SaveReport);
+            _reportSave = new DelegateCommand(SaveReport);
 
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
@@ -135,45 +136,60 @@ namespace SerialCommunicator.ViewModel
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
 
-            measurement = new Measurement();            
+
+            measurement = new Measurement();
 
         }
 
-        private enum UIElementStateVariations {ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick}
+        private void MeasureTypeComboBoxChanged()
+        {
+            if (SelectedMeasureType == "AutoMeasure")
+            {
+                ReportFieldState = true;
+                ReportCheckBoxEnabled = true;
+            }
+            else
+            {
+                ReportFieldState = false;
+                ReportCheckBoxEnabled = false;
+            }
+        }
+
+        private enum UIElementStateVariations { ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick }
 
         private void UIElementUpdater(UIElementStateVariations uev)
         {
             switch (uev)
             {
                 case UIElementStateVariations.ConnectBeforeClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false);
+                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
                     break;
                 case UIElementStateVariations.ConnectAfterClick:
-                    UIElementUpdaterHelper(false, true, false, false, false, true);
+                    UIElementUpdaterHelper(false, true, false, false, false, true, false);
                     break;
                 case UIElementStateVariations.DisConnectBase:
-                    UIElementUpdaterHelper(false, true, false, false, false, false);
+                    UIElementUpdaterHelper(false, true, false, false, false, false, false);
                     break;
                 case UIElementStateVariations.DisConnectClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false);
+                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
                     break;
                 case UIElementStateVariations.CardAndMeasureSelected:
-                    UIElementUpdaterHelper(false, true, true, false, false,true);
+                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
                     break;
                 case UIElementStateVariations.MeasureOffClick:
-                    UIElementUpdaterHelper(false, true, true, false, false, true);
+                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
                     break;
                 case UIElementStateVariations.MeasureOnAfterClick:
-                    UIElementUpdaterHelper(false, true, false, true, true, false);
+                    UIElementUpdaterHelper(false, true, false, true, true, false, false);
                     break;
                 default:
                     break;
             }
         }
         private void UIElementUpdaterHelper(
-            bool connectButton, bool disconnectButton, 
-            bool measureOnButton,bool measureOffButton,
-            bool runButton, bool cardAndMeasureType)
+            bool connectButton, bool disconnectButton,
+            bool measureOnButton, bool measureOffButton,
+            bool runButton, bool cardAndMeasureType, bool reportField)
         {
             CmdConnectIsEnabled = connectButton;
             CmdDisConnectIsEnabled = disconnectButton;
@@ -182,9 +198,7 @@ namespace SerialCommunicator.ViewModel
             CmdRunIsEnabled = runButton;
             CmdCardTypeIsEnabled = cardAndMeasureType;
             CmdMeasureTypeIsEnabled = cardAndMeasureType;
-            CmdSchauerNumberIsEnabled = cardAndMeasureType;
-
-
+            //ReportFieldState = reportField;
 
         }
 
@@ -356,7 +370,7 @@ namespace SerialCommunicator.ViewModel
             {
                 string incomingByte = COMPort.ReadByte().ToString();
 
-                MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+                //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
                 if (countBytes == 2)
@@ -393,12 +407,20 @@ namespace SerialCommunicator.ViewModel
                     }
                     else
                     {
-                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " + 
+                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
                                                xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
                                                + "\n" + MessageRecievedText + "\n";
+                        //MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
+                        //                    xmlData.GetSelectedCardTypeName
+                        //                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
+                        //                    + " -> " +
+                        //                    xmlData.GetResponseData
+                        //                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
+                        //                    + "\n" + MessageRecievedText + "\n";
+
                     }
 
                     countBytes = 0;
@@ -433,10 +455,6 @@ namespace SerialCommunicator.ViewModel
 
         }
 
-        private void CreateReport()
-        {
-               
-        }
 
         private void SaveReport()
         {
@@ -575,7 +593,7 @@ namespace SerialCommunicator.ViewModel
             {
                 _selectedMeasureType = value;
                 OnPropertyChanged("MeasureTypes");
-
+                MeasureTypeComboBoxChanged();
                 if (value != null)
                 {
                     UIElementUpdater(UIElementStateVariations.CardAndMeasureSelected);
@@ -787,19 +805,34 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-        
-        public bool CmdSchauerNumberIsEnabled
+
+        public bool ReportFieldState
         {
             get
             {
-                return _cmdSchauerNumberIsEnabled;
+                return _reportFieldState;
             }
             set
             {
-                _cmdSchauerNumberIsEnabled = value;
-                OnPropertyChanged("CmdSchauerNumberIsEnabled");
+                _reportFieldState = value;
+                OnPropertyChanged("ReportFieldState");
             }
         }
+
+
+        public bool ReportCheckBoxEnabled
+        {
+            get
+            {
+                return _reportCheckBoxEnabled;
+            }
+            set
+            {
+                _reportCheckBoxEnabled = value;
+                OnPropertyChanged("ReportCheckBoxEnabled");
+            }
+        }
+        
 
         #endregion
     }

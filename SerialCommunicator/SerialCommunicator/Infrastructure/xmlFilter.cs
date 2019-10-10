@@ -20,8 +20,7 @@ namespace SerialCommunicator.Infrastructure
             _rootOject = XmlProcessor.GetXmlRootObjectCommands();
 
             _rootOjectResponse = XmlProcessor.GetXmlRootObjectResponse();
-
-
+            
             GetEOF();
         }
 
@@ -83,11 +82,6 @@ namespace SerialCommunicator.Infrastructure
                                        .Select(k => k.Value).First();
 
             return singleMeasureValue;
-        }
-
-        public void GetClosingByte()
-        {
-            //string singleCloseCharacter = _rootOject.
         }
 
         public string GetEOF()

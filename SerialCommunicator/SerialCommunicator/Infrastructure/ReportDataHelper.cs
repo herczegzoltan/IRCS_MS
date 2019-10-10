@@ -8,7 +8,6 @@ namespace SerialCommunicator.Infrastructure
 {
     public static class ReportDataHelper
     {
-
         private static ReportCreator report = null;
 
         public static void InitializeMeasure(string _fileName, string _filePath)
@@ -52,15 +51,9 @@ namespace SerialCommunicator.Infrastructure
             report.AddData(input);
         }
 
-        public static void SetDataForReport(Measurement mt)
-        {
-            report.AddData(mt);
-        }
-
         public static void CreateReportFile()
         {
             report.CreateFile();
         }
-     
     }
 }

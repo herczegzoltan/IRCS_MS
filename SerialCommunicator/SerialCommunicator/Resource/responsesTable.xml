@@ -1,42 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <RootObjectResponse>
-    <Answer translate="Connected" command="0x11" data="0x70" eof="0x0D"/>
-    <Answer translate="Disconnected" command="0x22" data="0x71" eof="0x0D"/>
-    <Answer translate="Measure_OK" command="0x00" data="0x00" eof="0x0D"/>
-    <Answer translate="Measure_OFF" command="0x44" data="0x72" eof="0x0D"/>
-    <Answer translate="Error_48" command="0x07" data="0x73" eof="0x0D"/>
-    <Answer translate="Error_48i" command="0x07" data="0x74" eof="0x0D"/>
-    <Answer translate="Error_p12" command="0x07" data="0x75" eof="0x0D"/>
-    <Answer translate="Error_n12" command="0x07" data="0x76" eof="0x0D"/>
-    <Answer translate="Error_p7" command="0x07" data="0x77" eof="0x0D"/>
-    <Answer translate="Error_n7" command="0x07" data="0x78" eof="0x0D"/>
-    <Answer translate="Error_p5" command="0x07" data="0x79" eof="0x0D"/>
-    <Answer translate="Error_sp" command="0x07" data="0x7A" eof="0x0D"/>
-    <Answer translate="Data Bus Error" command="0x07" data="0x7B" eof="0x0D"/>
-    <Answer translate="Soundbus Error" command="0x07" data="0x7C" eof="0x0D"/>
+    <Answer translate="Connected" command="0x11" data="0x70" eof="0x04"/>
+    <Answer translate="Disconnected" command="0x22" data="0x71" eof="0x04"/>
+    <Answer translate="Measure_OK" command="0x00" data="0x00" eof="0x04"/>
+    <Answer translate="Measure_OFF" command="0x44" data="0x72" eof="0x04"/>
+    <Answer translate="Error_48" command="0x07" data="0x73" eof="0x04"/>
+    <Answer translate="Error_48i" command="0x07" data="0x74" eof="0x04"/>
+    <Answer translate="Error_p12" command="0x07" data="0x75" eof="0x04"/>
+    <Answer translate="Error_n12" command="0x07" data="0x76" eof="0x04"/>
+    <Answer translate="Error_p7" command="0x07" data="0x77" eof="0x04"/>
+    <Answer translate="Error_n7" command="0x07" data="0x78" eof="0x04"/>
+    <Answer translate="Error_p5" command="0x07" data="0x79" eof="0x04"/>
+    <Answer translate="Error_sp" command="0x07" data="0x7A" eof="0x04"/>
+    <Answer translate="Data Bus Error" command="0x07" data="0x7B" eof="0x04"/>
+    <Answer translate="Soundbus Error" command="0x07" data="0x7C" eof="0x04"/>
   
-  <Answer translate="Disp_i2c_e" command="0x02" data="0x20" eof="0x0D"/>
-    <Answer translate="Disp_opto_e" command="0x02" data="0x21" eof="0x0D"/>
-    <Answer translate="Disp_AD_e" command="0x02" data="0x22" eof="0x0D"/>
-    <Answer translate="Disp_Mic_ls_e" command="0x02" data="0x23" eof="0x0D"/>
-    <Answer translate="Disp_Amp1_e" command="0x02" data="0x24" eof="0x0D"/>
-    <Answer translate="Disp_Amp2_e" command="0x02" data="0x25" eof="0x0D"/>
-    <Answer translate="Disp_Amp3_e" command="0x02" data="0x26" eof="0x0D"/>
-    <Answer translate="Disp_IPO_e" command="0x02" data="0x27" eof="0x0D"/>
-    <Answer translate="Disp_TK_e" command="0x02" data="0x28" eof="0x0D"/>
-    <Answer translate="Line1_e" command="0x03" data="0x30" eof="0x0D"/>
-    <Answer translate="Line2_e" command="0x03" data="0x31" eof="0x0D"/>
-    <Answer translate="Line3_e" command="0x03" data="0x32" eof="0x0D"/>
-    <Answer translate="Line4_e" command="0x03" data="0x33" eof="0x0D"/>
-    <Answer translate="Input sense_e" command="0x03" data="0x34" eof="0x0D"/>
-    <Answer translate="Output load_e" command="0x03" data="0x35" eof="0x0D"/>
-    <Answer translate="Line1_e" command="0x04" data="0x40" eof="0x0D"/>
-    <Answer translate="Line2_e" command="0x04" data="0x41" eof="0x0D"/>
-    <Answer translate="Line3_e" command="0x04" data="0x42" eof="0x0D"/>
-    <Answer translate="Line4_e" command="0x04" data="0x43" eof="0x0D"/>
-    <Answer translate="Line5_e" command="0x04" data="0x44" eof="0x0D"/>
-    <Answer translate="Line6_e" command="0x04" data="0x45" eof="0x0D"/>
-    <Answer translate="I2C" command="0x05" data="0x50" eof="0x0D"/>
-    <Answer translate="Relay Zones" command="0x05" data="0x51" eof="0x0D"/>
-    <Answer translate="AMP100_e" command="0x06" data="0x60" eof="0x0D"/>
+  <Answer translate="Disp_i2c_e" command="0x02" data="0x20" eof="0x04"/>
+    <Answer translate="Disp_opto_e" command="0x02" data="0x21" eof="0x04"/>
+    <Answer translate="Disp_AD_e" command="0x02" data="0x22" eof="0x04"/>
+    <Answer translate="Disp_Mic_ls_e" command="0x02" data="0x23" eof="0x04"/>
+    <Answer translate="Disp_Amp1_e" command="0x02" data="0x24" eof="0x04"/>
+    <Answer translate="Disp_Amp2_e" command="0x02" data="0x25" eof="0x04"/>
+    <Answer translate="Disp_Amp3_e" command="0x02" data="0x26" eof="0x04"/>
+    <Answer translate="Disp_IPO_e" command="0x02" data="0x27" eof="0x04"/>
+    <Answer translate="Disp_TK_e" command="0x02" data="0x28" eof="0x04"/>
+    <Answer translate="Line1_e" command="0x03" data="0x30" eof="0x04"/>
+    <Answer translate="Line2_e" command="0x03" data="0x31" eof="0x04"/>
+    <Answer translate="Line3_e" command="0x03" data="0x32" eof="0x04"/>
+    <Answer translate="Line4_e" command="0x03" data="0x33" eof="0x04"/>
+    <Answer translate="Input sense_e" command="0x03" data="0x34" eof="0x04"/>
+    <Answer translate="Output load_e" command="0x03" data="0x35" eof="0x04"/>
+    <Answer translate="Line1_e" command="0x04" data="0x40" eof="0x04"/>
+    <Answer translate="Line2_e" command="0x04" data="0x41" eof="0x04"/>
+    <Answer translate="Line3_e" command="0x04" data="0x42" eof="0x04"/>
+    <Answer translate="Line4_e" command="0x04" data="0x43" eof="0x04"/>
+    <Answer translate="Line5_e" command="0x04" data="0x44" eof="0x04"/>
+    <Answer translate="Line6_e" command="0x04" data="0x45" eof="0x04"/>
+    <Answer translate="I2C" command="0x05" data="0x50" eof="0x04"/>
+    <Answer translate="Relay Zones" command="0x05" data="0x51" eof="0x04"/>
+    <Answer translate="AMP100_e" command="0x06" data="0x60" eof="0x04"/>
 </RootObjectResponse>
