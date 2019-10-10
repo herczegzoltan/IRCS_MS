@@ -372,7 +372,7 @@ namespace SerialCommunicator.ViewModel
             {
                 string incomingByte = COMPort.ReadByte().ToString();
             
-                MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+                //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
                 
                 if (countBytes == 2)
@@ -387,14 +387,15 @@ namespace SerialCommunicator.ViewModel
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                                                + "\n" + MessageRecievedText +  "\n";
 
-                        //string result = xmlData.GetResponseData
-                        //                       (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+                        string result = xmlData.GetResponseData
+                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                        //measurement.AddSchauerNumber((SchauerNumber++).ToString());
-                        //measurement.AddResultOfMeasurement(result);
+                        measurement.AddSchauerNumber((SchauerNumber++).ToString());
+                        measurement.AddResultOfMeasurement(result);
                         //measurement.AddMeasureType(SelectedMeasureType);
-                        //CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
-                        
+                        measurement.MeasureType = xmlData.GetMeasurements(SelectedCardType);
+                    //CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
+
                     }
                     else
                     {
@@ -427,7 +428,6 @@ namespace SerialCommunicator.ViewModel
                 }
             }
         }
-        //temp solution values shall be from xml
         private void WasItDisconnect()
         {
 
@@ -440,9 +440,6 @@ namespace SerialCommunicator.ViewModel
                 COMPort.Close();
                 COMPort.Dispose();
             }
-            //if (ByteMessageBuilder.GetByteIncomingArray()[2].ToString() == ByteMessageBuilder.ConvertStringToByte(xmlData.GetEOF()).ToString() //"13"
-            //                                && ByteMessageBuilder.GetByteIncomingArray()[1].ToString() == "113"
-            //                                && ByteMessageBuilder.GetByteIncomingArray()[0].ToString() == "34") //disconnected
 
         }
 

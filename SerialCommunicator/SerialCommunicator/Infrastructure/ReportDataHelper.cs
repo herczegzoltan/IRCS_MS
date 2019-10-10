@@ -25,24 +25,14 @@ namespace SerialCommunicator.Infrastructure
 
             rawdata.Add(mt.SchauerNumber.ToArray());
 
-            List<string> temp = new List<string>() { };
+            mt.MeasureType.RemoveAt(0);
+
             for (int i = 0; i < mt.MeasureType.Count; i++)
             {
-                temp.Clear();
-                for (int x = 0; x < i + 1; x++)
-                {
-                    if (x == i)
-                    {
-                        temp.Add(mt.ResultOfMeasurement[i]);
-                    }
-                    else
-                    {
-                        temp.Add(" ");
-                    }
-                }
-                rawdata.Add(new string[] { mt.MeasureType.ElementAt(i) }.Concat(temp.ToArray()).ToArray());
-            }
 
+                rawdata.Add(new string[] { mt.MeasureType.ElementAt(i), mt.ResultOfMeasurement.ElementAt(i) });
+
+            }
             return rawdata;
         }
 

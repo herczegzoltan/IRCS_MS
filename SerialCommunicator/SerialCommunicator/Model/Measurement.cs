@@ -20,7 +20,13 @@ namespace SerialCommunicator.Infrastructure
 
         public void AddSchauerNumber(string _sNumber)
         {
-            SchauerNumber.Add(_sNumber);
+            if (SchauerNumber.Count == 0)
+            {
+                SchauerNumber.Add(_sNumber);
+            }else
+            {
+
+            }
         }
 
         public void AddResultOfMeasurement(string _resultOfMes)
