@@ -16,6 +16,13 @@ namespace SerialCommunicator.Infrastructure
 
         public List<string> MeasureType = new List<string>() { };
 
+        public List<List<string>> SchaerNumberANDResultOfMeasurement = new List<List<string>>() { };
+
+
+        public void AddSchauerNumberROMSUm()
+        {
+            SchaerNumberANDResultOfMeasurement.Add(SchauerNumber.Concat(ResultOfMeasurement).ToList());
+         }
 
 
         public void AddSchauerNumber(string _sNumber)

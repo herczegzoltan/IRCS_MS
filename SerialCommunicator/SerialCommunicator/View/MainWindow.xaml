@@ -208,17 +208,6 @@
                   IsEnabled="{Binding ReportCheckBoxEnabled}"
                   />
 
-        <Button Command="{Binding CmdReportSave}"
-                IsEnabled="{Binding ReportFieldState}"
-                Content="Create Report to File"
-                Background="Green"
-                Foreground="Black"
-                Margin="5"
-                Grid.Row="13"
-                Grid.Column="2" 
-                FontSize="25"
-                Height="Auto"/>
-
         <Label Content="{Binding CurrentMeasureCount}"
                Grid.Row="13"
                Grid.Column="3" 

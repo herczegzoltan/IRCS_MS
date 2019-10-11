@@ -32,10 +32,6 @@ namespace SerialCommunicator.ViewModel
 
         private ICommand _run;
 
-        private ICommand _reportSave;
-        private ICommand _asd;
-
-
         private List<string> _availablePorts;
 
         private List<int> _baudRates;
@@ -65,9 +61,6 @@ namespace SerialCommunicator.ViewModel
         public ICommand CmdMeasureOff => _measureOff;
 
         public ICommand CmdRun => _run;
-
-        public ICommand CmdReportSave => _reportSave;
-
 
 
         private string _stateOfDevice = "State: Not connected!";
@@ -100,13 +93,10 @@ namespace SerialCommunicator.ViewModel
 
         private bool WasItRun = false;
 
-        private string[] saveable = new string[] { };
-        List<string> myCollection = new List<string>();
-
         private int countBytes = 0;
 
         private int _schauerNumber;
-
+        
         Measurement measurement = null;
         private string _currentMeasureCount = "Measured data to save: 0";
         private bool _reportFieldState;
@@ -122,8 +112,6 @@ namespace SerialCommunicator.ViewModel
             _measureOn = new DelegateCommand(SendMeasureOn);
             _measureOff = new DelegateCommand(SendMeasureOff);
             _run = new DelegateCommand(SendRun);
-            _reportSave = new DelegateCommand(SaveReport);
-
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
@@ -135,17 +123,14 @@ namespace SerialCommunicator.ViewModel
 
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
-
-
             measurement = new Measurement();
-
         }
 
         private void MeasureTypeComboBoxChanged()
         {
             if (SelectedMeasureType == "AutoMeasure")
             {
-                ReportFieldState = true;
+                ReportFieldState = false;
                 ReportCheckBoxEnabled = true;
             }
             else
@@ -316,6 +301,7 @@ namespace SerialCommunicator.ViewModel
 
         private void SendRun()
         {
+
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
             ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
@@ -324,6 +310,22 @@ namespace SerialCommunicator.ViewModel
 
             WasItRun = true;
             LoopMessagesArrayToSend();
+
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want new card?", "Card Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.No) {
+
+                measurement.AddSchauerNumber(SchauerNumber.ToString());
+                measurement.AddSchauerNumberROMSUm();
+                SaveReport();
+            }
+            else
+            {
+                SchauerNumber++;
+                measurement.AddSchauerNumber(SchauerNumber.ToString());
+                //measurement.AddSchauerNumberROMSUm();
+
+
+            }
         }
 
         private void LoopMessagesArrayToSend()
@@ -340,7 +342,6 @@ namespace SerialCommunicator.ViewModel
 
         private void DisConfigureDevice()
         {
-
             ByteMessageBuilder.SetByteArray(0, 0x02);
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
@@ -374,7 +375,8 @@ namespace SerialCommunicator.ViewModel
             
                 //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
-                
+                List<string> currentResult = new List<string>() { };
+
                 if (countBytes == 2)
                 {
                     if (WasItRun)
@@ -390,11 +392,10 @@ namespace SerialCommunicator.ViewModel
                         string result = xmlData.GetResponseData
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                        measurement.AddSchauerNumber((SchauerNumber++).ToString());
                         measurement.AddResultOfMeasurement(result);
                         //measurement.AddMeasureType(SelectedMeasureType);
                         measurement.MeasureType = xmlData.GetMeasurements(SelectedCardType);
-                    //CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
+                        //CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
 
                     }
                     else
@@ -405,22 +406,12 @@ namespace SerialCommunicator.ViewModel
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
                                                + "\n" + MessageRecievedText + "\n";
-                        //MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                        //                    xmlData.GetSelectedCardTypeName
-                        //                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
-                        //                    + " -> " +
-                        //                    xmlData.GetResponseData
-                        //                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                        //                    + "\n" + MessageRecievedText + "\n";
-
                     }
 
                     countBytes = 0;
 
-                    //disconnecting
                     WasItDisconnect();
                     ByteMessageBuilder.ResetByteIncomingArray();
-
                 }
                 else
                 {
@@ -428,6 +419,7 @@ namespace SerialCommunicator.ViewModel
                 }
             }
         }
+
         private void WasItDisconnect()
         {
 
@@ -443,10 +435,9 @@ namespace SerialCommunicator.ViewModel
 
         }
 
-
         private void SaveReport()
         {
-            if (measurement.MeasureType.Any())
+            if (measurement.SchaerNumberANDResultOfMeasurement.Any())
             {
                 string FolderPath = FolderDialog();
                 if (FolderPath != "")
@@ -457,7 +448,8 @@ namespace SerialCommunicator.ViewModel
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
                     //ReportDataHelper.SetDataForReport(measurement);
-                    ReportDataHelper.PassListTOReport(ReportDataHelper.CreateDataMap(measurement));
+                    //measurement.AddSchauerNumberROMSUm();
+                    ReportDataHelper.PassListTOReport(measurement.MeasureType,ReportDataHelper.CreateDataMap(measurement));
                     
                     ReportDataHelper.CreateReportFile();
 
@@ -468,8 +460,6 @@ namespace SerialCommunicator.ViewModel
             {
                 MessageBox.Show("No measurement data!");
             }
-          
-
         }
     
         private string FolderDialog()
