@@ -451,8 +451,9 @@ namespace SerialCommunicator.ViewModel
                 }
                 catch (TimeoutException et)
                 {
-                    TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
-                        " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
+                    MessageRecievedText = "TIMEOUT" + "\n" + MessageRecievedText;
+                    //TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
+                    //    " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
                     timeOut = "TO";
                 }
 
