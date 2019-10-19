@@ -97,13 +97,11 @@ namespace SerialCommunicator.ViewModel
 
         private int _schauerNumber;
         
-        Measurement measurement = null;
         private string _currentMeasureCount = "Measured data to save: 0";
         private bool _reportFieldState;
         private bool _reportCheckBoxEnabled;
 
         #endregion
-
         public MainViewModel()
         {
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
@@ -120,10 +118,10 @@ namespace SerialCommunicator.ViewModel
             CardTypes = xmlData.GetCardTypeNames();
 
             UpdateTimeUI();
-
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
-            measurement = new Measurement();
+
+            ReportDataCollector.InitializeLists();
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -310,22 +308,6 @@ namespace SerialCommunicator.ViewModel
 
             WasItRun = true;
             LoopMessagesArrayToSend();
-
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want new card?", "Card Confirmation", System.Windows.MessageBoxButton.YesNo);
-            if (messageBoxResult == MessageBoxResult.No) {
-
-                measurement.AddSchauerNumber(SchauerNumber.ToString());
-                measurement.AddSchauerNumberROMSUm();
-                SaveReport();
-            }
-            else
-            {
-                SchauerNumber++;
-                measurement.AddSchauerNumber(SchauerNumber.ToString());
-                //measurement.AddSchauerNumberROMSUm();
-
-
-            }
         }
 
         private void LoopMessagesArrayToSend()
@@ -366,7 +348,34 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
+        private void PopUpQuestionbox()
+        {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want new card?", "Card Confirmation", System.Windows.MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.No)
+            {
+                WasItRun = false;
+                //SaveReport();
+                FolderDialog();
+            }
+            else
+            {
+                WasItRun = false;
+                SchauerNumber++;
+                counterIncomingMessage = 0;
+            }
+        }
 
+        private void TopMessage(string header, string text)
+        {
+            //MessageBox.Show(new Form { TopMost = true }, header, text, MessageBoxButtons.OK);
+
+            
+            //var msg = "This is the message!";
+            //var title = "This is the title";
+            MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
+
+        }
+        int counterIncomingMessage = 0;
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             if (COMPort.IsOpen)
@@ -375,8 +384,8 @@ namespace SerialCommunicator.ViewModel
             
                 //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
                 ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
-                List<string> currentResult = new List<string>() { };
 
+                //3 bytes arrived
                 if (countBytes == 2)
                 {
                     if (WasItRun)
@@ -388,15 +397,31 @@ namespace SerialCommunicator.ViewModel
                                                xmlData.GetResponseData
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                                                + "\n" + MessageRecievedText +  "\n";
-
+                        
+                        //get result of measure
                         string result = xmlData.GetResponseData
                                                (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                        measurement.AddResultOfMeasurement(result);
-                        //measurement.AddMeasureType(SelectedMeasureType);
-                        measurement.MeasureType = xmlData.GetMeasurements(SelectedCardType);
-                        //CurrentMeasureCount = "Measured data to save: " +measurement.MeasureType.Count().ToString();
+                        //waiting for all arrive
+                        if (ReportFieldState)
+                        {
+                            ReportDataCollector.AddToVertical(result);
+                            counterIncomingMessage++;
+                            if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                            {
+                                ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
+                                ReportDataCollector.AddVerticalToHorizontal();
+                                ReportDataCollector.CleanerVertical();
+                                MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
+                                counterIncomingMessage = 0;
 
+                                PopUpQuestionbox();
+                            }
+                            else
+                            {
+                                //MessageRecievedText = "Counter:" + counterIncomingMessage.ToString() + "\n" + MessageRecievedText;
+                            }
+                        }
                     }
                     else
                     {
@@ -437,23 +462,23 @@ namespace SerialCommunicator.ViewModel
 
         private void SaveReport()
         {
-            if (measurement.SchaerNumberANDResultOfMeasurement.Any())
+            if (ReportDataCollector.GetTotal().Any())
             {
-                string FolderPath = FolderDialog();
+               // FolderDialog();
+                //string FolderPath = 
                 if (FolderPath != "")
                 {
-                    string FileName = $"IRCS_{SelectedCardType}_{measurement.SchauerNumber.First()}_"+
-                      $"{int.Parse(measurement.SchauerNumber.Last()) - int.Parse(measurement.SchauerNumber.First()) + 1}";
+                    string FileName = $"IRCS_{SelectedCardType}_{ReportDataCollector.GetTotal().First().ElementAt(0)}_"+
+                      $"{int.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - int.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-                    //ReportDataHelper.SetDataForReport(measurement);
-                    //measurement.AddSchauerNumberROMSUm();
-                    ReportDataHelper.PassListTOReport(measurement.MeasureType,ReportDataHelper.CreateDataMap(measurement));
+                    ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType),ReportDataCollector.GetTotal());
                     
                     ReportDataHelper.CreateReportFile();
 
-                    MessageBox.Show("File Saved!");
+                    TopMessage("Saving File....", "File Saved!");
+                    //MessageBox.Show("File Saved!");
                 }
             }
             else
@@ -461,17 +486,41 @@ namespace SerialCommunicator.ViewModel
                 MessageBox.Show("No measurement data!");
             }
         }
-    
-        private string FolderDialog()
+
+        private string FolderPath = "";
+        private void FolderDialog()
         {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.ShowNewFolderButton = true;
-            DialogResult result = fbd.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                return fbd.SelectedPath;
-            }
-            return "";
+            string selectedPath;
+
+            var t = new Thread((ThreadStart)(() => {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+               //fbd.RootFolder = System.Environment.SpecialFolder.Desktop;
+                fbd.ShowNewFolderButton = true;
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.Cancel)
+                {
+                    FolderPath = "";
+                }
+                if (result == DialogResult.OK)
+                {
+                    selectedPath = fbd.SelectedPath;
+                    FolderPath = selectedPath;
+                    SaveReport();
+                }
+
+            }));
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            //FolderBrowserDialog fbd = new FolderBrowserDialog();
+            //fbd.ShowNewFolderButton = true;
+            //DialogResult result = fbd.ShowDialog();
+            //if (result == DialogResult.OK)
+            //{
+            //    return fbd.SelectedPath;
+            //}
         }
 
         #region Properties

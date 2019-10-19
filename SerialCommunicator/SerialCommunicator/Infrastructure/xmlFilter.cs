@@ -84,6 +84,15 @@ namespace SerialCommunicator.Infrastructure
             return singleMeasureValue;
         }
 
+        public int GetNumberOfExpextedMeasureState(string cardType)
+        {
+            int counter = _rootOject.Card.Where(c => c.Name == cardType)
+                          .Select(n => n.Measure).First()
+                          .Where(l => l.Name != "AutoMeasure").Count();
+
+            return counter;
+        }
+
         public string GetEOF()
         {
             string singleEof = _rootOject.ValuesCommands.Record.Where(x => x.Name == "EOF")

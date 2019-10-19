@@ -17,35 +17,6 @@ namespace SerialCommunicator.Infrastructure
             report.FilePath = _filePath;
         }
 
-
-
-        public static List<List<string>> CreateDataMap(Measurement mt)
-        {
-
-            List<List<string>> snAndMo = new List<List<string>>() { };
-
-
-            snAndMo.Add(mt.SchauerNumber.Concat(mt.ResultOfMeasurement).ToList());
-
-            //List<string[]> rawdata = new List<string[]>() { };
-            return snAndMo;
-
-
-            //mt.SchauerNumber.Insert(0, " ");
-
-            //rawdata.Add(mt.SchauerNumber.ToArray());
-
-            //mt.MeasureType.RemoveAt(0);
-
-            //for (int i = 0; i < mt.MeasureType.Count; i++)
-            //{
-
-            //    rawdata.Add(new string[] { mt.MeasureType.ElementAt(i), mt.ResultOfMeasurement.ElementAt(i) });
-
-            //}
-           // return rawdata;
-        }
-
         public static void PassListTOReport(List<string> input, List<List<string>> input2)
         {
             report.AddData(input,input2);

@@ -31,7 +31,6 @@ namespace SerialCommunicator.Infrastructure
         {
             HeaderRowInsertable = data;
             HeaderRowInsertable2 = data2;
-
         }
 
         public void CreateFile()
