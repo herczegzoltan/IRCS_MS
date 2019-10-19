@@ -217,7 +217,7 @@ namespace SerialCommunicator.ViewModel
                 try
                 {
                     //COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-
+                    COMPort.ReadTimeout = 60000;
                     COMPort.Open();
                     UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
@@ -393,7 +393,6 @@ namespace SerialCommunicator.ViewModel
                     {
                         if (WasItRun)
                         {
-                            COMPort.ReadTimeout = 60000;
 
                             MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
                                                    xmlData.GetSelectedCardTypeName
@@ -449,12 +448,12 @@ namespace SerialCommunicator.ViewModel
                         countBytes++;
                     }
                 }
-                catch (TimeoutException et)
+                catch (TimeoutException ex)
                 {
                     //MessageRecievedText = "TIMEOUT" + "\n" + MessageRecievedText;
                     TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
                         " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
-                    //timeOut = "TO";
+                    throw;
                 }
 
             }
