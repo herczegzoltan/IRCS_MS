@@ -368,80 +368,94 @@ namespace SerialCommunicator.ViewModel
         private void TopMessage(string header, string text)
         {
             //MessageBox.Show(new Form { TopMost = true }, header, text, MessageBoxButtons.OK);
-
-            
             //var msg = "This is the message!";
             //var title = "This is the title";
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
 
         }
         int counterIncomingMessage = 0;
+        string timeOut = "";
+
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
+
             if (COMPort.IsOpen)
             {
-                string incomingByte = COMPort.ReadByte().ToString();
-            
-                //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
-                ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
-
-                //3 bytes arrived
-                if (countBytes == 2)
+                try
                 {
-                    if (WasItRun)
+                    string incomingByte = COMPort.ReadByte().ToString();
+
+                    //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+                    ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+
+                    //3 bytes arrived
+                    if (countBytes == 2)
                     {
-                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " + 
-                                               xmlData.GetSelectedCardTypeName
-                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString())) 
-                                               + " -> " +
-                                               xmlData.GetResponseData
-                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                                               + "\n" + MessageRecievedText +  "\n";
-                        
-                        //get result of measure
-                        string result = xmlData.GetResponseData
-                                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
-
-                        //waiting for all arrive
-                        if (ReportFieldState)
+                        if (WasItRun)
                         {
-                            ReportDataCollector.AddToVertical(result);
-                            counterIncomingMessage++;
-                            if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
-                            {
-                                ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
-                                ReportDataCollector.AddVerticalToHorizontal();
-                                ReportDataCollector.CleanerVertical();
-                                MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
-                                counterIncomingMessage = 0;
+                            COMPort.ReadTimeout = 60000;
 
-                                PopUpQuestionbox();
-                            }
-                            else
+                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
+                                                   xmlData.GetSelectedCardTypeName
+                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
+                                                   + " -> " +
+                                                   xmlData.GetResponseData
+                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
+                                                   + "\n" + MessageRecievedText + "\n";
+
+                            //get result of measure
+                            string result = xmlData.GetResponseData
+                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+
+                            //waiting for all arrive
+                            if (ReportFieldState)
                             {
-                                //MessageRecievedText = "Counter:" + counterIncomingMessage.ToString() + "\n" + MessageRecievedText;
+                                ReportDataCollector.AddToVertical(result + " "+ timeOut);
+                                timeOut = "";
+                                counterIncomingMessage++;
+                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                                {
+                                    ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
+                                    ReportDataCollector.AddVerticalToHorizontal();
+                                    ReportDataCollector.CleanerVertical();
+                                    MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
+                                    counterIncomingMessage = 0;
+
+                                    PopUpQuestionbox();
+                                }
+                                else
+                                {
+                                    //MessageRecievedText = "Counter:" + counterIncomingMessage.ToString() + "\n" + MessageRecievedText;
+                                }
                             }
                         }
+                        else
+                        {
+                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
+                                                   xmlData.GetResponseTranslate
+                                                   (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                                   ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                                                   ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
+                                                   + "\n" + MessageRecievedText + "\n";
+                        }
+
+                        countBytes = 0;
+
+                        WasItDisconnect();
+                        ByteMessageBuilder.ResetByteIncomingArray();
                     }
                     else
                     {
-                        MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                               xmlData.GetResponseTranslate
-                                               (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                               ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-                                               ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
-                                               + "\n" + MessageRecievedText + "\n";
+                        countBytes++;
                     }
-
-                    countBytes = 0;
-
-                    WasItDisconnect();
-                    ByteMessageBuilder.ResetByteIncomingArray();
                 }
-                else
+                catch (TimeoutException et)
                 {
-                    countBytes++;
+                    TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
+                        " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
+                    timeOut = "TO";
                 }
+
             }
         }
 
@@ -464,9 +478,7 @@ namespace SerialCommunicator.ViewModel
         {
             if (ReportDataCollector.GetTotal().Any())
             {
-               // FolderDialog();
-                //string FolderPath = 
-                if (FolderPath != "")
+               if (FolderPath != "")
                 {
                     string FileName = $"IRCS_{SelectedCardType}_{ReportDataCollector.GetTotal().First().ElementAt(0)}_"+
                       $"{int.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - int.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
@@ -478,12 +490,11 @@ namespace SerialCommunicator.ViewModel
                     ReportDataHelper.CreateReportFile();
 
                     TopMessage("Saving File....", "File Saved!");
-                    //MessageBox.Show("File Saved!");
                 }
             }
             else
             {
-                MessageBox.Show("No measurement data!");
+                TopMessage("Error!", "No measurement data!");
             }
         }
 
@@ -514,13 +525,6 @@ namespace SerialCommunicator.ViewModel
             t.Start();
             t.Join();
 
-            //FolderBrowserDialog fbd = new FolderBrowserDialog();
-            //fbd.ShowNewFolderButton = true;
-            //DialogResult result = fbd.ShowDialog();
-            //if (result == DialogResult.OK)
-            //{
-            //    return fbd.SelectedPath;
-            //}
         }
 
         #region Properties
