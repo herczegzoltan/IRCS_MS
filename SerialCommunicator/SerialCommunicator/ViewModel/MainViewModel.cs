@@ -374,7 +374,7 @@ namespace SerialCommunicator.ViewModel
 
         }
         int counterIncomingMessage = 0;
-        string timeOut = "";
+       // string timeOut = "";
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
@@ -410,8 +410,8 @@ namespace SerialCommunicator.ViewModel
                             //waiting for all arrive
                             if (ReportFieldState)
                             {
-                                ReportDataCollector.AddToVertical(result + " "+ timeOut);
-                                timeOut = "";
+                                ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
+                              //  timeOut = "";
                                 counterIncomingMessage++;
                                 if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
                                 {
@@ -451,10 +451,10 @@ namespace SerialCommunicator.ViewModel
                 }
                 catch (TimeoutException et)
                 {
-                    MessageRecievedText = "TIMEOUT" + "\n" + MessageRecievedText;
-                    //TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
-                    //    " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
-                    timeOut = "TO";
+                    //MessageRecievedText = "TIMEOUT" + "\n" + MessageRecievedText;
+                    TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
+                        " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
+                    //timeOut = "TO";
                 }
 
             }
