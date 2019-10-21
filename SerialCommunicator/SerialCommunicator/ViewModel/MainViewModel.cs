@@ -89,7 +89,7 @@ namespace SerialCommunicator.ViewModel
 
         SerialPort COMPort = null;
 
-        private DateTime _currentDateTime;
+        private string _currentDateTime;
 
         private bool WasItRun = false;
 
@@ -196,7 +196,9 @@ namespace SerialCommunicator.ViewModel
                 {
                     Thread.Sleep(100);
 
-                    CurrentDateTime = DateTime.UtcNow;
+                    string s = DateTime.Now.ToString("dddd, dd MMMM yyyy") + " " + DateTime.Now.ToString("HH:mm:ss");
+
+                    CurrentDateTime = s;//DateTime.UtcNow;
                 }
             });
         }
@@ -217,7 +219,6 @@ namespace SerialCommunicator.ViewModel
                 try
                 {
                     //COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-                    COMPort.ReadTimeout = 60000;
                     COMPort.Open();
                     UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
@@ -312,6 +313,8 @@ namespace SerialCommunicator.ViewModel
 
         private void LoopMessagesArrayToSend()
         {
+            COMPort.ReadTimeout = 60000;
+
             ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
@@ -406,6 +409,8 @@ namespace SerialCommunicator.ViewModel
                             string result = xmlData.GetResponseData
                                                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
+                  
+
                             //waiting for all arrive
                             if (ReportFieldState)
                             {
@@ -425,6 +430,17 @@ namespace SerialCommunicator.ViewModel
                                 else
                                 {
                                     //MessageRecievedText = "Counter:" + counterIncomingMessage.ToString() + "\n" + MessageRecievedText;
+                                }
+                            }
+                            else
+                            {
+
+                                counterIncomingMessage++;
+
+                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                                {
+                                    MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
+                                    counterIncomingMessage = 0;
                                 }
                             }
                         }
@@ -673,7 +689,7 @@ namespace SerialCommunicator.ViewModel
             }
         }
 
-        public DateTime CurrentDateTime
+        public string CurrentDateTime
         {
             get
             {
