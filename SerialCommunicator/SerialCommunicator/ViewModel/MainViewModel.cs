@@ -309,11 +309,11 @@ namespace SerialCommunicator.ViewModel
 
             WasItRun = true;
             LoopMessagesArrayToSend();
+            
         }
 
         private void LoopMessagesArrayToSend()
         {
-            COMPort.ReadTimeout = 60000;
 
             ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
@@ -321,24 +321,27 @@ namespace SerialCommunicator.ViewModel
 
             for (int i = 0; i < ByteMessageBuilder.GetByteArray().Length; i++)
             {
+
                 SendData(ByteMessageBuilder.GetByteArray()[i]);
             }
         }
 
         private void DisConfigureDevice()
         {
-            ByteMessageBuilder.SetByteArray(0, 0x02);
+
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetDisConnect());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
             ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, 0x0D);
+            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
             WasItRun = false;
             LoopMessagesArrayToSend();
         }
 
         private void SendData(byte data)
         {
-
+            
             var dataArray = new byte[] { data };
             if (COMPort == null)
             {
@@ -370,15 +373,9 @@ namespace SerialCommunicator.ViewModel
 
         private void TopMessage(string header, string text)
         {
-            //MessageBox.Show(new Form { TopMost = true }, header, text, MessageBoxButtons.OK);
-            //var msg = "This is the message!";
-            //var title = "This is the title";
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
-
         }
         int counterIncomingMessage = 0;
-       // string timeOut = "";
-
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
 
@@ -434,15 +431,16 @@ namespace SerialCommunicator.ViewModel
                             }
                             else
                             {
-
                                 counterIncomingMessage++;
 
                                 if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
                                 {
                                     MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
                                     counterIncomingMessage = 0;
+
                                 }
                             }
+
                         }
                         else
                         {
@@ -452,12 +450,13 @@ namespace SerialCommunicator.ViewModel
                                                    ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                    ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
                                                    + "\n" + MessageRecievedText + "\n";
+
                         }
 
                         countBytes = 0;
-
                         WasItDisconnect();
                         ByteMessageBuilder.ResetByteIncomingArray();
+
                     }
                     else
                     {
@@ -466,13 +465,14 @@ namespace SerialCommunicator.ViewModel
                 }
                 catch (TimeoutException ex)
                 {
-                    //MessageRecievedText = "TIMEOUT" + "\n" + MessageRecievedText;
                     TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
                         " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
                     throw;
                 }
-
             }
+
+
+
         }
 
         private void WasItDisconnect()
@@ -658,6 +658,7 @@ namespace SerialCommunicator.ViewModel
             {
                 _measureTypes = value;
                 OnPropertyChanged("MeasureTypes");
+
             }
         }
 

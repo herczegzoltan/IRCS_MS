@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <RootObject>
     <DefaultValues> 
-      <Record name = "EOF"        value = "0x0D"/>
+      <Record name = "EOF"        value = "0x04"/>
       <Record name = "Connect"    value = "0X01"/>
       <Record name = "DisConnect" value = "0X02"/>
       <Record name = "MeasureOn"  value = "0X03"/>
