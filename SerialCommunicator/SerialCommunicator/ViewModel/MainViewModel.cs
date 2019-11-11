@@ -122,6 +122,8 @@ namespace SerialCommunicator.ViewModel
             ReadingSerialState();
 
             ReportDataCollector.InitializeLists();
+            IsRunningNow = "Not Running...";
+
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -393,6 +395,7 @@ namespace SerialCommunicator.ViewModel
                     {
                         if (WasItRun)
                         {
+                            IsRunningNow = "Running...";
 
                             MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
                                                    xmlData.GetSelectedCardTypeName
@@ -421,6 +424,7 @@ namespace SerialCommunicator.ViewModel
                                     ReportDataCollector.CleanerVertical();
                                     MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
                                     counterIncomingMessage = 0;
+                                    IsRunningNow = "Not Running...";
 
                                     PopUpQuestionbox();
                                 }
@@ -437,6 +441,7 @@ namespace SerialCommunicator.ViewModel
                                 {
                                     MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
                                     counterIncomingMessage = 0;
+                                    IsRunningNow = "Not Running...";
 
                                 }
                             }
@@ -515,6 +520,8 @@ namespace SerialCommunicator.ViewModel
         }
 
         private string FolderPath = "";
+        private string _isRunningNow;
+
         private void FolderDialog()
         {
             string selectedPath;
@@ -878,6 +885,20 @@ namespace SerialCommunicator.ViewModel
             {
                 _reportCheckBoxEnabled = value;
                 OnPropertyChanged("ReportCheckBoxEnabled");
+            }
+        }
+
+
+        public string IsRunningNow
+        {
+            get
+            {
+                return _isRunningNow;
+            }
+            set
+            {
+                _isRunningNow = value;
+                OnPropertyChanged("IsRunningNow");
             }
         }
         

@@ -215,5 +215,16 @@
                HorizontalAlignment="Center" 
                VerticalAlignment="Center"/>
 
+        <Label Content="{Binding IsRunningNow}"
+               Grid.Row="14"
+               Grid.Column="5" 
+               FontSize="20"
+               FontWeight="Bold"
+               Margin="10,-10,0,0"
+               HorizontalAlignment="Left" 
+               VerticalAlignment="Center"
+               />
+              
+           
     </Grid>
 </Window>
