@@ -49,6 +49,11 @@
         <Measure name = "I2C" value="0x50" />
         <Measure name = "Relay Zones" value="0x51" />
     </Card>
+  <Card name="Rele3er_3T" value="0x08" iscommon="false">
+    <Measure name = "AutoMeasure" value="0x01" />
+    <Measure name = "I2C" value="0x50" />
+    <Measure name = "Relay Zones" value="0x51" />
+  </Card>
     <Card name="AMP100" value="0x06" iscommon="false">
         <Measure name = "AutoMeasure" value="0x01" />
     </Card>
