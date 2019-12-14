@@ -198,7 +198,7 @@ namespace IRCS_MS.ViewModel
                 {
                     Thread.Sleep(100);
 
-                    string s = DateTime.Now.ToString("dddd, dd MMMM yyyy") + " " + DateTime.Now.ToString("HH:mm:ss");
+                    string s = DateTime.Now.ToString("yyyy MMMM dd, dddd") + " " + DateTime.Now.ToString("HH:mm:ss");
 
                     CurrentDateTime = s;//DateTime.UtcNow;
                 }
