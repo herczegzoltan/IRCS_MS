@@ -15,7 +15,6 @@
     <Answer translate="Data Bus Error" command="0x07" data="0x7B" eof="0x04"/>
     <Answer translate="Soundbus Error" command="0x07" data="0x7C" eof="0x04"/>
   
-  
   <Answer translate="Disp_i2c_e" command="0x02" data="0x20" eof="0x04"/>
     <Answer translate="Disp_opto_e" command="0x02" data="0x21" eof="0x04"/>
     <Answer translate="Disp_AD_e" command="0x02" data="0x22" eof="0x04"/>
