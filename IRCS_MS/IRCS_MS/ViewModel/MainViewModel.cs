@@ -417,7 +417,7 @@ namespace IRCS_MS.ViewModel
                                 ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
                               //  timeOut = "";
                                 counterIncomingMessage++;
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                                if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
                                 {
                                     ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
                                     ReportDataCollector.AddVerticalToHorizontal();
@@ -437,7 +437,7 @@ namespace IRCS_MS.ViewModel
                             {
                                 counterIncomingMessage++;
 
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                                if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
                                 {
                                     MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
                                     counterIncomingMessage = 0;
