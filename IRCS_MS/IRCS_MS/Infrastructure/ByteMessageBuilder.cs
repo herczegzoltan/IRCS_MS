@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace IRCS_MS.Infrastructure
 {
-
     public static class ByteMessageBuilder
     {
         private static List<byte> listOfBytes = new List<byte>() { };
