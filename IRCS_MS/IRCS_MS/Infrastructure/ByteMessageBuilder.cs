@@ -17,7 +17,6 @@ namespace IRCS_MS.Infrastructure
 
         public static void SetByteArray(int index, byte inputByte)
         {
-
             _arrayByteOutgoing[index] = inputByte;
         }
 
