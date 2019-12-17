@@ -15,28 +15,72 @@
     <Answer translate="Data Bus Error" command="0x07" data="0x7B" eof="0x04"/>
     <Answer translate="Soundbus Error" command="0x07" data="0x7C" eof="0x04"/>
   
-  <Answer translate="Disp_i2c_e" command="0x02" data="0x20" eof="0x04"/>
-    <Answer translate="Disp_opto_e" command="0x02" data="0x21" eof="0x04"/>
-    <Answer translate="Disp_AD_e" command="0x02" data="0x22" eof="0x04"/>
-    <Answer translate="Disp_Mic_ls_e" command="0x02" data="0x23" eof="0x04"/>
-    <Answer translate="Disp_Amp1_e" command="0x02" data="0x24" eof="0x04"/>
-    <Answer translate="Disp_Amp2_e" command="0x02" data="0x25" eof="0x04"/>
-    <Answer translate="Disp_Amp3_e" command="0x02" data="0x26" eof="0x04"/>
-    <Answer translate="Disp_IPO_e" command="0x02" data="0x27" eof="0x04"/>
-    <Answer translate="Disp_TK_e" command="0x02" data="0x28" eof="0x04"/>
-    <Answer translate="Line1_e" command="0x03" data="0x30" eof="0x04"/>
-    <Answer translate="Line2_e" command="0x03" data="0x31" eof="0x04"/>
-    <Answer translate="Line3_e" command="0x03" data="0x32" eof="0x04"/>
-    <Answer translate="Line4_e" command="0x03" data="0x33" eof="0x04"/>
-    <Answer translate="Input sense_e" command="0x03" data="0x34" eof="0x04"/>
-    <Answer translate="Output load_e" command="0x03" data="0x35" eof="0x04"/>
-    <Answer translate="Line1_e" command="0x04" data="0x40" eof="0x04"/>
-    <Answer translate="Line2_e" command="0x04" data="0x41" eof="0x04"/>
-    <Answer translate="Line3_e" command="0x04" data="0x42" eof="0x04"/>
-    <Answer translate="Line4_e" command="0x04" data="0x43" eof="0x04"/>
-    <Answer translate="Line5_e" command="0x04" data="0x44" eof="0x04"/>
-    <Answer translate="Line6_e" command="0x04" data="0x45" eof="0x04"/>
-    <Answer translate="I2C" command="0x05" data="0x50" eof="0x04"/>
-    <Answer translate="Relay Zones" command="0x05" data="0x51" eof="0x04"/>
-    <Answer translate="AMP100_e" command="0x06" data="0x60" eof="0x04"/>
+    <Answer translate="Disp_i2c_error" command="0x02" data="0x20" eof="0x04"/>
+    <Answer translate="Disp_opto_error" command="0x02" data="0x21" eof="0x04"/>
+    <Answer translate="Disp_AD_error" command="0x02" data="0x22" eof="0x04"/>
+    <Answer translate="Disp_Mic_ls_error" command="0x02" data="0x23" eof="0x04"/>
+    <Answer translate="Disp_Amp1_error" command="0x02" data="0x24" eof="0x04"/>
+    <Answer translate="Disp_Amp2_error" command="0x02" data="0x25" eof="0x04"/>
+    <Answer translate="Disp_Amp3_error" command="0x02" data="0x26" eof="0x04"/>
+    <Answer translate="Disp_IPO_error" command="0x02" data="0x27" eof="0x04"/>
+    <Answer translate="Disp_Phone_Sound_error" command="0x02" data="0x28" eof="0x04"/>
+    <Answer translate="Intercom_Line1_error" command="0x03" data="0x30" eof="0x04"/>
+    <Answer translate="Intercom_Line2_error" command="0x03" data="0x31" eof="0x04"/>
+    <Answer translate="Intercom_Line3_error" command="0x03" data="0x32" eof="0x04"/>
+    <Answer translate="Intercom_Line4_error" command="0x03" data="0x33" eof="0x04"/>
+    <Answer translate="Intercom_Input sense_error" command="0x03" data="0x34" eof="0x04"/>
+    <Answer translate="Intercom_Output load_error" command="0x03" data="0x35" eof="0x04"/>
+    <Answer translate="CBLB_Line1_error" command="0x04" data="0x40" eof="0x04"/>
+    <Answer translate="CBLB_Line2_error" command="0x04" data="0x41" eof="0x04"/>
+    <Answer translate="CBLB_Line3_error" command="0x04" data="0x42" eof="0x04"/>
+    <Answer translate="CBLB_Line4_error" command="0x04" data="0x43" eof="0x04"/>
+    <Answer translate="CBLB_Line5_error" command="0x04" data="0x44" eof="0x04"/>
+    <Answer translate="CBLB_Line6_error" command="0x04" data="0x45" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent1_error" command="0x04" data="0x46" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent1_EL_e" command="0x04" data="0x47" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent2_error" command="0x04" data="0x48" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent3_error" command="0x04" data="0x49" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent4_error" command="0x04" data="0x4a" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent5_error" command="0x04" data="0x4b" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent6_error" command="0x04" data="0x4c" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In1_error" command="0x04" data="0x4d" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In2_error" command="0x04" data="0x4e" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In3_error" command="0x04" data="0x4f" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In4_error" command="0x04" data="0x50" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In5_error" command="0x04" data="0x51" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In6_error" command="0x04" data="0x52" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out1_error" command="0x04" data="0x53" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out2_error" command="0x04" data="0x54" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out3_error" command="0x04" data="0x55" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out4_error" command="0x04" data="0x56" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out5_error" command="0x04" data="0x57" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out6_error" command="0x04" data="0x58" eof="0x04"/>
+    <Answer translate="CBLB_Line1_error" command="0x0a" data="0x40" eof="0x04"/>
+    <Answer translate="CBLB_Line2_error" command="0x0a" data="0x41" eof="0x04"/>
+    <Answer translate="CBLB_Line3_error" command="0x0a" data="0x42" eof="0x04"/>
+    <Answer translate="CBLB_Line4_error" command="0x0a" data="0x43" eof="0x04"/>
+    <Answer translate="CBLB_Line5_error" command="0x0a" data="0x44" eof="0x04"/>
+    <Answer translate="CBLB_Line6_error" command="0x0a" data="0x45" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent1_error" command="0x0a" data="0x46" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent1_EL_e" command="0x0a" data="0x47" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent2_error" command="0x0a" data="0x48" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent3_error" command="0x0a" data="0x49" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent4_error" command="0x0a" data="0x4a" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent5_error" command="0x0a" data="0x4b" eof="0x04"/>
+    <Answer translate="CBLB_LoopCurrent6_error" command="0x0a" data="0x4c" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In1_error" command="0x0a" data="0x4d" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In2_error" command="0x0a" data="0x4e" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In3_error" command="0x0a" data="0x4f" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In4_error" command="0x0a" data="0x50" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In5_error" command="0x0a" data="0x51" eof="0x04"/>
+    <Answer translate="CBLB_Ring_In6_error" command="0x0a" data="0x52" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out1_error" command="0x0a" data="0x53" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out2_error" command="0x0a" data="0x54" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out3_error" command="0x0a" data="0x55" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out4_error" command="0x0a" data="0x56" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out5_error" command="0x0a" data="0x57" eof="0x04"/>
+    <Answer translate="CBLB_Ring_out6_error" command="0x0a" data="0x58" eof="0x04"/>
+    <Answer translate="I2C" command="0x05" data="0x60" eof="0x04"/>
+    <Answer translate="Relay Zones" command="0x05" data="0x61" eof="0x04"/>
+    <Answer translate="AMP100_e" command="0x06" data="0x70" eof="0x04"/>
 </RootObjectResponse>
