@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OfficeOpenXml;
 using System.IO;
+using OfficeOpenXml.Style;
+using System.Drawing;
 
 namespace IRCS_MS.Infrastructure
 {
@@ -71,6 +73,18 @@ namespace IRCS_MS.Infrastructure
 
                 FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");//+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
                 excel.SaveAs(excelFile);
+            }
+        }
+
+
+
+        private void ColorChanger(int row, int colum, ExcelWorksheet excelWorksheet, Color cellBackGroundColor)
+        {
+            using (var range = excelWorksheet.Cells[row, colum])
+            {
+                range.Style.Font.Bold = true;
+                range.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(cellBackGroundColor);
             }
         }
 
