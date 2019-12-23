@@ -155,5 +155,12 @@ namespace IRCS_MS.Infrastructure
 
             return singleResponseTranslateByData;
         }
+
+        public bool ContainTheRespone(string input)
+        {
+            bool singleResponseTranslate = _rootOjectResponse.Answer.Any(item => item.Translate.ToUpper() == input.ToUpper());
+
+            return singleResponseTranslate;
+        }
     }
 }

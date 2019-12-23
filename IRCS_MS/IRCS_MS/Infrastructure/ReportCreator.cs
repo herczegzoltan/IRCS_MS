@@ -99,6 +99,19 @@ namespace IRCS_MS.Infrastructure
                     object cellValue = workSheet.Cells[row, col].Text;
 
                     //Here check the current cell value and change cell's color
+
+                    if (XmlFilter.Instance.ContainTheRespone(cellValue.ToString()) && cellValue.ToString() == "Measure_OK")
+                    {
+                        ColorChanger(row, col, workSheet, Color.LightGreen);
+                    }
+                    else if (XmlFilter.Instance.ContainTheRespone(cellValue.ToString()) && cellValue.ToString() != "Measure_OK")
+                    {
+                        ColorChanger(row, col, workSheet, Color.Red);
+                    }
+                    else
+                    {
+
+                    }
                 }
             }
         }
