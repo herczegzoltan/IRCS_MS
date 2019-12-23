@@ -68,8 +68,14 @@ namespace IRCS_MS.Infrastructure
                     }
                     worksheet.Cells[headerRange2].LoadFromCollection(item);
 
-
+                    //Rotation
+                    var headerCells = worksheet.Cells[1, 2, 2, worksheet.Dimension.Columns];//sorok és oszlopok mettől meddig
+                    headerCells.Style.TextRotation = 90;
                 }
+
+
+                LoopThrough(worksheet);
+                CellsMerge(worksheet);
 
                 FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");//+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
                 excel.SaveAs(excelFile);
@@ -114,6 +120,13 @@ namespace IRCS_MS.Infrastructure
                     }
                 }
             }
+        }
+
+
+        private void CellsMerge(ExcelWorksheet workSheet)
+        {
+            workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Merge = true;
+            workSheet.Cells[3, 2, 3, workSheet.Dimension.Columns].Merge = true;
         }
 
     }
