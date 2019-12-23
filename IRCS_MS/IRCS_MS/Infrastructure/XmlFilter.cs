@@ -84,7 +84,7 @@ namespace IRCS_MS.Infrastructure
             return singleMeasureValue;
         }
 
-        public int GetNumberOfExpextedMeasureState(string cardType)
+        public int GetNumberOfExpectedMeasureState(string cardType)
         {
             int counter = _rootOject.Card.Where(c => c.Name == cardType)
                           .Select(n => n.Measure).First()

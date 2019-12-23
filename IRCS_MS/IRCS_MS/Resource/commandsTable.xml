@@ -44,17 +44,29 @@
         <Measure name = "Line5" value="0x44" />
         <Measure name = "Line6" value="0x45" />
     </Card>
+    <Card name="CBLB_TY" value="0x0a" iscommon="true">
+        <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Line1" value="0x40" />
+        <Measure name = "Line2" value="0x41" />
+        <Measure name = "Line3" value="0x42" />
+        <Measure name = "Line4" value="0x43" />
+        <Measure name = "Line5" value="0x44" />
+        <Measure name = "Line6" value="0x45" />
+    </Card>
     <Card name="Rele3er" value="0x05" iscommon="false">
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "I2C" value="0x50" />
         <Measure name = "Relay Zones" value="0x51" />
     </Card>
-  <Card name="Rele3er_3T" value="0x08" iscommon="false">
-    <Measure name = "AutoMeasure" value="0x01" />
-    <Measure name = "I2C" value="0x50" />
-    <Measure name = "Relay Zones" value="0x51" />
-  </Card>
+    <Card name="Rele3er_3T" value="0x08" iscommon="false">
+        <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "I2C" value="0x50" />
+        <Measure name = "Relay Zones" value="0x51" />
+    </Card>
     <Card name="AMP100" value="0x06" iscommon="false">
+        <Measure name = "AutoMeasure" value="0x01" />
+    </Card>
+    <Card name="AMP100_BR" value="0x09" iscommon="false">
         <Measure name = "AutoMeasure" value="0x01" />
     </Card>
 </RootObject>

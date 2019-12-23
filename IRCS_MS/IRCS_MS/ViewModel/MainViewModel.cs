@@ -198,7 +198,7 @@ namespace IRCS_MS.ViewModel
                 {
                     Thread.Sleep(100);
 
-                    string s = DateTime.Now.ToString("dddd, dd MMMM yyyy") + " " + DateTime.Now.ToString("HH:mm:ss");
+                    string s = DateTime.Now.ToString("yyyy MMMM dd, dddd") + " " + DateTime.Now.ToString("HH:mm:ss");
 
                     CurrentDateTime = s;//DateTime.UtcNow;
                 }
@@ -417,7 +417,7 @@ namespace IRCS_MS.ViewModel
                                 ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
                               //  timeOut = "";
                                 counterIncomingMessage++;
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                                if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
                                 {
                                     ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
                                     ReportDataCollector.AddVerticalToHorizontal();
@@ -437,7 +437,7 @@ namespace IRCS_MS.ViewModel
                             {
                                 counterIncomingMessage++;
 
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
+                                if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
                                 {
                                     MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
                                     counterIncomingMessage = 0;
