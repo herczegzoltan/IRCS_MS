@@ -12,8 +12,8 @@
     <Answer translate="Error_n7" command="0x07" data="0x78" eof="0x04"/>
     <Answer translate="Error_p5" command="0x07" data="0x79" eof="0x04"/>
     <Answer translate="Error_sp" command="0x07" data="0x7A" eof="0x04"/>
-    <Answer translate="Data Bus Error" command="0x07" data="0x7B" eof="0x04"/>
-    <Answer translate="Soundbus Error" command="0x07" data="0x7C" eof="0x04"/>
+    <Answer translate="Data_Bus_Error" command="0x07" data="0x7B" eof="0x04"/>
+    <Answer translate="Soundbus_Error" command="0x07" data="0x7C" eof="0x04"/>
   
     <Answer translate="Disp_i2c_error" command="0x02" data="0x20" eof="0x04"/>
     <Answer translate="Disp_opto_error" command="0x02" data="0x21" eof="0x04"/>

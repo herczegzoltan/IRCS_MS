@@ -88,5 +88,20 @@ namespace IRCS_MS.Infrastructure
             }
         }
 
+        private void LoopThrough(ExcelWorksheet workSheet)
+        {
+            var start = workSheet.Dimension.Start;
+            var end = workSheet.Dimension.End;
+            for (int row = start.Row; row <= end.Row; row++)
+            {
+                for (int col = start.Column; col <= end.Column; col++)
+                {
+                    object cellValue = workSheet.Cells[row, col].Text;
+
+                    //Here check the current cell value and change cell's color
+                }
+            }
+        }
+
     }
 }
