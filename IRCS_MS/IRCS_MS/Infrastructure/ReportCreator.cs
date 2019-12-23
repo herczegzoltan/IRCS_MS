@@ -122,6 +122,20 @@ namespace IRCS_MS.Infrastructure
         private void OtherCellsModification(ExcelWorksheet workSheet)
         {
             workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Merge = true;
+            workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Style.Border.Bottom.Style = ExcelBorderStyle.Double;
+
+            workSheet.Cells[2, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+            workSheet.Cells[2, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+            workSheet.Cells[2, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+            workSheet.Cells[2, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+
+            workSheet.Cells[1, workSheet.Dimension.Columns, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Right.Style = ExcelBorderStyle.Thick;
+
+            workSheet.Cells[workSheet.Dimension.Rows, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+
+
+
             workSheet.Cells[3, 2, 3, workSheet.Dimension.Columns].Merge = true;
             workSheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             workSheet.Cells[3, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
