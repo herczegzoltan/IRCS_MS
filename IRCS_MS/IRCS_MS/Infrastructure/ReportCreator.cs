@@ -37,6 +37,13 @@ namespace IRCS_MS.Infrastructure
 
         public void CreateFile()
         {
+
+            HeaderRowInsertable.Insert(0, "IRCS_Measurement System");
+            HeaderRowInsertable.Insert(2, "Name:");
+            HeaderRowInsertable2[0].Insert(0, "");
+            HeaderRowInsertable2[0].Insert(2, "name");
+
+
             char[] apha = "ABCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 
             using (excel)
@@ -71,15 +78,12 @@ namespace IRCS_MS.Infrastructure
 
 
                 LoopThrough(worksheet);
-                //CellsMerge(worksheet);
-                //OtherCellsModification(worksheet);
+                OtherCellsModification(worksheet);
 
                 FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");//+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
                 excel.SaveAs(excelFile);
             }
         }
-
-
 
         private void ColorChanger(int row, int colum, ExcelWorksheet excelWorksheet, Color cellBackGroundColor)
         {
@@ -121,6 +125,7 @@ namespace IRCS_MS.Infrastructure
 
         private void OtherCellsModification(ExcelWorksheet workSheet)
         {
+
             workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Merge = true;
             workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Style.Border.Bottom.Style = ExcelBorderStyle.Double;
 
@@ -143,6 +148,10 @@ namespace IRCS_MS.Infrastructure
             //Rotation
             var headerCells = workSheet.Cells[1, 2, 2, workSheet.Dimension.Columns];//sorok és oszlopok mettől meddig
             headerCells.Style.TextRotation = 90;
+
+
+            workSheet.Cells.AutoFitColumns();
+            workSheet.Row(2).Height = 100;
         }
     }
 }
