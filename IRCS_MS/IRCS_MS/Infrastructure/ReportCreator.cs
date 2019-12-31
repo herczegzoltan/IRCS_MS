@@ -16,6 +16,8 @@ namespace IRCS_MS.Infrastructure
 
         public string FileName { get; set; }
 
+        private string Name { get; set; }
+
         private List<string> HeaderRowInsertable = null;
         private List<List<string>> HeaderRowInsertable2 = null;
 
@@ -29,20 +31,34 @@ namespace IRCS_MS.Infrastructure
             HeaderRowInsertable2 = new List<List<string>>() { };
         }
 
-        public void AddData(List<string> data, List<List<string>> data2)
+        public void AddData(List<string> data, List<List<string>> data2, string name)
         {
             HeaderRowInsertable = data;
             HeaderRowInsertable2 = data2;
+            Name = name;
+        }
+
+
+        private void FixExtraValues()
+        {
+            HeaderRowInsertable.Insert(0, "IRCS_Measurement System");
+            HeaderRowInsertable.Insert(2, "Name:");
+                       
+            foreach (var item in HeaderRowInsertable2)
+            {
+                item.Insert(0, "");
+                item.Insert(2, "");
+            }
+
+            HeaderRowInsertable2[0][2] = Name;
+
+            //HeaderRowInsertable2[1].Insert(0, "");
+            //HeaderRowInsertable2[1].Insert(2, "");
         }
 
         public void CreateFile()
         {
-
-            HeaderRowInsertable.Insert(0, "IRCS_Measurement System");
-            HeaderRowInsertable.Insert(2, "Name:");
-            HeaderRowInsertable2[0].Insert(0, "");
-            HeaderRowInsertable2[0].Insert(2, "name");
-
+            FixExtraValues();
 
             char[] apha = "ABCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 
@@ -55,10 +71,7 @@ namespace IRCS_MS.Infrastructure
                 var worksheet = excel.Workbook.Worksheets["Worksheet1"];
 
                 //string headerRange = "A1:" + Char.ConvertFromUtf32(HeaderRowInsertable[0].Length + 64) + "1";
-
-
                 worksheet.Cells[headerRange].LoadFromCollection(HeaderRowInsertable);
-
 
                 int i = 0;
                 string headerRange2 = "";
@@ -76,11 +89,10 @@ namespace IRCS_MS.Infrastructure
                     worksheet.Cells[headerRange2].LoadFromCollection(item);
                 }
 
-
                 LoopThrough(worksheet);
                 OtherCellsModification(worksheet);
 
-                FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");//+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
+                FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");    //+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
                 excel.SaveAs(excelFile);
             }
         }
@@ -117,7 +129,7 @@ namespace IRCS_MS.Infrastructure
                     }
                     else
                     {
-
+                        //Nothing to do.
                     }
                 }
             }

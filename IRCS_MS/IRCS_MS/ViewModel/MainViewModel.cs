@@ -61,8 +61,7 @@ namespace IRCS_MS.ViewModel
         public ICommand CmdMeasureOff => _measureOff;
 
         public ICommand CmdRun => _run;
-
-
+        
         private string _stateOfDevice = "State: Not connected!";
 
         private string _stateOfDeviceColor = "Red";
@@ -82,8 +81,6 @@ namespace IRCS_MS.ViewModel
         private bool _runButtonIsEnabled;
 
         private bool _runningTask;
-
-
 
         XmlFilter xmlData = null;
 
@@ -123,7 +120,6 @@ namespace IRCS_MS.ViewModel
 
             ReportDataCollector.InitializeLists();
             IsRunningNow = "Not Running...";
-
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -184,7 +180,6 @@ namespace IRCS_MS.ViewModel
             CmdCardTypeIsEnabled = cardAndMeasureType;
             CmdMeasureTypeIsEnabled = cardAndMeasureType;
             //ReportFieldState = reportField;
-
         }
 
         private void UpdateTimeUI()
@@ -276,7 +271,6 @@ namespace IRCS_MS.ViewModel
 
         private void SendMeasureOn()
         {
-
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
@@ -297,12 +291,10 @@ namespace IRCS_MS.ViewModel
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementUpdater(UIElementStateVariations.MeasureOffClick);
-            
         }
 
         private void SendRun()
         {
-
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
             ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
@@ -311,12 +303,10 @@ namespace IRCS_MS.ViewModel
 
             WasItRun = true;
             LoopMessagesArrayToSend();
-            
         }
 
         private void LoopMessagesArrayToSend()
         {
-
             ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
@@ -343,7 +333,6 @@ namespace IRCS_MS.ViewModel
 
         private void SendData(byte data)
         {
-            
             var dataArray = new byte[] { data };
             if (COMPort == null)
             {
@@ -378,6 +367,7 @@ namespace IRCS_MS.ViewModel
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         int counterIncomingMessage = 0;
+
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
 
@@ -409,16 +399,15 @@ namespace IRCS_MS.ViewModel
                             string result = xmlData.GetResponseData
                                                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                  
-
                             //waiting for all arrive
                             if (ReportFieldState)
                             {
                                 ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
-                              //  timeOut = "";
+
                                 counterIncomingMessage++;
                                 if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
                                 {
+                                    
                                     ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
                                     ReportDataCollector.AddVerticalToHorizontal();
                                     ReportDataCollector.CleanerVertical();
@@ -455,13 +444,11 @@ namespace IRCS_MS.ViewModel
                                                    ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                    ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
                                                    + "\n" + MessageRecievedText + "\n";
-
                         }
 
                         countBytes = 0;
                         WasItDisconnect();
                         ByteMessageBuilder.ResetByteIncomingArray();
-
                     }
                     else
                     {
@@ -475,14 +462,10 @@ namespace IRCS_MS.ViewModel
                     throw;
                 }
             }
-
-
-
         }
 
         private void WasItDisconnect()
         {
-
             if(xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
@@ -492,7 +475,6 @@ namespace IRCS_MS.ViewModel
                 COMPort.Close();
                 COMPort.Dispose();
             }
-
         }
 
         private void SaveReport()
@@ -506,7 +488,7 @@ namespace IRCS_MS.ViewModel
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-                    ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType),ReportDataCollector.GetTotal());
+                    ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType),ReportDataCollector.GetTotal(), Name);
                     
                     ReportDataHelper.CreateReportFile();
 
@@ -521,6 +503,7 @@ namespace IRCS_MS.ViewModel
 
         private string FolderPath = "";
         private string _isRunningNow;
+        private string _name;
 
         private void FolderDialog()
         {
@@ -856,6 +839,21 @@ namespace IRCS_MS.ViewModel
             {
                 _currentMeasureCount = value;
                 OnPropertyChanged("CurrentMeasureCount");
+
+            }
+        }
+
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name= value;
+                OnPropertyChanged("Name");
 
             }
         }
