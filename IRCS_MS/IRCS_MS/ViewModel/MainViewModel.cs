@@ -92,7 +92,7 @@ namespace IRCS_MS.ViewModel
 
         private int countBytes = 0;
 
-        private int _schauerNumber;
+        private ulong _schauerNumber;
         
         private string _currentMeasureCount = "Measured data to save: 0";
         private bool _reportFieldState;
@@ -395,11 +395,11 @@ namespace IRCS_MS.ViewModel
                                                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                                                    + "\n" + MessageRecievedText + "\n";
 
-                            //get result of measure
+                            //get result of measurment
                             string result = xmlData.GetResponseData
                                                    (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                            //waiting for all arrive
+                            //waiting for all arrivals
                             if (ReportFieldState)
                             {
                                 ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
@@ -814,7 +814,7 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        public int SchauerNumber
+        public ulong SchauerNumber
         {
             get
             {
