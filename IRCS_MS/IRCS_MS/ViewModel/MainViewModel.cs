@@ -463,7 +463,6 @@ namespace IRCS_MS.ViewModel
                 }
             }
         }
-
         private void WasItDisconnect()
         {
             if(xmlData.GetResponseTranslate
@@ -476,7 +475,6 @@ namespace IRCS_MS.ViewModel
                 COMPort.Dispose();
             }
         }
-
         private void SaveReport()
         {
             if (ReportDataCollector.GetTotal().Any())
@@ -504,7 +502,6 @@ namespace IRCS_MS.ViewModel
         private string FolderPath = "";
         private string _isRunningNow;
         private string _name;
-
         private void FolderDialog()
         {
             string selectedPath;
