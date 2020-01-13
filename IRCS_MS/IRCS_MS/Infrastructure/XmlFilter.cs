@@ -162,5 +162,12 @@ namespace IRCS_MS.Infrastructure
 
             return singleResponseTranslate;
         }
+
+        public bool IsCommonIncluded(string cardType)
+        {
+            bool isCommonIncluded = _rootOject.Card.Where(x => x.Name == cardType)
+                .Select(n => n.IsCommonIncluded).First();
+            return isCommonIncluded;
+        }
     }
 }

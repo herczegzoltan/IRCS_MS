@@ -14,6 +14,5 @@ namespace IRCS_MS.Model
 
         [XmlAttribute("value")]
         public string Value { get; set; }
-
     }
 }
