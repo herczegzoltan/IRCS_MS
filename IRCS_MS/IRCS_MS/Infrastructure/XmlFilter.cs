@@ -165,9 +165,9 @@ namespace IRCS_MS.Infrastructure
 
         public bool IsCommonIncluded(string cardType)
         {
-            bool isCommonIncluded = _rootOject.Card.Where(x => x.Name == cardType)
+            string isCommonIncluded = _rootOject.Card.Where(x => x.Name == cardType)
                 .Select(n => n.IsCommonIncluded).First();
-            return isCommonIncluded;
+            return bool.Parse(isCommonIncluded);
         }
     }
 }

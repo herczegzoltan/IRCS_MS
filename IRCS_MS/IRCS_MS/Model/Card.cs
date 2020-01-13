@@ -15,7 +15,7 @@ namespace IRCS_MS.Model
         public List<Measure> Measure { get; set; }
 
         [XmlAttribute("iscommon")]
-        public bool IsCommonIncluded { get; set; }
+        public string IsCommonIncluded { get; set; }
 
 
     }
