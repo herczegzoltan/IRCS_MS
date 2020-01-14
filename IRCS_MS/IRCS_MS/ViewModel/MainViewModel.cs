@@ -322,7 +322,6 @@ namespace IRCS_MS.ViewModel
 
         private void DisConfigureDevice()
         {
-
             ByteMessageBuilder.SetByteArray(0, xmlData.GetDisConnect());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
@@ -354,6 +353,7 @@ namespace IRCS_MS.ViewModel
             {
                 WasItRun = false;
                 //SaveReport();
+                _savedMeasureCounter = 0;
                 FolderDialog();
             }
             else
@@ -371,6 +371,8 @@ namespace IRCS_MS.ViewModel
         private int _counterIncomingPackage = 1;
         private int _extramessages = 0;
         private bool _validateFinished = false;
+        private int _savedMeasureCounter = 0;
+
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             if (COMPort.IsOpen)
@@ -423,6 +425,9 @@ namespace IRCS_MS.ViewModel
 
                             if (ReportFieldState)
                             {
+                                _savedMeasureCounter++;
+
+                                CurrentMeasureCount = _savedMeasureCounter.ToString();
                                 string reportInsertData = xmlData.GetResponseData(
                                     ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
@@ -433,8 +438,8 @@ namespace IRCS_MS.ViewModel
                                     ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
                                     ReportDataCollector.AddVerticalToHorizontal();
                                     ReportDataCollector.CleanerVertical();
-
                                     PopUpQuestionbox();
+                               
                                 }
                             }
                         }
