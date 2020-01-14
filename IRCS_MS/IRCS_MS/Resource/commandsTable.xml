@@ -8,7 +8,7 @@
       <Record name = "MeasureOff" value = "0X04"/>
       <Record name = "Run" value = "0X05"/>
     </DefaultValues>
-    <Card name="Common" value="0x07" iscommon="False">
+    <Card name="Common" value="0x07" iscommon="False" default ="true">
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "Current" value="0x02" />
         <Measure name = "Data Bus" value="0x03" />

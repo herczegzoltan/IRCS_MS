@@ -15,6 +15,8 @@ namespace IRCS_MS.Infrastructure
 
         private RootObjectResponse _rootOjectResponse;
 
+        public readonly int DefaultNumbersOfBytes = 3;
+
         public XmlFilter()
         {
             _rootOject = XmlProcessor.GetXmlRootObjectCommands();
@@ -47,14 +49,25 @@ namespace IRCS_MS.Infrastructure
 
         public List<string> GetMeasurements(string cardType)
         {
-            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => x.Name == cardType)
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name,cardType,StringComparison.OrdinalIgnoreCase))
                                          .Select(m => m.Measure.Select(l => l.Name));
 
             IEnumerable<String> measureList = measure.SelectMany(s => s);
 
             return new List<string>(measureList);
         }
- 
+
+        public List<string> GetMeasurementsWithoutAutoMeasure(string cardType)
+        {
+
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                                         .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+
+            IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+            return new List<string>(measureList);
+        }
+
         public string GetSelectedCardTypeValue(string cardType)
         {
             string singleCardTypeValue = _rootOject.Card.Where(x => x.Name == cardType)
@@ -86,7 +99,7 @@ namespace IRCS_MS.Infrastructure
 
         public int GetNumberOfExpectedMeasureState(string cardType)
         {
-            int counter = _rootOject.Card.Where(c => c.Name == cardType)
+            int counter = _rootOject.Card.Where(c => string.Equals(c.Name, cardType, StringComparison.OrdinalIgnoreCase))
                           .Select(n => n.Measure).First()
                           .Where(l => l.Name != "AutoMeasure").Count();
 
@@ -140,17 +153,17 @@ namespace IRCS_MS.Infrastructure
             command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
             data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
             eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
-
-            string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (x.Data.ToUpper() == data.ToUpper()) 
-                                             && (x.Command.ToUpper() == command.ToUpper())
-                                             && (x.Eof.ToUpper() == eof.ToUpper()))
+            //string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
+            string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase)) 
+                                             && (string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
+                                             && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase)))
                .Select(n => n.Translate).FirstOrDefault();
             return singleResponseTranslate;
         }
 
         public string GetResponseData(string data)
         {
-            string singleResponseTranslateByData = _rootOjectResponse.Answer.Where(x => x.Data.ToUpper() == data.ToUpper())
+            string singleResponseTranslateByData = _rootOjectResponse.Answer.Where(x => string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
                                                    .Select(h => h.Translate).FirstOrDefault();
 
             return singleResponseTranslateByData;
@@ -158,16 +171,25 @@ namespace IRCS_MS.Infrastructure
 
         public bool ContainTheRespone(string input)
         {
-            bool singleResponseTranslate = _rootOjectResponse.Answer.Any(item => item.Translate.ToUpper() == input.ToUpper());
+            bool singleResponseTranslate = _rootOjectResponse.Answer.Any(item => string.Equals(item.Translate, input, StringComparison.OrdinalIgnoreCase));
 
             return singleResponseTranslate;
         }
 
         public bool IsCommonIncluded(string cardType)
         {
-            string isCommonIncluded = _rootOject.Card.Where(x => x.Name == cardType)
+            string isCommonIncluded = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
                 .Select(n => n.IsCommonIncluded).First();
             return bool.Parse(isCommonIncluded);
         }
+
+        public string GetDefaultName()
+        {
+            string defaultCardName = _rootOject.Card.Where(x => x.Default == "true")
+                .Select(n => n.Name).First();
+
+            return defaultCardName.ToLower();
+        }
+
     }
 }

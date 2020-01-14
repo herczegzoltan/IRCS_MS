@@ -17,6 +17,10 @@ namespace IRCS_MS.Model
         [XmlAttribute("iscommon")]
         public string IsCommonIncluded { get; set; }
 
+        [XmlAttribute("default")]
+        public string Default{ get; set; }
+
+
 
     }
 }

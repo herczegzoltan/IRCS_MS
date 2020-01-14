@@ -21,7 +21,6 @@ namespace IRCS_MS.Infrastructure
         private List<string> HeaderRowInsertable = null;
         private List<List<string>> HeaderRowInsertable2 = null;
 
-
         //TODO Constructor DI
         ExcelPackage excel = null;
         public ReportCreator()
@@ -38,10 +37,10 @@ namespace IRCS_MS.Infrastructure
             Name = name;
         }
 
-
         private void FixExtraValues()
         {
             HeaderRowInsertable.Insert(0, "IRCS_Measurement System");
+            HeaderRowInsertable.Insert(1, "Auto Measure:");
             HeaderRowInsertable.Insert(2, "Name:");
                        
             foreach (var item in HeaderRowInsertable2)
@@ -137,7 +136,6 @@ namespace IRCS_MS.Infrastructure
 
         private void OtherCellsModification(ExcelWorksheet workSheet)
         {
-
             workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Merge = true;
             workSheet.Cells[1, 1, 1, workSheet.Dimension.Columns].Style.Border.Bottom.Style = ExcelBorderStyle.Double;
 
@@ -146,12 +144,9 @@ namespace IRCS_MS.Infrastructure
             workSheet.Cells[2, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Left.Style = ExcelBorderStyle.Thin;
             workSheet.Cells[2, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Right.Style = ExcelBorderStyle.Thin;
 
-
             workSheet.Cells[1, workSheet.Dimension.Columns, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Right.Style = ExcelBorderStyle.Thick;
 
             workSheet.Cells[workSheet.Dimension.Rows, 1, workSheet.Dimension.Rows, workSheet.Dimension.Columns].Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
-
-
 
             workSheet.Cells[3, 2, 3, workSheet.Dimension.Columns].Merge = true;
             workSheet.Cells[1, 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;

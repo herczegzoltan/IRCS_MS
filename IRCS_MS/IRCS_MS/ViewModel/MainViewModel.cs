@@ -98,6 +98,7 @@ namespace IRCS_MS.ViewModel
         private bool _reportFieldState;
         private bool _reportCheckBoxEnabled;
 
+
         #endregion
         public MainViewModel()
         {
@@ -120,6 +121,7 @@ namespace IRCS_MS.ViewModel
 
             ReportDataCollector.InitializeLists();
             IsRunningNow = "Not Running...";
+
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -358,7 +360,6 @@ namespace IRCS_MS.ViewModel
             {
                 WasItRun = false;
                 SchauerNumber++;
-                counterIncomingMessage = 0;
             }
         }
 
@@ -366,84 +367,85 @@ namespace IRCS_MS.ViewModel
         {
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
-        int counterIncomingMessage = 0;
 
+        private int _counterIncomingPackage = 1;
+        private int _extramessages = 0;
+        private bool _validateFinished = false;
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-
             if (COMPort.IsOpen)
             {
                 try
                 {
                     string incomingByte = COMPort.ReadByte().ToString();
 
-                    //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
-                    ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+                    IsRunningNow  = WasItRun == true ? "Running..." : "Not Running...";
 
-                    //3 bytes arrived
+                    ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+                    
                     if (countBytes == 2)
                     {
                         if (WasItRun)
                         {
-                            IsRunningNow = "Running...";
+                            _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
+                                xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
+                                _extramessages = 0;
 
-                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                                   xmlData.GetSelectedCardTypeName
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
-                                                   + " -> " +
-                                                   xmlData.GetResponseData
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                                                   + "\n" + MessageRecievedText + "\n";
-
-                            //get result of measurment
-                            string result = xmlData.GetResponseData
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
-
-                            //waiting for all arrivals
-                            if (ReportFieldState)
+                            if (_counterIncomingPackage == 
+                                xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                             {
-                                ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
-
-                                counterIncomingMessage++;
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
-                                {
-                                    
-                                    ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
-                                    ReportDataCollector.AddVerticalToHorizontal();
-                                    ReportDataCollector.CleanerVertical();
-                                    MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
-                                    counterIncomingMessage = 0;
-                                    IsRunningNow = "Not Running...";
-
-                                    PopUpQuestionbox();
-                                }
-                                else
-                                {
-                                    //MessageRecievedText = "Counter:" + counterIncomingMessage.ToString() + "\n" + MessageRecievedText;
-                                }
+                                /*
+                                MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
+                                                      _counterIncomingPackage.ToString() + " : " + incomingByte + "<->" +
+                                                      "Validate OK" + "\n" + MessageRecievedText + "\n";
+                                                      */
+                                MessageRecievedText = GeneralMessageRecived("Validate OK", xmlData) + MessageRecievedText;
+                                _counterIncomingPackage = 1;
+                                _validateFinished = true;
                             }
                             else
                             {
-                                counterIncomingMessage++;
+                                MessageRecievedText = GeneralMessageRecived("", xmlData) + MessageRecievedText;
 
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpectedMeasureState(SelectedCardType))
-                                {
-                                    MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
-                                    counterIncomingMessage = 0;
-                                    IsRunningNow = "Not Running...";
+                                //MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
+                                //   xmlData.GetSelectedCardTypeName
+                                //   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
+                                //   + " -> " +
+                                //   xmlData.GetResponseData
+                                //   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
+                                //   + "\n" + MessageRecievedText + "\n";
+                                /*
+                                 *     string result = xmlData.GetResponseData
+                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                                }
+                                 */
                             }
 
+                            if (ReportFieldState)
+                            {
+                                string reportInsertData = xmlData.GetResponseData(
+                                    ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+
+                                ReportDataCollector.AddToVertical(reportInsertData);
+
+                                if (ReportFieldState && _validateFinished)
+                                {
+                                    ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
+                                    ReportDataCollector.AddVerticalToHorizontal();
+                                    ReportDataCollector.CleanerVertical();
+
+                                    PopUpQuestionbox();
+                                }
+                            }
                         }
                         else
                         {
-                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                                   xmlData.GetResponseTranslate
-                                                   (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                                   ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-                                                   ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
-                                                   + "\n" + MessageRecievedText + "\n";
+                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " <-> " +
+                                                xmlData.GetResponseTranslate
+                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
+                                                + "\n" + MessageRecievedText + "\n";
                         }
 
                         countBytes = 0;
@@ -454,6 +456,17 @@ namespace IRCS_MS.ViewModel
                     {
                         countBytes++;
                     }
+
+                    if (WasItRun && !_validateFinished)
+                    {
+                        _counterIncomingPackage++;
+                    }
+                    if(_validateFinished)
+                    {
+                        _counterIncomingPackage = 1;
+                        _validateFinished = false;
+                    }
+
                 }
                 catch (TimeoutException ex)
                 {
@@ -463,6 +476,19 @@ namespace IRCS_MS.ViewModel
                 }
             }
         }
+
+
+        private string GeneralMessageRecived(string customText, XmlFilter xmlData)
+        {
+            return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
+                              xmlData.GetSelectedCardTypeName
+                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
+                              + " -> " +
+                              xmlData.GetResponseData
+                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
+                              + "\n" + customText + "\n";
+        }
+
         private void WasItDisconnect()
         {
             if(xmlData.GetResponseTranslate
@@ -486,8 +512,23 @@ namespace IRCS_MS.ViewModel
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-                    ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType),ReportDataCollector.GetTotal(), Name);
-                    
+
+                    if (xmlData.IsCommonIncluded(SelectedCardType))
+                    {
+                        ReportDataHelper.PassListTOReport(
+
+                            xmlData.GetMeasurementsWithoutAutoMeasure(xmlData.GetDefaultName())
+                                .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
+                                .ToList()
+
+                            , ReportDataCollector.GetTotal(), Name);
+                    }
+                    else
+                    {
+                        ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType), ReportDataCollector.GetTotal(), Name);
+                    }
+
+
                     ReportDataHelper.CreateReportFile();
 
                     TopMessage("Saving File....", "File Saved!");
