@@ -19,6 +19,9 @@ namespace IRCS_MS.Infrastructure
         private string Name { get; set; }
 
         private List<string> HeaderRowInsertable = null;
+        
+        private List<string> HeaderZeroColumInsertable = null;
+        
         private List<List<string>> HeaderRowInsertable2 = null;
 
         //TODO Constructor DI
@@ -28,6 +31,7 @@ namespace IRCS_MS.Infrastructure
             excel = new ExcelPackage();
             HeaderRowInsertable = new List<string>() { };
             HeaderRowInsertable2 = new List<List<string>>() { };
+            HeaderZeroColumInsertable = new List<string>() { };
         }
 
         public void AddData(List<string> data, List<List<string>> data2, string name)
@@ -39,37 +43,37 @@ namespace IRCS_MS.Infrastructure
 
         private void FixExtraValues()
         {
-            HeaderRowInsertable.Insert(0, "IRCS_Measurement System");
+            HeaderZeroColumInsertable.Insert(0,"IRCS_Measurement System");
+
+            HeaderRowInsertable.Insert(0, " ");
             HeaderRowInsertable.Insert(1, "Auto Measure:");
-            HeaderRowInsertable.Insert(2, "Name:");
+            HeaderRowInsertable.Insert(2, "Name:" + Name);
                        
             foreach (var item in HeaderRowInsertable2)
             {
                 item.Insert(0, "");
                 item.Insert(2, "");
             }
-
-            HeaderRowInsertable2[0][2] = Name;
-
-            //HeaderRowInsertable2[1].Insert(0, "");
-            //HeaderRowInsertable2[1].Insert(2, "");
         }
 
         public void CreateFile()
         {
             FixExtraValues();
 
-            char[] apha = "ABCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
+            char[] apha = "BCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 
             using (excel)
             {
                 excel.Workbook.Worksheets.Add("Worksheet1");
 
-                string headerRange = "A1:" + HeaderRowInsertable.Count;
+                string headerRange0 = "A1:" + HeaderRowInsertable.Count;
+                string headerRange = "B1:" + HeaderRowInsertable.Count;
+
 
                 var worksheet = excel.Workbook.Worksheets["Worksheet1"];
 
                 //string headerRange = "A1:" + Char.ConvertFromUtf32(HeaderRowInsertable[0].Length + 64) + "1";
+                worksheet.Cells[headerRange0].LoadFromCollection(HeaderZeroColumInsertable);
                 worksheet.Cells[headerRange].LoadFromCollection(HeaderRowInsertable);
 
                 int i = 0;
@@ -77,7 +81,7 @@ namespace IRCS_MS.Infrastructure
                 foreach (var item in HeaderRowInsertable2)
                 {
                     headerRange2 = apha[i + 1].ToString() + 0 + ":" + item.Count;
-                    if (i == item.Count)
+                    if(i == item.Count)
                     {
                         i = 0;
                     }
@@ -128,7 +132,7 @@ namespace IRCS_MS.Infrastructure
                     }
                     else
                     {
-                        //Nothing to do.
+                        //Nothing to do yet.
                     }
                 }
             }
@@ -153,7 +157,7 @@ namespace IRCS_MS.Infrastructure
             workSheet.Cells[3, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
             //Rotation
-            var headerCells = workSheet.Cells[1, 2, 2, workSheet.Dimension.Columns];//sorok és oszlopok mettől meddig
+            var headerCells = workSheet.Cells[1, 3, 2, workSheet.Dimension.Columns];//sorok és oszlopok mettől meddig
             headerCells.Style.TextRotation = 90;
 
 
