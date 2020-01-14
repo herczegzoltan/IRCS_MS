@@ -142,15 +142,16 @@
         <TextBlock Text="Name" Grid.Row="11" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <TextBox  Text="{Binding SchauerNumber}"
+                  FontSize="25" 
                   Grid.Column="2"
                   Margin="10"
                   Grid.ColumnSpan="2"
                   Grid.Row="10" 
                   IsEnabled="{Binding ReportFieldState}"
-                  
                   />
 
         <TextBox  Text="{Binding Name}"
+                  FontSize="25" 
                   Grid.Column="2"
                   Margin="10"
                   Grid.ColumnSpan="2"

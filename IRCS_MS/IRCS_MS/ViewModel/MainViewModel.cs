@@ -399,7 +399,7 @@ namespace IRCS_MS.ViewModel
                                                       _counterIncomingPackage.ToString() + " : " + incomingByte + "<->" +
                                                       "Validate OK" + "\n" + MessageRecievedText + "\n";
                                                       */
-                                MessageRecievedText = GeneralMessageRecived("Validate OK", xmlData) + MessageRecievedText;
+                                MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                 _counterIncomingPackage = 1;
                                 _validateFinished = true;
                             }
@@ -440,7 +440,7 @@ namespace IRCS_MS.ViewModel
                         }
                         else
                         {
-                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " <-> " +
+                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
                                                 xmlData.GetResponseTranslate
                                                 (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                 ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
@@ -486,7 +486,7 @@ namespace IRCS_MS.ViewModel
                               + " -> " +
                               xmlData.GetResponseData
                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                              + "\n" + customText + "\n";
+                              + customText + "\n";
         }
 
         private void WasItDisconnect()
@@ -513,21 +513,31 @@ namespace IRCS_MS.ViewModel
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
 
-                    if (xmlData.IsCommonIncluded(SelectedCardType))
+
+                    if (xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType).Count == 0)
                     {
+                        //only automeasure 
                         ReportDataHelper.PassListTOReport(
 
-                            xmlData.GetMeasurementsWithoutAutoMeasure(xmlData.GetDefaultName())
-                                .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
-                                .ToList()
-
-                            , ReportDataCollector.GetTotal(), Name);
+                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name);
                     }
                     else
                     {
-                        ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType), ReportDataCollector.GetTotal(), Name);
-                    }
+                        if (xmlData.IsCommonIncluded(SelectedCardType))
+                        {
+                            ReportDataHelper.PassListTOReport(
 
+                                xmlData.GetMeasurementsWithoutAutoMeasure(xmlData.GetDefaultName())
+                                    .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
+                                    .ToList()
+
+                                , ReportDataCollector.GetTotal(), Name);
+                        }
+                        else
+                        {
+                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name);
+                        }
+                    }
 
                     ReportDataHelper.CreateReportFile();
 
@@ -861,6 +871,7 @@ namespace IRCS_MS.ViewModel
             set
             {
                 _schauerNumber = value;
+ 
                 OnPropertyChanged("SchauerNumber");
 
             }
@@ -875,6 +886,7 @@ namespace IRCS_MS.ViewModel
             }
             set
             {
+
                 _currentMeasureCount = value;
                 OnPropertyChanged("CurrentMeasureCount");
 
