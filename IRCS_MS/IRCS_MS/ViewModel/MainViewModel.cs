@@ -396,11 +396,6 @@ namespace IRCS_MS.ViewModel
                             if (_counterIncomingPackage == 
                                 xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                             {
-                                /*
-                                MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                                      _counterIncomingPackage.ToString() + " : " + incomingByte + "<->" +
-                                                      "Validate OK" + "\n" + MessageRecievedText + "\n";
-                                                      */
                                 MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                 _counterIncomingPackage = 1;
                                 _validateFinished = true;
@@ -409,18 +404,6 @@ namespace IRCS_MS.ViewModel
                             {
                                 MessageRecievedText = GeneralMessageRecived("", xmlData) + MessageRecievedText;
 
-                                //MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                //   xmlData.GetSelectedCardTypeName
-                                //   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
-                                //   + " -> " +
-                                //   xmlData.GetResponseData
-                                //   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                                //   + "\n" + MessageRecievedText + "\n";
-                                /*
-                                 *     string result = xmlData.GetResponseData
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
-
-                                 */
                             }
 
                             if (ReportFieldState)
