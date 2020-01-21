@@ -384,7 +384,13 @@ namespace IRCS_MS.ViewModel
                     IsRunningNow  = WasItRun == true ? "Running..." : "Not Running...";
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
-                    
+
+                    //timeout_testing
+
+
+                    CurrentMeasureCount = incomingByte;
+
+                    //all bytes arrived
                     if (countBytes == 2)
                     {
                         if (WasItRun)
@@ -410,7 +416,7 @@ namespace IRCS_MS.ViewModel
                             {
                                 _savedMeasureCounter++;
 
-                                CurrentMeasureCount = _savedMeasureCounter.ToString();
+                                //CurrentMeasureCount = _savedMeasureCounter.ToString();
                                 string reportInsertData = xmlData.GetResponseData(
                                     ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
@@ -464,7 +470,6 @@ namespace IRCS_MS.ViewModel
                 }
             }
         }
-
 
         private string GeneralMessageRecived(string customText, XmlFilter xmlData)
         {

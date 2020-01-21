@@ -18,6 +18,8 @@ namespace IRCS_MS.Infrastructure
 
         private string Name { get; set; }
 
+        public List<string> MeasuredCards { get; set; }
+
         private List<string> HeaderRowInsertable = null;
         
         private List<string> HeaderZeroColumInsertable = null;
@@ -25,10 +27,10 @@ namespace IRCS_MS.Infrastructure
         private List<List<string>> HeaderRowInsertable2 = null;
 
         //TODO Constructor DI
-        ExcelPackage excel = null;
+        private ExcelPackage _excel = null;
         public ReportCreator()
         {
-            excel = new ExcelPackage();
+            _excel = new ExcelPackage();
             HeaderRowInsertable = new List<string>() { };
             HeaderRowInsertable2 = new List<List<string>>() { };
             HeaderZeroColumInsertable = new List<string>() { };
@@ -62,15 +64,15 @@ namespace IRCS_MS.Infrastructure
 
             char[] apha = "BCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 
-            using (excel)
+            using (_excel)
             {
-                excel.Workbook.Worksheets.Add("Worksheet1");
+                _excel.Workbook.Worksheets.Add("Worksheet1");
 
                 string headerRange0 = "A1:" + HeaderRowInsertable.Count;
                 string headerRange = "B1:" + HeaderRowInsertable.Count;
 
 
-                var worksheet = excel.Workbook.Worksheets["Worksheet1"];
+                var worksheet = _excel.Workbook.Worksheets["Worksheet1"];
 
                 //string headerRange = "A1:" + Char.ConvertFromUtf32(HeaderRowInsertable[0].Length + 64) + "1";
                 worksheet.Cells[headerRange0].LoadFromCollection(HeaderZeroColumInsertable);
@@ -96,7 +98,7 @@ namespace IRCS_MS.Infrastructure
                 OtherCellsModification(worksheet);
 
                 FileInfo excelFile = new FileInfo(@""+ FilePath +"\\" + FileName + ".xlsx");    //+ FilePath + FileName + ".xlsx"); //C:\Users\Herczeg Zoltán\Desktop\test.xlsx");
-                excel.SaveAs(excelFile);
+                _excel.SaveAs(excelFile);
             }
         }
 
