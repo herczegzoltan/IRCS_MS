@@ -191,5 +191,13 @@ namespace IRCS_MS.Infrastructure
             return defaultCardName.ToLower();
         }
 
+        public int GetDefaultTimeOutValue()
+        {
+            string defaultCardName = _rootOject.ValuesCommands.Record.Where(x => x.Name == "TimeOutDefault")
+                .Select(n => n.Value).First();
+
+            return int.Parse(defaultCardName);
+        }
+
     }
 }

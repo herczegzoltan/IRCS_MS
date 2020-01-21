@@ -138,8 +138,6 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        private enum UIElementStateVariations { ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick }
-
         private void UIElementUpdater(UIElementStateVariations uev)
         {
             switch (uev)
@@ -186,7 +184,6 @@ namespace IRCS_MS.ViewModel
 
         private void UpdateTimeUI()
         {
-
             Thread _thread = null;
             var taskState = Task.Run(() =>
             {
@@ -297,6 +294,9 @@ namespace IRCS_MS.ViewModel
 
         private void SendRun()
         {
+            //stopwatch
+            TimeOutValidator(TimeOutValidatorStates.Start);
+            //stopWatchTimeOut.Start();
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
             ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
@@ -368,6 +368,48 @@ namespace IRCS_MS.ViewModel
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
+
+        private Stopwatch stopWatchTimeOut = new Stopwatch();
+
+        private void TimeOutValidator(TimeOutValidatorStates tovs)
+        {
+            switch (tovs)
+            {
+                case TimeOutValidatorStates.Start:
+                    TaskTimeOutWatcher();
+                    break;
+                case TimeOutValidatorStates.Reset:
+                    stopWatchTimeOut.Restart();
+
+                    break;
+                case TimeOutValidatorStates.Stop:
+                    stopWatchTimeOut.Stop();
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        private void TaskTimeOutWatcher()
+        {
+            stopWatchTimeOut.Start();
+
+            var taskState = Task.Run(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(100);
+
+                    if (stopWatchTimeOut.ElapsedMilliseconds > xmlData.GetDefaultTimeOutValue())
+                    {
+                        MessageBox.Show($"TimeOut error! > {xmlData.GetDefaultTimeOutValue()} ms ");
+                        TimeOutValidator(TimeOutValidatorStates.Reset);
+                    }
+                }
+            });
+        }
+    
+
         private int _counterIncomingPackage = 1;
         private int _extramessages = 0;
         private bool _validateFinished = false;
@@ -387,8 +429,10 @@ namespace IRCS_MS.ViewModel
 
                     //timeout_testing
 
-
-                    CurrentMeasureCount = incomingByte;
+                    if (WasItRun)
+                    {
+                        TimeOutValidator(TimeOutValidatorStates.Reset);
+                    }
 
                     //all bytes arrived
                     if (countBytes == 2)
@@ -405,6 +449,9 @@ namespace IRCS_MS.ViewModel
                                 MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                 _counterIncomingPackage = 1;
                                 _validateFinished = true;
+                                
+                                TimeOutValidator(TimeOutValidatorStates.Stop);
+                                //stopWatchTimeOut.Stop();
                             }
                             else
                             {
