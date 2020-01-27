@@ -426,17 +426,12 @@ namespace IRCS_MS.ViewModel
             {
                 try
                 {
-                    //TimeOutValidator(TimeOutValidatorStates.Reset);
-
                     string incomingByte = COMPort.ReadByte().ToString();
 
                     IsRunningNow  = WasItRun == true ? "Running..." : "Not Running...";
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
-                    //timeout_testing
-
-                    
                     //all bytes arrived
                     if (countBytes == 2)
                     {
@@ -459,7 +454,6 @@ namespace IRCS_MS.ViewModel
                                 MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                 _counterIncomingPackage = 1;
                                 _validateFinished = true;
-                                MessageBox.Show(_stopWatchTimeOut.IsRunning.ToString());
                             }
                             else
                             {
@@ -483,10 +477,8 @@ namespace IRCS_MS.ViewModel
                                     ReportDataCollector.AddVerticalToHorizontal();
                                     ReportDataCollector.CleanerVertical();
                                     PopUpQuestionbox();
-                               
                                 }
                             }
-
                         }
                         else
                         {
