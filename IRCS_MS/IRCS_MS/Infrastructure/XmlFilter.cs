@@ -198,6 +198,12 @@ namespace IRCS_MS.Infrastructure
 
             return int.Parse(defaultCardName);
         }
-
+        
+        public bool GetValidator(string data)
+        {
+            string defaultValidator = _rootOjectResponse.Answer.Where(x => x.Translate ==data && x.Validation == "true")
+                .Select(f => f.Validation).First(); 
+            return bool.Parse(defaultValidator);
+        }
     }
 }

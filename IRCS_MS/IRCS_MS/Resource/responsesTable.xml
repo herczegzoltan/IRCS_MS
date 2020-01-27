@@ -2,7 +2,7 @@
 <RootObjectResponse>
     <Answer translate="Connected" command="0x11" data="0x70" eof="0x04"/>
     <Answer translate="Disconnected" command="0x22" data="0x71" eof="0x04"/>
-    <Answer translate="Measure_OK" command="0x00" data="0x00" eof="0x04"/>
+    <Answer translate="Measure_OK" command="0x00" data="0x00" eof="0x04" validation="true"/>
     <Answer translate="Measure_OFF" command="0x44" data="0x72" eof="0x04"/>
     <Answer translate="Error_48" command="0x07" data="0x73" eof="0x04"/>
     <Answer translate="Error_48i" command="0x07" data="0x74" eof="0x04"/>
