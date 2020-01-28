@@ -98,6 +98,8 @@ namespace IRCS_MS.ViewModel
         private bool _reportFieldState;
         private bool _reportCheckBoxEnabled;
 
+        private Stopwatch _stopWatchTimeOut =null;
+
 
         #endregion
         public MainViewModel()
@@ -118,10 +120,10 @@ namespace IRCS_MS.ViewModel
             UpdateTimeUI();
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
-
+            
             ReportDataCollector.InitializeLists();
             IsRunningNow = "Not Running...";
-
+            _stopWatchTimeOut = new Stopwatch();
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -369,8 +371,6 @@ namespace IRCS_MS.ViewModel
         }
 
 
-        private Stopwatch stopWatchTimeOut = new Stopwatch();
-
         private void TimeOutValidator(TimeOutValidatorStates tovs)
         {
             switch (tovs)
@@ -379,36 +379,41 @@ namespace IRCS_MS.ViewModel
                     TaskTimeOutWatcher();
                     break;
                 case TimeOutValidatorStates.Reset:
-                    stopWatchTimeOut.Restart();
+                    _stopWatchTimeOut.Restart();
 
                     break;
                 case TimeOutValidatorStates.Stop:
-                    stopWatchTimeOut.Stop();
+                    _stopWatchTimeOut.Stop();
                     break;
                 default:
                     break;
             }
         }
-        
+
+        private bool TaskTimeOutWatcherIsRunning = false;
         private void TaskTimeOutWatcher()
         {
-            stopWatchTimeOut.Start();
-
-            var taskState = Task.Run(() =>
+            if (!TaskTimeOutWatcherIsRunning)
             {
-                while (true)
-                {
-                    Thread.Sleep(100);
+                _stopWatchTimeOut.Start();
 
-                    if (stopWatchTimeOut.ElapsedMilliseconds > xmlData.GetDefaultTimeOutValue())
+                var taskState = Task.Run(() =>
+                {
+                    while (true)
                     {
-                        MessageBox.Show($"TimeOut error! > {xmlData.GetDefaultTimeOutValue()} ms ");
-                        TimeOutValidator(TimeOutValidatorStates.Reset);
+                        Thread.Sleep(100);
+
+                        if (_stopWatchTimeOut.ElapsedMilliseconds > xmlData.GetDefaultTimeOutValue())
+                        {
+                            MessageBox.Show($"TimeOut error! > {xmlData.GetDefaultTimeOutValue()} ms");
+                            TimeOutValidator(TimeOutValidatorStates.Reset);
+                        }
                     }
-                }
-            });
+                });
+
+                TaskTimeOutWatcherIsRunning = true;
+            }
         }
-    
 
         private int _counterIncomingPackage = 1;
         private int _extramessages = 0;
@@ -427,18 +432,14 @@ namespace IRCS_MS.ViewModel
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
-                    //timeout_testing
-
-                    if (WasItRun)
-                    {
-                        TimeOutValidator(TimeOutValidatorStates.Reset);
-                    }
-
                     //all bytes arrived
                     if (countBytes == 2)
                     {
                         if (WasItRun)
                         {
+                    
+                            TimeOutValidator(TimeOutValidatorStates.Reset);
+
                             _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
                                 xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
                                 _extramessages = 0;
@@ -446,17 +447,18 @@ namespace IRCS_MS.ViewModel
                             if (_counterIncomingPackage == 
                                 xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                             {
+
+                                TimeOutValidator(TimeOutValidatorStates.Reset);
+                                TimeOutValidator(TimeOutValidatorStates.Stop);
+
                                 MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                 _counterIncomingPackage = 1;
                                 _validateFinished = true;
-                                
-                                TimeOutValidator(TimeOutValidatorStates.Stop);
-                                //stopWatchTimeOut.Stop();
                             }
                             else
                             {
+                                TimeOutValidator(TimeOutValidatorStates.Reset);
                                 MessageRecievedText = GeneralMessageRecived("", xmlData) + MessageRecievedText;
-
                             }
 
                             if (ReportFieldState)
@@ -467,7 +469,7 @@ namespace IRCS_MS.ViewModel
                                 string reportInsertData = xmlData.GetResponseData(
                                     ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                                ReportDataCollector.AddToVertical(reportInsertData);
+                                //ReportDataCollector.AddToVertical(reportInsertData);
 
                                 if (ReportFieldState && _validateFinished)
                                 {
@@ -475,7 +477,6 @@ namespace IRCS_MS.ViewModel
                                     ReportDataCollector.AddVerticalToHorizontal();
                                     ReportDataCollector.CleanerVertical();
                                     PopUpQuestionbox();
-                               
                                 }
                             }
                         }
@@ -507,12 +508,12 @@ namespace IRCS_MS.ViewModel
                         _counterIncomingPackage = 1;
                         _validateFinished = false;
                     }
-
                 }
-                catch (TimeoutException ex)
+                catch (Exception ex)
                 {
-                    TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
-                        " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
+                    MessageBox.Show(ex.ToString());
+                    //TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
+                    //    " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
                     throw;
                 }
             }

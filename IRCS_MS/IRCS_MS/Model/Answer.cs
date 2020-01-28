@@ -15,5 +15,8 @@ namespace IRCS_MS.Model
 
         [XmlAttribute("eof")]
         public string Eof { get; set; }
+
+        [XmlAttribute("validation")]
+        public string Validation { get; set; }
     }
 }
