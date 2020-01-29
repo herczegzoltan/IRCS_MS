@@ -169,6 +169,14 @@ namespace IRCS_MS.Infrastructure
             return singleResponseTranslateByData;
         }
 
+        public string GetResponseEOF(string data)
+        {
+            string singleResponseEOFByData = _rootOjectResponse.Answer.Where(x => string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
+                                                   .Select(h => h.Eof).FirstOrDefault();
+
+            return singleResponseEOFByData;
+        }
+
         public bool ContainTheRespone(string input)
         {
             bool singleResponseTranslate = _rootOjectResponse.Answer.Any(item => string.Equals(item.Translate, input, StringComparison.OrdinalIgnoreCase));

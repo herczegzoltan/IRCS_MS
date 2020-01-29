@@ -440,6 +440,9 @@ namespace IRCS_MS.ViewModel
                     
                             TimeOutValidator(TimeOutValidatorStates.Reset);
 
+                            //validate EOF
+                            ValidatorIncomingMessage(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(),xmlData);
+                            //
                             _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
                                 xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
                                 _extramessages = 0;
@@ -447,7 +450,6 @@ namespace IRCS_MS.ViewModel
                             if (_counterIncomingPackage == 
                                 xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                             {
-
                                 TimeOutValidator(TimeOutValidatorStates.Reset);
                                 TimeOutValidator(TimeOutValidatorStates.Stop);
 
