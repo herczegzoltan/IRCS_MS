@@ -480,7 +480,7 @@ namespace IRCS_MS.ViewModel
                                     string reportInsertData = xmlData.GetResponseData(
                                         ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
-                                    //ReportDataCollector.AddToVertical(reportInsertData);
+                                    ReportDataCollector.AddToVertical(reportInsertData);
 
                                     if (ReportFieldState && _validateFinished)
                                     {
@@ -495,7 +495,6 @@ namespace IRCS_MS.ViewModel
                             else
                             {
                                 MessageRecievedText = GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
-
                             }
                         }
                         else
