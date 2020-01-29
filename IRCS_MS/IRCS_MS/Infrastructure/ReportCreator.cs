@@ -71,7 +71,6 @@ namespace IRCS_MS.Infrastructure
                 string headerRange0 = "A1:" + HeaderRowInsertable.Count;
                 string headerRange = "B1:" + HeaderRowInsertable.Count;
 
-
                 var worksheet = _excel.Workbook.Worksheets["Worksheet1"];
 
                 //string headerRange = "A1:" + Char.ConvertFromUtf32(HeaderRowInsertable[0].Length + 64) + "1";
