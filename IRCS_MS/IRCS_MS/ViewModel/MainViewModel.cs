@@ -420,6 +420,17 @@ namespace IRCS_MS.ViewModel
         private bool _validateFinished = false;
         private int _savedMeasureCounter = 0;
 
+        private bool Validation()
+        {
+            bool val = ValidatorIncomingMessage.CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
+            //validate EOF
+            if (!val)
+            {
+                MessageBox.Show("Uart Error!");
+            }
+            return val;
+        }
+
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             if (COMPort.IsOpen)
@@ -437,49 +448,54 @@ namespace IRCS_MS.ViewModel
                     {
                         if (WasItRun)
                         {
-                    
                             TimeOutValidator(TimeOutValidatorStates.Reset);
 
-                            //validate EOF
-                            ValidatorIncomingMessage(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(),xmlData);
-                            //
-                            _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
-                                xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
-                                _extramessages = 0;
-
-                            if (_counterIncomingPackage == 
-                                xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
+                            if (Validation())
                             {
-                                TimeOutValidator(TimeOutValidatorStates.Reset);
-                                TimeOutValidator(TimeOutValidatorStates.Stop);
+                                _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
+                                    xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
+                                    _extramessages = 0;
 
-                                MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
-                                _counterIncomingPackage = 1;
-                                _validateFinished = true;
+                                if (_counterIncomingPackage == 
+                                    xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
+                                {
+                                    TimeOutValidator(TimeOutValidatorStates.Reset);
+                                    TimeOutValidator(TimeOutValidatorStates.Stop);
+
+                                    MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
+                                    _counterIncomingPackage = 1;
+                                    _validateFinished = true;
+                                }
+                                else
+                                {
+                                    TimeOutValidator(TimeOutValidatorStates.Reset);
+                                    MessageRecievedText = GeneralMessageRecived("", xmlData) + MessageRecievedText;
+                                }
+
+                                if (ReportFieldState)
+                                {
+                                    _savedMeasureCounter++;
+
+                                    //CurrentMeasureCount = _savedMeasureCounter.ToString();
+                                    string reportInsertData = xmlData.GetResponseData(
+                                        ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+
+                                    //ReportDataCollector.AddToVertical(reportInsertData);
+
+                                    if (ReportFieldState && _validateFinished)
+                                    {
+                                        ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
+                                        ReportDataCollector.AddVerticalToHorizontal();
+                                        ReportDataCollector.CleanerVertical();
+                                        PopUpQuestionbox();
+                                    }
+                                }
+
                             }
                             else
                             {
-                                TimeOutValidator(TimeOutValidatorStates.Reset);
-                                MessageRecievedText = GeneralMessageRecived("", xmlData) + MessageRecievedText;
-                            }
+                                MessageRecievedText = GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
 
-                            if (ReportFieldState)
-                            {
-                                _savedMeasureCounter++;
-
-                                //CurrentMeasureCount = _savedMeasureCounter.ToString();
-                                string reportInsertData = xmlData.GetResponseData(
-                                    ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
-
-                                //ReportDataCollector.AddToVertical(reportInsertData);
-
-                                if (ReportFieldState && _validateFinished)
-                                {
-                                    ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
-                                    ReportDataCollector.AddVerticalToHorizontal();
-                                    ReportDataCollector.CleanerVertical();
-                                    PopUpQuestionbox();
-                                }
                             }
                         }
                         else
@@ -531,6 +547,12 @@ namespace IRCS_MS.ViewModel
                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
                               + customText + "\n";
         }
+
+        private string GeneralMessageRecived(string customText)
+        {
+            return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " + customText + "\n";
+        }
+
 
         private void WasItDisconnect()
         {

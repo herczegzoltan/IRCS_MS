@@ -9,9 +9,15 @@ namespace IRCS_MS.Infrastructure
 
     public static class ValidatorIncomingMessage
     {
-        public static void CheckEOF(string incomingByte, XmlFilter xmlFilter)
+        public static bool CheckRightEOF(string incomingByte, XmlFilter xmlFilter)
         {
-            string asd = xmlFilter.GetEOF();
+            incomingByte = ByteMessageBuilder.ConvertDecimalStringToHexString(incomingByte);
+
+            if (xmlFilter.GetEOF() == incomingByte)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
