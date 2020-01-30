@@ -49,11 +49,6 @@ namespace IRCS_MS.Infrastructure
         {
             HeaderZeroColumInsertable.Insert(0,"IRCS_Measurement System");
             HeaderZeroColumInsertable.AddRange(_measuredCardsColum);
-            //HeaderZeroColumInsertable.Concat(_measuredCardsColum).ToList();
-            //HeaderZeroColumInsertable.Insert(0, "");
-            //HeaderZeroColumInsertable.Insert(1, "");
-            //HeaderZeroColumInsertable.Insert(2, "");
-            //HeaderZeroColumInsertable.Insert(3, "Common"); //this is the first place for card name
 
             HeaderRowInsertable.Insert(0, " ");
             HeaderRowInsertable.Insert(1, "Auto Measure:");
