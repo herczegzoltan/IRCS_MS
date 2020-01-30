@@ -583,7 +583,7 @@ namespace IRCS_MS.ViewModel
                         //only automeasure 
                         ReportDataHelper.PassListTOReport(
 
-                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name);
+                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name, new List<string>() { });
                     }
                     else
                     {
@@ -595,11 +595,11 @@ namespace IRCS_MS.ViewModel
                                     .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
                                     .ToList()
 
-                                , ReportDataCollector.GetTotal(), Name);
+                                , ReportDataCollector.GetTotal(), Name, FillColumeForReport(true));
                         }
                         else
                         {
-                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name);
+                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name, FillColumeForReport(true));
                         }
                     }
 
@@ -611,6 +611,29 @@ namespace IRCS_MS.ViewModel
             else
             {
                 TopMessage("Error!", "No measurement data!");
+            }
+        }
+
+        private List<string> FillColumeForReport(bool IsCommonInclided)
+        {
+            List<string> temp = new List<string>() { };
+
+            if (IsCommonInclided)
+            {
+                temp.Add("");
+                temp.Add("");
+                temp.Add(xmlData.GetDefaultName());
+                temp.Add("");
+                temp.Add("");
+                temp.Add(SelectedCardType);
+                return temp;
+            }
+            else
+            {
+                temp.Add("");
+                temp.Add("");
+                temp.Add(xmlData.GetDefaultName());
+                return temp;
             }
         }
 
