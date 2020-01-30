@@ -18,7 +18,7 @@ namespace IRCS_MS.Infrastructure
 
         private string Name { get; set; }
 
-        public List<string> MeasuredCards { get; set; }
+        private List<string> _measuredCardsColum = null;
 
         private List<string> HeaderRowInsertable = null;
         
@@ -34,18 +34,21 @@ namespace IRCS_MS.Infrastructure
             HeaderRowInsertable = new List<string>() { };
             HeaderRowInsertable2 = new List<List<string>>() { };
             HeaderZeroColumInsertable = new List<string>() { };
+            _measuredCardsColum = new List<string>() { };
         }
 
-        public void AddData(List<string> data, List<List<string>> data2, string name)
+        public void AddData(List<string> data, List<List<string>> data2, string name, List<string> measuredCardsColum)
         {
             HeaderRowInsertable = data;
             HeaderRowInsertable2 = data2;
             Name = name;
+            _measuredCardsColum = measuredCardsColum;
         }
 
         private void FixExtraValues()
         {
             HeaderZeroColumInsertable.Insert(0,"IRCS_Measurement System");
+            HeaderZeroColumInsertable.AddRange(_measuredCardsColum);
 
             HeaderRowInsertable.Insert(0, " ");
             HeaderRowInsertable.Insert(1, "Auto Measure:");

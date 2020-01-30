@@ -16,6 +16,7 @@ using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
+using IRCS_MS.Helper;
 
 namespace IRCS_MS.ViewModel
 {
@@ -216,7 +217,6 @@ namespace IRCS_MS.ViewModel
                 COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
-                    //COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
                     COMPort.Open();
                     UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
@@ -231,10 +231,8 @@ namespace IRCS_MS.ViewModel
 
         private void ReadingSerialState()
         {
-            //Thread _thread = null;
             var taskState = Task.Run(() =>
             {
-                //_thread = Thread.CurrentThread;
                 while (true)
                 {
                     Thread.Sleep(500);
@@ -251,9 +249,6 @@ namespace IRCS_MS.ViewModel
 
         private void DisConnect()
         {
-            //_runningTask = false;
-
-            //ReadingSerialState();
             DisConfigureDevice();
             UIElementUpdater(UIElementStateVariations.DisConnectClick);
         }
@@ -354,7 +349,6 @@ namespace IRCS_MS.ViewModel
             if (messageBoxResult == MessageBoxResult.No)
             {
                 WasItRun = false;
-                //SaveReport();
                 _savedMeasureCounter = 0;
                 FolderDialog();
             }
@@ -369,7 +363,6 @@ namespace IRCS_MS.ViewModel
         {
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
-
 
         private void TimeOutValidator(TimeOutValidatorStates tovs)
         {
@@ -462,21 +455,20 @@ namespace IRCS_MS.ViewModel
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
 
-                                    MessageRecievedText = GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
+                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                     _counterIncomingPackage = 1;
                                     _validateFinished = true;
                                 }
                                 else
                                 {
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
-                                    MessageRecievedText = GeneralMessageRecived("", xmlData) + MessageRecievedText;
+                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("", xmlData) + MessageRecievedText;
                                 }
 
                                 if (ReportFieldState)
                                 {
                                     _savedMeasureCounter++;
 
-                                    //CurrentMeasureCount = _savedMeasureCounter.ToString();
                                     string reportInsertData = xmlData.GetResponseData(
                                         ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
 
@@ -494,7 +486,7 @@ namespace IRCS_MS.ViewModel
                             }
                             else
                             {
-                                MessageRecievedText = GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
+                                MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
                             }
                         }
                         else
@@ -529,29 +521,13 @@ namespace IRCS_MS.ViewModel
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
-                    //TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
-                    //    " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
                     throw;
                 }
             }
         }
 
-        private string GeneralMessageRecived(string customText, XmlFilter xmlData)
-        {
-            return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
-                              xmlData.GetSelectedCardTypeName
-                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
-                              + " -> " +
-                              xmlData.GetResponseData
-                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                              + customText + "\n";
-        }
-
-        private string GeneralMessageRecived(string customText)
-        {
-            return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " + customText + "\n";
-        }
-
+        
+    
 
         private void WasItDisconnect()
         {
@@ -565,6 +541,7 @@ namespace IRCS_MS.ViewModel
                 COMPort.Dispose();
             }
         }
+
         private void SaveReport()
         {
             if (ReportDataCollector.GetTotal().Any())
@@ -583,7 +560,7 @@ namespace IRCS_MS.ViewModel
                         //only automeasure 
                         ReportDataHelper.PassListTOReport(
 
-                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name);
+                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name, new List<string>() { });
                     }
                     else
                     {
@@ -595,11 +572,11 @@ namespace IRCS_MS.ViewModel
                                     .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
                                     .ToList()
 
-                                , ReportDataCollector.GetTotal(), Name);
+                                , ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(true,xmlData,SelectedCardType));
                         }
                         else
                         {
-                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name);
+                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(false, xmlData, SelectedCardType));
                         }
                     }
 
@@ -614,6 +591,7 @@ namespace IRCS_MS.ViewModel
             }
         }
 
+      
         private string FolderPath = "";
         private string _isRunningNow;
         private string _name;
@@ -623,7 +601,6 @@ namespace IRCS_MS.ViewModel
 
             var t = new Thread((ThreadStart)(() => {
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
-               //fbd.RootFolder = System.Environment.SpecialFolder.Desktop;
                 fbd.ShowNewFolderButton = true;
                 DialogResult result = fbd.ShowDialog();
                 if (result == DialogResult.Cancel)
@@ -653,7 +630,6 @@ namespace IRCS_MS.ViewModel
             {
                 return _selectedAvailablePort;
             }
-
             set
             {
                 _selectedAvailablePort = value;

@@ -17,9 +17,9 @@ namespace IRCS_MS.Infrastructure
             report.FilePath = _filePath;
         }
 
-        public static void PassListTOReport(List<string> input, List<List<string>> input2, string name)
+        public static void PassListTOReport(List<string> input, List<List<string>> input2, string name, List<string> measurements)
         {
-            report.AddData(input,input2,name);
+            report.AddData(input,input2,name, measurements);
         }
 
         public static void CreateReportFile()

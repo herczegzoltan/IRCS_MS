@@ -85,6 +85,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\GeneralCollection.cs" />
     <Compile Include="Infrastructure\MessageBoxWrapper.cs" />
     <Compile Include="Infrastructure\ReportDataCollector.cs" />
     <Compile Include="Infrastructure\ReportDataHelper.cs" />
@@ -151,5 +152,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
