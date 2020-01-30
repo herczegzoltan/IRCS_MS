@@ -99,17 +99,17 @@
     <Answer translate="R3ER_Amp3_Normal_Zone_2_error" command="0x05" data="0x6a" eof="0x04"/>
     <Answer translate="R3ER_Amp3_Normal_Zone_3_error" command="0x05" data="0x6b" eof="0x04"/>
     <Answer translate="R3ER_Amp3_Normal_Zone_4_error" command="0x05" data="0x6c" eof="0x04"/>
-    <Answer translate="R3ER_Amp1_Spare_Zone_1_error" command="0x05" data="0x71" eof="0x04"/>
-    <Answer translate="R3ER_Amp1_Spare_Zone_2_error" command="0x05" data="0x72" eof="0x04"/>
-    <Answer translate="R3ER_Amp1_Spare_Zone_3_error" command="0x05" data="0x73" eof="0x04"/>
-    <Answer translate="R3ER_Amp1_Spare_Zone_4_error" command="0x05" data="0x74" eof="0x04"/>
-    <Answer translate="R3ER_Amp2_Spare_Zone_1_error" command="0x05" data="0x75" eof="0x04"/>
-    <Answer translate="R3ER_Amp2_Spare_Zone_2_error" command="0x05" data="0x76" eof="0x04"/>
-    <Answer translate="R3ER_Amp2_Spare_Zone_3_error" command="0x05" data="0x77" eof="0x04"/>
-    <Answer translate="R3ER_Amp2_Spare_Zone_4_error" command="0x05" data="0x78" eof="0x04"/>
-    <Answer translate="R3ER_Amp3_Spare_Zone_1_error" command="0x05" data="0x79" eof="0x04"/>
-    <Answer translate="R3ER_Amp3_Spare_Zone_2_error" command="0x05" data="0x7a" eof="0x04"/>
-    <Answer translate="R3ER_Amp3_Spare_Zone_3_error" command="0x05" data="0x7b" eof="0x04"/>
-    <Answer translate="R3ER_Amp3_Spare_Zone_4_error" command="0x05" data="0x7c" eof="0x04"/>
-    <Answer translate="AMP100_e" command="0x06" data="0x80" eof="0x04"/>
+    <Answer translate="R3ER_Amp1_Spare_Zone_1_error" command="0x05" data="0x81" eof="0x04"/>
+    <Answer translate="R3ER_Amp1_Spare_Zone_2_error" command="0x05" data="0x82" eof="0x04"/>
+    <Answer translate="R3ER_Amp1_Spare_Zone_3_error" command="0x05" data="0x83" eof="0x04"/>
+    <Answer translate="R3ER_Amp1_Spare_Zone_4_error" command="0x05" data="0x84" eof="0x04"/>
+    <Answer translate="R3ER_Amp2_Spare_Zone_1_error" command="0x05" data="0x85" eof="0x04"/>
+    <Answer translate="R3ER_Amp2_Spare_Zone_2_error" command="0x05" data="0x86" eof="0x04"/>
+    <Answer translate="R3ER_Amp2_Spare_Zone_3_error" command="0x05" data="0x87" eof="0x04"/>
+    <Answer translate="R3ER_Amp2_Spare_Zone_4_error" command="0x05" data="0x88" eof="0x04"/>
+    <Answer translate="R3ER_Amp3_Spare_Zone_1_error" command="0x05" data="0x89" eof="0x04"/>
+    <Answer translate="R3ER_Amp3_Spare_Zone_2_error" command="0x05" data="0x8a" eof="0x04"/>
+    <Answer translate="R3ER_Amp3_Spare_Zone_3_error" command="0x05" data="0x8b" eof="0x04"/>
+    <Answer translate="R3ER_Amp3_Spare_Zone_4_error" command="0x05" data="0x8c" eof="0x04"/>
+    <Answer translate="AMP100_e" command="0x06" data="0x90" eof="0x04"/>
 </RootObjectResponse>
