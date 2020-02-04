@@ -184,6 +184,12 @@
                 Grid.Column="6" FontSize="30" Height="Auto"
                 Margin="5,5,5,5"/>
 
+        <Button Command="{Binding CmdEnterServiceMode}"  
+                IsEnabled="{Binding CmdEnterServiceModeIsEnabled}" 
+                Content="Enter Service Mode" Grid.Row="6" 
+                Grid.Column="7" FontSize="24" Height="Auto"
+                Margin="5,5,5,5"/>
+
         <Button Command="{Binding CmdMeasureOff}" 
                 IsEnabled="{Binding CmdMeasureOffIsEnabled}" 
                 Content="Measure OFF" 

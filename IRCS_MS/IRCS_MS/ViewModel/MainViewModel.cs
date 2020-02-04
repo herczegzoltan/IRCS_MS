@@ -33,6 +33,9 @@ namespace IRCS_MS.ViewModel
 
         private ICommand _run;
 
+        private ICommand _enterServiceMode;
+
+
         private List<string> _availablePorts;
 
         private List<int> _baudRates;
@@ -62,7 +65,10 @@ namespace IRCS_MS.ViewModel
         public ICommand CmdMeasureOff => _measureOff;
 
         public ICommand CmdRun => _run;
-        
+
+        public ICommand CmdEnterServiceMode => _enterServiceMode;
+
+
         private string _stateOfDevice = "State: Not connected!";
 
         private string _stateOfDeviceColor = "Red";
@@ -111,6 +117,8 @@ namespace IRCS_MS.ViewModel
             _measureOn = new DelegateCommand(SendMeasureOn);
             _measureOff = new DelegateCommand(SendMeasureOff);
             _run = new DelegateCommand(SendRun);
+            _enterServiceMode = new DelegateCommand(EnterServiceMode);
+
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
@@ -304,6 +312,12 @@ namespace IRCS_MS.ViewModel
             LoopMessagesArrayToSend();
         }
 
+
+        private void EnterServiceMode()
+        {
+            MessageBox.Show("Not available yet, under development!");
+        }
+
         private void LoopMessagesArrayToSend()
         {
             ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
@@ -482,7 +496,6 @@ namespace IRCS_MS.ViewModel
                                         PopUpQuestionbox();
                                     }
                                 }
-
                             }
                             else
                             {
@@ -526,16 +539,12 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        
-    
-
         private void WasItDisconnect()
         {
             if(xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
-
             {
                 COMPort.Close();
                 COMPort.Dispose();

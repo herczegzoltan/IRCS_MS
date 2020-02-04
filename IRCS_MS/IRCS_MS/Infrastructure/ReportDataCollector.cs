@@ -8,9 +8,10 @@ namespace IRCS_MS.Infrastructure
 {
     public static class ReportDataCollector
     {
-        private static List<List<string>> HorizontalList = null;// new List<List<string>>() { };
+        private static List<List<string>> HorizontalList = null;
 
-        private static List<string> VerticalList = null;//new List<string>() { };
+        private static List<string> VerticalList = null;
+
 
         public static void InitializeLists()
         {
@@ -67,7 +68,5 @@ namespace IRCS_MS.Infrastructure
                 return temp;
             }
         }
-
-
     }
 }
