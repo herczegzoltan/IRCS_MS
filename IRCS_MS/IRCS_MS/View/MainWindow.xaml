@@ -137,7 +137,7 @@
                   />
 
 
-        <TextBlock Text="Report data type" Grid.Row="9" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Text="Report data" Grid.Row="9" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBlock Text="Schauer number" Grid.Row="10" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <TextBlock Text="Name" Grid.Row="11" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
