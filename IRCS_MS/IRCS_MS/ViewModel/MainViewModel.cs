@@ -427,7 +427,7 @@ namespace IRCS_MS.ViewModel
         private bool _validateFinished = false;
         private int _savedMeasureCounter = 0;
 
-        private bool Validation()
+        private bool ValidationEOF()
         {
             bool val = ValidatorIncomingMessage.CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
             //validate EOF
@@ -457,13 +457,14 @@ namespace IRCS_MS.ViewModel
                         {
                             TimeOutValidator(TimeOutValidatorStates.Reset);
 
-                            if (Validation())
+                            if (ValidationEOF())
                             {
+                                //MessageBox.Show(ValidatorIncomingMessage.ErrorMessageBack(xmlData).ToString());
                                 _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
                                     xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
                                     _extramessages = 0;
 
-                                if (_counterIncomingPackage == 
+                                if (_counterIncomingPackage ==
                                     xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                                 {
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
@@ -478,6 +479,18 @@ namespace IRCS_MS.ViewModel
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
                                     MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("", xmlData) + MessageRecievedText;
                                 }
+
+
+
+                                if (ValidatorIncomingMessage.ErrorMessageBack(xmlData, ByteMessageBuilder.GetByteIncomingArray()[1]))
+                                {
+                                    _validateFinished = true;
+                                }
+
+                                //if (xmlData.GetValidator(ByteMessageBuilder.GetByteIncomingArray()[1]) != true)
+                                //{
+                                //    MessageBox.Show(xmlData.GetValidator(ByteMessageBuilder.GetByteIncomingArray()[1]).ToString());
+                                //}
 
                                 if (ReportFieldState)
                                 {
@@ -496,6 +509,7 @@ namespace IRCS_MS.ViewModel
                                         PopUpQuestionbox();
                                     }
                                 }
+
                             }
                             else
                             {

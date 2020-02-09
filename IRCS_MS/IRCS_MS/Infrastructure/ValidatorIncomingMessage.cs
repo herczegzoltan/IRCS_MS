@@ -19,5 +19,11 @@ namespace IRCS_MS.Infrastructure
             }
             return false;
         }
+
+
+        public static bool ErrorMessageBack(XmlFilter xmlData, string incomingData)
+        {
+            return !xmlData.GetValidator(incomingData);
+        }
     }
 }
