@@ -317,7 +317,7 @@ namespace IRCS_MS.ViewModel
         {
             MessageBox.Show("Not available yet, under development!");
             /*
-            ByteMessageBuilder.SetByteArray(0, 0x06);
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetServiceOn());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
             ByteMessageBuilder.SetByteArray(3, 0x00);

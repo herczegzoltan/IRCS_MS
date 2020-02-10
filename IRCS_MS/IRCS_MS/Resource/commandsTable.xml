@@ -6,6 +6,8 @@
       <Record name = "DisConnect" value = "0X02"/>
       <Record name = "MeasureOn"  value = "0X03"/>
       <Record name = "MeasureOff" value = "0X04"/>
+      <Record name = "ServiceOn"  value = "0X06"/>
+      <Record name = "ServiceOff" value = "0X07"/>
       <Record name = "Run" value = "0X05"/>
       <Record name = "TimeOutDefault" value ="90000"/>
     </DefaultValues>

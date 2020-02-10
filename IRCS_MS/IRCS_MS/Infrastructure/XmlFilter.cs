@@ -120,6 +120,13 @@ namespace IRCS_MS.Infrastructure
             return singleMeasureOn;
         }
 
+        public string GetServiceOn()
+        {
+            string singleServiceOn = _rootOject.ValuesCommands.Record.Where(x => x.Name == "ServiceOn")
+                .Select(n => n.Value).First();
+            return singleServiceOn;
+        }
+
         public string GetMeasureOff()
         {
             string singleMeasureOff = _rootOject.ValuesCommands.Record.Where(x => x.Name == "MeasureOff")
