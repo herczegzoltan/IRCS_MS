@@ -12,6 +12,7 @@ namespace IRCS_MS.Infrastructure
     {
         public static MessageBoxResult Show(string msg, string title, MessageBoxButton buttonStyle, MessageBoxImage image)
         {
+            
             var result = MessageBoxResult.None;
 
             if (Application.Current.Dispatcher.CheckAccess())

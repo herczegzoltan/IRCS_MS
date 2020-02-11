@@ -15,6 +15,8 @@ namespace IRCS_MS.Infrastructure
 
         private RootObjectResponse _rootOjectResponse;
 
+        public readonly int DefaultNumbersOfBytes = 3;
+
         public XmlFilter()
         {
             _rootOject = XmlProcessor.GetXmlRootObjectCommands();
@@ -47,14 +49,19 @@ namespace IRCS_MS.Infrastructure
 
         public List<string> GetMeasurements(string cardType)
         {
-            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => x.Name == cardType)
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name,cardType,StringComparison.OrdinalIgnoreCase))
                                          .Select(m => m.Measure.Select(l => l.Name));
 
             IEnumerable<String> measureList = measure.SelectMany(s => s);
 
             return new List<string>(measureList);
         }
- 
+
+        public List<string> GetMeasurementsWithoutAutoMeasure(string cardType)
+        {
+            return new List<string>(GetMeasureListByCardTypeWithoutAuto(cardType));
+        }
+
         public string GetSelectedCardTypeValue(string cardType)
         {
             string singleCardTypeValue = _rootOject.Card.Where(x => x.Name == cardType)
@@ -84,9 +91,9 @@ namespace IRCS_MS.Infrastructure
             return singleMeasureValue;
         }
 
-        public int GetNumberOfExpextedMeasureState(string cardType)
+        public int GetNumberOfExpectedMeasureState(string cardType)
         {
-            int counter = _rootOject.Card.Where(c => c.Name == cardType)
+            int counter = _rootOject.Card.Where(c => string.Equals(c.Name, cardType, StringComparison.OrdinalIgnoreCase))
                           .Select(n => n.Measure).First()
                           .Where(l => l.Name != "AutoMeasure").Count();
 
@@ -105,6 +112,13 @@ namespace IRCS_MS.Infrastructure
             string singleMeasureOn = _rootOject.ValuesCommands.Record.Where(x => x.Name == "MeasureOn")
                 .Select(n => n.Value).First();
             return singleMeasureOn;
+        }
+
+        public string GetServiceOn()
+        {
+            string singleServiceOn = _rootOject.ValuesCommands.Record.Where(x => x.Name == "ServiceOn")
+                .Select(n => n.Value).First();
+            return singleServiceOn;
         }
 
         public string GetMeasureOff()
@@ -140,20 +154,125 @@ namespace IRCS_MS.Infrastructure
             command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
             data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
             eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
-
-            string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (x.Data.ToUpper() == data.ToUpper()) 
-                                             && (x.Command.ToUpper() == command.ToUpper())
-                                             && (x.Eof.ToUpper() == eof.ToUpper()))
+            //string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
+            string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase)) 
+                                             && (string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
+                                             && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase)))
                .Select(n => n.Translate).FirstOrDefault();
             return singleResponseTranslate;
         }
 
         public string GetResponseData(string data)
         {
-            string singleResponseTranslateByData = _rootOjectResponse.Answer.Where(x => x.Data.ToUpper() == data.ToUpper())
+            string singleResponseTranslateByData = _rootOjectResponse.Answer.Where(x => string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
                                                    .Select(h => h.Translate).FirstOrDefault();
 
             return singleResponseTranslateByData;
+        }
+
+        public string GetResponseEOF(string data)
+        {
+            string singleResponseEOFByData = _rootOjectResponse.Answer.Where(x => string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
+                                                   .Select(h => h.Eof).FirstOrDefault();
+
+            return singleResponseEOFByData;
+        }
+
+        public bool ContainTheRespone(string input)
+        {
+            bool singleResponseTranslate = _rootOjectResponse.Answer.Any(item => string.Equals(item.Translate, input, StringComparison.OrdinalIgnoreCase));
+
+            return singleResponseTranslate;
+        }
+
+        public bool IsCommonIncluded(string cardType)
+        {
+            string isCommonIncluded = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                .Select(n => n.IsCommonIncluded).First();
+            return bool.Parse(isCommonIncluded);
+        }
+
+        public string GetDefaultName()
+        {
+            string defaultCardName = _rootOject.Card.Where(x => x.Default == "true")
+                .Select(n => n.Name).First();
+
+            return defaultCardName.ToLower();
+        }
+
+        public int GetDefaultTimeOutValue()
+        {
+            string defaultCardName = _rootOject.ValuesCommands.Record.Where(x => x.Name == "TimeOutDefault")
+                .Select(n => n.Value).First();
+
+            return int.Parse(defaultCardName);
+        }
+        
+        public bool GetValidator(string data)
+        {
+            //string defaultValidator = _rootOjectResponse.Answer.Where(x => x.Translate == data && x.Validation == "true")
+            //    .Select(f => f.Validation).FirstOrDefault();
+            //return bool.Parse(defaultValidator);
+
+
+            //bool asd = _rootOjectResponse.Answer.Any(x => x.Validation == "true");
+
+
+            //command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
+            //data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
+            //eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
+            ////string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
+            //bool singleResponse = _rootOjectResponse.Answer.Any(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
+            //                                 && (string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
+            //                                 && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase))
+            //                                 && (string.Equals(x.Validation, "true", StringComparison.OrdinalIgnoreCase)));
+            //return singleResponse;
+
+
+            //string defaultCardName = _rootOject.Card.Where(x => x.Default == "true")
+            //  .Select(n => n.Name).First();
+
+            //return defaultCardName.ToLower();
+
+            //command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
+            data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
+            //eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
+            //string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
+            bool singleResponseTranslate = _rootOjectResponse.Answer.Any(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
+                                             && (string.Equals(x.Validation, "true", StringComparison.OrdinalIgnoreCase)));
+
+            
+            return singleResponseTranslate;
+        }
+
+        public string GetCurrentMMeasurement(string cardType,int data)
+        {
+
+            if (IsCommonIncluded(cardType))
+            {
+                IEnumerable<String> measureListForDefault = GetMeasureListByCardTypeWithoutAuto(GetDefaultName());
+
+                IEnumerable<String> measureListForExternal = GetMeasureListByCardTypeWithoutAuto(cardType);
+ 
+                IEnumerable<string> temp = measureListForDefault.Concat(measureListForExternal);
+
+                return temp.ElementAt(data);
+
+            }
+            else
+            {
+                return GetMeasureListByCardTypeWithoutAuto(cardType).ElementAt(data);
+            }
+        }
+
+        private IEnumerable<String> GetMeasureListByCardTypeWithoutAuto(string cardType)
+        {
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                              .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+
+            IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+            return measureList;
         }
     }
 }

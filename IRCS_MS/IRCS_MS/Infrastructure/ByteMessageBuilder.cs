@@ -32,7 +32,6 @@ namespace IRCS_MS.Infrastructure
         public static void ResetByteIncomingArray()
         {
             Array.Clear(_arrayByteIncoming, 0, _arrayByteIncoming.Length);
-
         }
 
         public static string[] GetByteIncomingArray()

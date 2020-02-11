@@ -16,6 +16,7 @@ using System.IO;
 using System.Globalization;
 using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
+using IRCS_MS.Helper;
 
 namespace IRCS_MS.ViewModel
 {
@@ -31,6 +32,9 @@ namespace IRCS_MS.ViewModel
         private ICommand _measureOff;
 
         private ICommand _run;
+
+        private ICommand _enterServiceMode;
+
 
         private List<string> _availablePorts;
 
@@ -62,6 +66,8 @@ namespace IRCS_MS.ViewModel
 
         public ICommand CmdRun => _run;
 
+        public ICommand CmdEnterServiceMode => _enterServiceMode;
+
 
         private string _stateOfDevice = "State: Not connected!";
 
@@ -83,8 +89,6 @@ namespace IRCS_MS.ViewModel
 
         private bool _runningTask;
 
-
-
         XmlFilter xmlData = null;
 
         SerialPort COMPort = null;
@@ -95,11 +99,14 @@ namespace IRCS_MS.ViewModel
 
         private int countBytes = 0;
 
-        private int _schauerNumber;
+        private ulong _schauerNumber;
         
         private string _currentMeasureCount = "Measured data to save: 0";
         private bool _reportFieldState;
         private bool _reportCheckBoxEnabled;
+
+        private Stopwatch _stopWatchTimeOut =null;
+
 
         #endregion
         public MainViewModel()
@@ -110,6 +117,8 @@ namespace IRCS_MS.ViewModel
             _measureOn = new DelegateCommand(SendMeasureOn);
             _measureOff = new DelegateCommand(SendMeasureOff);
             _run = new DelegateCommand(SendRun);
+            _enterServiceMode = new DelegateCommand(EnterServiceMode);
+
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
@@ -120,10 +129,10 @@ namespace IRCS_MS.ViewModel
             UpdateTimeUI();
             UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
             ReadingSerialState();
-
+            
             ReportDataCollector.InitializeLists();
             IsRunningNow = "Not Running...";
-
+            _stopWatchTimeOut = new Stopwatch();
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -139,8 +148,6 @@ namespace IRCS_MS.ViewModel
                 ReportCheckBoxEnabled = false;
             }
         }
-
-        private enum UIElementStateVariations { ConnectBeforeClick, ConnectAfterClick, DisConnectClick, DisConnectBase, CardAndMeasureSelected, MeasureOffClick, MeasureOnAfterClick }
 
         private void UIElementUpdater(UIElementStateVariations uev)
         {
@@ -184,12 +191,10 @@ namespace IRCS_MS.ViewModel
             CmdCardTypeIsEnabled = cardAndMeasureType;
             CmdMeasureTypeIsEnabled = cardAndMeasureType;
             //ReportFieldState = reportField;
-
         }
 
         private void UpdateTimeUI()
         {
-
             Thread _thread = null;
             var taskState = Task.Run(() =>
             {
@@ -198,7 +203,7 @@ namespace IRCS_MS.ViewModel
                 {
                     Thread.Sleep(100);
 
-                    string s = DateTime.Now.ToString("dddd, dd MMMM yyyy") + " " + DateTime.Now.ToString("HH:mm:ss");
+                    string s = DateTime.Now.ToString("yyyy MMMM dd, dddd") + " " + DateTime.Now.ToString("HH:mm:ss");
 
                     CurrentDateTime = s;//DateTime.UtcNow;
                 }
@@ -220,7 +225,6 @@ namespace IRCS_MS.ViewModel
                 COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
-                    //COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
                     COMPort.Open();
                     UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
@@ -235,10 +239,8 @@ namespace IRCS_MS.ViewModel
 
         private void ReadingSerialState()
         {
-            //Thread _thread = null;
             var taskState = Task.Run(() =>
             {
-                //_thread = Thread.CurrentThread;
                 while (true)
                 {
                     Thread.Sleep(500);
@@ -255,9 +257,6 @@ namespace IRCS_MS.ViewModel
 
         private void DisConnect()
         {
-            //_runningTask = false;
-
-            //ReadingSerialState();
             DisConfigureDevice();
             UIElementUpdater(UIElementStateVariations.DisConnectClick);
         }
@@ -276,7 +275,6 @@ namespace IRCS_MS.ViewModel
 
         private void SendMeasureOn()
         {
-
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
@@ -297,12 +295,13 @@ namespace IRCS_MS.ViewModel
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementUpdater(UIElementStateVariations.MeasureOffClick);
-            
         }
 
         private void SendRun()
         {
-
+            //stopwatch
+            TimeOutValidator(TimeOutValidatorStates.Start);
+            //stopWatchTimeOut.Start();
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
             ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
@@ -311,26 +310,37 @@ namespace IRCS_MS.ViewModel
 
             WasItRun = true;
             LoopMessagesArrayToSend();
-            
+        }
+
+
+        private void EnterServiceMode()
+        {
+            MessageBox.Show("Not available yet, under development!");
+            /*
+            ByteMessageBuilder.SetByteArray(0, xmlData.GetServiceOn());
+            ByteMessageBuilder.SetByteArray(1, 0x00);
+            ByteMessageBuilder.SetByteArray(2, 0x00);
+            ByteMessageBuilder.SetByteArray(3, 0x00);
+            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            LoopMessagesArrayToSend();
+            */
         }
 
         private void LoopMessagesArrayToSend()
         {
-
             ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
 
             for (int i = 0; i < ByteMessageBuilder.GetByteArray().Length; i++)
             {
-
                 SendData(ByteMessageBuilder.GetByteArray()[i]);
             }
         }
 
         private void DisConfigureDevice()
         {
-
             ByteMessageBuilder.SetByteArray(0, xmlData.GetDisConnect());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);
@@ -343,7 +353,6 @@ namespace IRCS_MS.ViewModel
 
         private void SendData(byte data)
         {
-            
             var dataArray = new byte[] { data };
             if (COMPort == null)
             {
@@ -362,14 +371,13 @@ namespace IRCS_MS.ViewModel
             if (messageBoxResult == MessageBoxResult.No)
             {
                 WasItRun = false;
-                //SaveReport();
+                _savedMeasureCounter = 0;
                 FolderDialog();
             }
             else
             {
                 WasItRun = false;
                 SchauerNumber++;
-                counterIncomingMessage = 0;
             }
         }
 
@@ -377,122 +385,199 @@ namespace IRCS_MS.ViewModel
         {
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
-        int counterIncomingMessage = 0;
+
+        private void TimeOutValidator(TimeOutValidatorStates tovs)
+        {
+            switch (tovs)
+            {
+                case TimeOutValidatorStates.Start:
+                    TaskTimeOutWatcher();
+                    break;
+                case TimeOutValidatorStates.Reset:
+                    _stopWatchTimeOut.Restart();
+
+                    break;
+                case TimeOutValidatorStates.Stop:
+                    _stopWatchTimeOut.Stop();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private bool TaskTimeOutWatcherIsRunning = false;
+        private void TaskTimeOutWatcher()
+        {
+            if (!TaskTimeOutWatcherIsRunning)
+            {
+                _stopWatchTimeOut.Start();
+
+                var taskState = Task.Run(() =>
+                {
+                    while (true)
+                    {
+                        Thread.Sleep(100);
+
+                        if (_stopWatchTimeOut.ElapsedMilliseconds > xmlData.GetDefaultTimeOutValue())
+                        {
+                            MessageBox.Show($"TimeOut error! > {xmlData.GetDefaultTimeOutValue()} ms");
+                            TimeOutValidator(TimeOutValidatorStates.Reset);
+                        }
+                    }
+                });
+
+                TaskTimeOutWatcherIsRunning = true;
+            }
+        }
+
+        private int _counterIncomingPackage = 1;
+        private int _extramessages = 0;
+        private bool _validateFinished = false;
+        private int _savedMeasureCounter = 0;
+
+        private bool ValidationEOF()
+        {
+            bool val = ValidatorIncomingMessage.CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
+            //validate EOF
+            if (!val)
+            {
+                MessageBox.Show("Uart Error!");
+            }
+            return val;
+        }
+
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-
             if (COMPort.IsOpen)
             {
                 try
                 {
                     string incomingByte = COMPort.ReadByte().ToString();
 
-                    //MessageRecievedText += countBytes.ToString() + " :" + incomingByte + "\n";
+                    IsRunningNow  = WasItRun == true ? "Running..." : "Not Running...";
+
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
-                    //3 bytes arrived
+                    //all bytes arrived
                     if (countBytes == 2)
                     {
                         if (WasItRun)
                         {
-                            IsRunningNow = "Running...";
+                            TimeOutValidator(TimeOutValidatorStates.Reset);
 
-                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                                   xmlData.GetSelectedCardTypeName
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
-                                                   + " -> " +
-                                                   xmlData.GetResponseData
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
-                                                   + "\n" + MessageRecievedText + "\n";
-
-                            //get result of measure
-                            string result = xmlData.GetResponseData
-                                                   (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
-
-                  
-
-                            //waiting for all arrive
-                            if (ReportFieldState)
+                            if (ValidationEOF())
                             {
-                                ReportDataCollector.AddToVertical(result);// + " "+ timeOut);
-                              //  timeOut = "";
-                                counterIncomingMessage++;
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
-                                {
-                                    ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
-                                    ReportDataCollector.AddVerticalToHorizontal();
-                                    ReportDataCollector.CleanerVertical();
-                                    MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
-                                    counterIncomingMessage = 0;
-                                    IsRunningNow = "Not Running...";
+                                //MessageBox.Show(ValidatorIncomingMessage.ErrorMessageBack(xmlData).ToString());
+                                _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
+                                    xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
+                                    _extramessages = 0;
 
-                                    PopUpQuestionbox();
+                                if (_counterIncomingPackage ==
+                                    xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
+                                {
+                                    TimeOutValidator(TimeOutValidatorStates.Reset);
+                                    TimeOutValidator(TimeOutValidatorStates.Stop);
+
+                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
+                                    _counterIncomingPackage = 1;
+                                    _validateFinished = true;
+                                    GeneralMessageCollection.LoopCounter = 0;
+
                                 }
                                 else
                                 {
-                                    //MessageRecievedText = "Counter:" + counterIncomingMessage.ToString() + "\n" + MessageRecievedText;
+                                    TimeOutValidator(TimeOutValidatorStates.Reset);
+                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("", xmlData) + MessageRecievedText;
+                                    GeneralMessageCollection.LoopCounter++;
+
                                 }
+
+
+
+                                if (ValidatorIncomingMessage.ErrorMessageBack(xmlData, ByteMessageBuilder.GetByteIncomingArray()[1]))
+                                {
+                                    _validateFinished = true;
+                                }
+
+                                //if (xmlData.GetValidator(ByteMessageBuilder.GetByteIncomingArray()[1]) != true)
+                                //{
+                                //    MessageBox.Show(xmlData.GetValidator(ByteMessageBuilder.GetByteIncomingArray()[1]).ToString());
+                                //}
+
+                                if (ReportFieldState)
+                                {
+                                    _savedMeasureCounter++;
+
+                                    string reportInsertData = xmlData.GetResponseData(
+                                        ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+
+                                    ReportDataCollector.AddToVertical(reportInsertData);
+
+                                    if (ReportFieldState && _validateFinished)
+                                    {
+                                        ReportDataCollector.AddToVerticalAtIndex(0, SchauerNumber.ToString());
+                                        ReportDataCollector.AddVerticalToHorizontal();
+                                        ReportDataCollector.CleanerVertical();
+                                        PopUpQuestionbox();
+                                    }
+                                }
+
                             }
                             else
                             {
-                                counterIncomingMessage++;
-
-                                if (counterIncomingMessage == xmlData.GetNumberOfExpextedMeasureState(SelectedCardType))
-                                {
-                                    MessageRecievedText = "Validate OK" + "\n" + MessageRecievedText;
-                                    counterIncomingMessage = 0;
-                                    IsRunningNow = "Not Running...";
-
-                                }
+                                MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
                             }
-
                         }
                         else
                         {
-                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + "-> " +
-                                                   xmlData.GetResponseTranslate
-                                                   (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                                   ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-                                                   ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
-                                                   + "\n" + MessageRecievedText + "\n";
-
+                            MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
+                                                xmlData.GetResponseTranslate
+                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
+                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
+                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
+                                                + "\n" + MessageRecievedText + "\n";
                         }
 
                         countBytes = 0;
                         WasItDisconnect();
                         ByteMessageBuilder.ResetByteIncomingArray();
-
                     }
                     else
                     {
                         countBytes++;
                     }
+
+                    if (WasItRun && !_validateFinished)
+                    {
+                        _counterIncomingPackage++;
+                    }
+                    if(_validateFinished)
+                    {
+                        _counterIncomingPackage = 1;
+                        _validateFinished = false;
+                    }
+
+
                 }
-                catch (TimeoutException ex)
+                catch (Exception ex)
                 {
-                    TopMessage("TIMEOUT", "The serial connection was aborted.This could be caused by an error" +
-                        " processing your message or a receive timeout being exceeded by the remote host. The timeout was '00:01:00'.");
-                    throw;
+
+                    MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
                 }
             }
-
-
-
         }
 
         private void WasItDisconnect()
         {
 
-            if(xmlData.GetResponseTranslate
+            if (xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
-
             {
                 COMPort.Close();
                 COMPort.Dispose();
             }
-
         }
 
         private void SaveReport()
@@ -502,12 +587,37 @@ namespace IRCS_MS.ViewModel
                if (FolderPath != "")
                 {
                     string FileName = $"IRCS_{SelectedCardType}_{ReportDataCollector.GetTotal().First().ElementAt(0)}_"+
-                      $"{int.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - int.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
+                      $"{ulong.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - ulong.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-                    ReportDataHelper.PassListTOReport(xmlData.GetMeasurements(SelectedCardType),ReportDataCollector.GetTotal());
-                    
+
+
+                    if (xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType).Count == 0)
+                    {
+                        //only automeasure 
+                        ReportDataHelper.PassListTOReport(
+
+                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name, new List<string>() { });
+                    }
+                    else
+                    {
+                        if (xmlData.IsCommonIncluded(SelectedCardType))
+                        {
+                            ReportDataHelper.PassListTOReport(
+
+                                xmlData.GetMeasurementsWithoutAutoMeasure(xmlData.GetDefaultName())
+                                    .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
+                                    .ToList()
+
+                                , ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(true,xmlData,SelectedCardType));
+                        }
+                        else
+                        {
+                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(false, xmlData, SelectedCardType));
+                        }
+                    }
+
                     ReportDataHelper.CreateReportFile();
 
                     TopMessage("Saving File....", "File Saved!");
@@ -519,16 +629,16 @@ namespace IRCS_MS.ViewModel
             }
         }
 
+      
         private string FolderPath = "";
         private string _isRunningNow;
-
+        private string _name;
         private void FolderDialog()
         {
             string selectedPath;
 
             var t = new Thread((ThreadStart)(() => {
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
-               //fbd.RootFolder = System.Environment.SpecialFolder.Desktop;
                 fbd.ShowNewFolderButton = true;
                 DialogResult result = fbd.ShowDialog();
                 if (result == DialogResult.Cancel)
@@ -558,7 +668,6 @@ namespace IRCS_MS.ViewModel
             {
                 return _selectedAvailablePort;
             }
-
             set
             {
                 _selectedAvailablePort = value;
@@ -831,17 +940,22 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        public int SchauerNumber
+        public ulong SchauerNumber
         {
             get
             {
+                if (_schauerNumber.ToString().Length == 18)
+                {
+                    MessageBox.Show("Maximum Schauer Number is reached!");
+                }
+
                 return _schauerNumber;
             }
             set
             {
+
                 _schauerNumber = value;
                 OnPropertyChanged("SchauerNumber");
-
             }
         }
 
@@ -856,6 +970,21 @@ namespace IRCS_MS.ViewModel
             {
                 _currentMeasureCount = value;
                 OnPropertyChanged("CurrentMeasureCount");
+
+            }
+        }
+
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name= value;
+                OnPropertyChanged("Name");
 
             }
         }
