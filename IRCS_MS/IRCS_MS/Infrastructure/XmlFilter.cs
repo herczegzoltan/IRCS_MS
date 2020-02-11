@@ -59,13 +59,7 @@ namespace IRCS_MS.Infrastructure
 
         public List<string> GetMeasurementsWithoutAutoMeasure(string cardType)
         {
-
-            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
-                                         .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
-
-            IEnumerable<String> measureList = measure.SelectMany(s => s);
-
-            return new List<string>(measureList);
+            return new List<string>(GetMeasureListByCardTypeWithoutAuto(cardType));
         }
 
         public string GetSelectedCardTypeValue(string cardType)
@@ -256,34 +250,29 @@ namespace IRCS_MS.Infrastructure
 
             if (IsCommonIncluded(cardType))
             {
+                IEnumerable<String> measureListForDefault = GetMeasureListByCardTypeWithoutAuto(GetDefaultName());
 
-
-                IEnumerable<IEnumerable<String>> measureForDefault= _rootOject.Card.Where(x => string.Equals(x.Name, GetDefaultName(), StringComparison.OrdinalIgnoreCase))
-                                     .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
-
-                IEnumerable<String> measureListDefault = measureForDefault.SelectMany(s => s);
-
-
-
-                IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
-                                     .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
-
-                IEnumerable<String> measureList = measure.SelectMany(s => s);
-
-                IEnumerable<string> temp = measureListDefault.Concat(measureList);
+                IEnumerable<String> measureListForExternal = GetMeasureListByCardTypeWithoutAuto(cardType);
+ 
+                IEnumerable<string> temp = measureListForDefault.Concat(measureListForExternal);
 
                 return temp.ElementAt(data);
 
             }
             else
             {
-                IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
-                                     .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
-
-                IEnumerable<String> measureList = measure.SelectMany(s => s);
-
-                return measureList.ElementAt(data);
+                return GetMeasureListByCardTypeWithoutAuto(cardType).ElementAt(data);
             }
+        }
+
+        private IEnumerable<String> GetMeasureListByCardTypeWithoutAuto(string cardType)
+        {
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                              .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+
+            IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+            return measureList;
         }
     }
 }
