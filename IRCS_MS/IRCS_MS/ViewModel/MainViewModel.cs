@@ -572,7 +572,7 @@ namespace IRCS_MS.ViewModel
                if (FolderPath != "")
                 {
                     string FileName = $"IRCS_{SelectedCardType}_{ReportDataCollector.GetTotal().First().ElementAt(0)}_"+
-                      $"{int.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - int.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
+                      $"{ulong.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - ulong.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
@@ -929,14 +929,14 @@ namespace IRCS_MS.ViewModel
         {
             get
             {
+               // MessageBox.Show(_schauerNumber.ToString().Length.ToString());
                 return _schauerNumber;
             }
             set
             {
                 _schauerNumber = value;
- 
-                OnPropertyChanged("SchauerNumber");
 
+                OnPropertyChanged("SchauerNumber");
             }
         }
 
@@ -949,7 +949,6 @@ namespace IRCS_MS.ViewModel
             }
             set
             {
-
                 _currentMeasureCount = value;
                 OnPropertyChanged("CurrentMeasureCount");
 
