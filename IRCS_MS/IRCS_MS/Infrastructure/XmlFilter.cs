@@ -253,14 +253,37 @@ namespace IRCS_MS.Infrastructure
 
         public string GetCurrentMMeasurement(string cardType,int data)
         {
-            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
-                                        .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
-            
-            IEnumerable<String> measureList = measure.SelectMany(s => s);
 
-            return measureList.ElementAt(data);
+            if (IsCommonIncluded(cardType))
+            {
 
+
+                IEnumerable<IEnumerable<String>> measureForDefault= _rootOject.Card.Where(x => string.Equals(x.Name, GetDefaultName(), StringComparison.OrdinalIgnoreCase))
+                                     .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+
+                IEnumerable<String> measureListDefault = measureForDefault.SelectMany(s => s);
+
+
+
+                IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                                     .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+
+                IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+                IEnumerable<string> temp = measureListDefault.Concat(measureList);
+
+                return temp.ElementAt(data);
+
+            }
+            else
+            {
+                IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                                     .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+
+                IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+                return measureList.ElementAt(data);
+            }
         }
-
     }
 }
