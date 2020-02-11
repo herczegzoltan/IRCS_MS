@@ -556,20 +556,21 @@ namespace IRCS_MS.ViewModel
                         _counterIncomingPackage = 1;
                         _validateFinished = false;
                     }
+
+
                 }
                 catch (Exception ex)
                 {
 
-                    //MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
-                    MessageBox.Show(ex.ToString());
-                    throw;
+                    MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
                 }
             }
         }
 
         private void WasItDisconnect()
         {
-            if(xmlData.GetResponseTranslate
+
+            if (xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")

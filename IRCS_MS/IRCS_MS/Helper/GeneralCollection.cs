@@ -32,14 +32,22 @@ namespace IRCS_MS.Helper
 
         public static string LogIntoFile(Exception ex)
         {
-
-            //if it exists no need to create new 
             string docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "LogFile.txt")))
+            if(File.Exists(docPath + "\\IRCS_MS_LogFile.txt"))
             {
-                outputFile.WriteLine(ex.ToString());
+                File.AppendAllText(
+                    docPath + "\\IRCS_MS_LogFile.txt", Environment.NewLine + DateTime.Now.ToString("HH:mm:ss") +"\n" + ex.ToString() + Environment.NewLine);
             }
+            else
+            {
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "IRCS_MS_LogFile.txt")))
+                {
+                    outputFile.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\n" + ex.ToString());
+                }
+
+            }
+            //if it exists no need to create new 
 
             return "Error occurred! Logfile was saved to " + docPath.ToString();
         }
