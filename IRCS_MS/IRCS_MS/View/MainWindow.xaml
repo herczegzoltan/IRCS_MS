@@ -148,6 +148,7 @@
                   Grid.ColumnSpan="2"
                   Grid.Row="10" 
                   IsEnabled="{Binding ReportFieldState}"
+                  MaxLength="18"
                   />
 
         <TextBox  Text="{Binding Name}"

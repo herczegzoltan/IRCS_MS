@@ -938,13 +938,17 @@ namespace IRCS_MS.ViewModel
         {
             get
             {
-               // MessageBox.Show(_schauerNumber.ToString().Length.ToString());
+                if (_schauerNumber.ToString().Length == 18)
+                {
+                    MessageBox.Show("Maximum Schauer Number is reached!");
+                }
+
                 return _schauerNumber;
             }
             set
             {
-                _schauerNumber = value;
 
+                _schauerNumber = value;
                 OnPropertyChanged("SchauerNumber");
             }
         }
