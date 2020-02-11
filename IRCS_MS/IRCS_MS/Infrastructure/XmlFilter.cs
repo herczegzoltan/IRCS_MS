@@ -250,5 +250,17 @@ namespace IRCS_MS.Infrastructure
             
             return singleResponseTranslate;
         }
+
+        public string GetCurrentMMeasurement(string cardType,int data)
+        {
+            IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+                                        .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
+            
+            IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+            return measureList.ElementAt(data);
+
+        }
+
     }
 }

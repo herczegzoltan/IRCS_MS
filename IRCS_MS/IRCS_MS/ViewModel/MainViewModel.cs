@@ -335,7 +335,6 @@ namespace IRCS_MS.ViewModel
 
             for (int i = 0; i < ByteMessageBuilder.GetByteArray().Length; i++)
             {
-
                 SendData(ByteMessageBuilder.GetByteArray()[i]);
             }
         }
@@ -482,11 +481,15 @@ namespace IRCS_MS.ViewModel
                                     MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
                                     _counterIncomingPackage = 1;
                                     _validateFinished = true;
+                                    GeneralMessageCollection.LoopCounter = 0;
+
                                 }
                                 else
                                 {
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
                                     MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("", xmlData) + MessageRecievedText;
+                                    GeneralMessageCollection.LoopCounter++;
+
                                 }
 
 
@@ -556,6 +559,8 @@ namespace IRCS_MS.ViewModel
                 }
                 catch (Exception ex)
                 {
+
+                    //MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
                     MessageBox.Show(ex.ToString());
                     throw;
                 }
