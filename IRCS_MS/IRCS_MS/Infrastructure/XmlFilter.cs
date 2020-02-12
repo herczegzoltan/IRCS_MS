@@ -245,7 +245,7 @@ namespace IRCS_MS.Infrastructure
             return singleResponseTranslate;
         }
 
-        public string GetCurrentMMeasurement(string cardType,int data)
+        public string GetCurrentMeasurement(string cardType,int data)
         {
 
             if (IsCommonIncluded(cardType))

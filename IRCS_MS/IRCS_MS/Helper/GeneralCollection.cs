@@ -22,7 +22,7 @@ namespace IRCS_MS.Helper
                               xmlData.GetSelectedCardTypeName
                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
                               + " -> " +
-                              xmlData.GetCurrentMMeasurement(xmlData.GetSelectedCardTypeName
+                              xmlData.GetCurrentMeasurement(xmlData.GetSelectedCardTypeName
                               (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString())), LoopCounter)
                               + " -> " +
                               xmlData.GetResponseData

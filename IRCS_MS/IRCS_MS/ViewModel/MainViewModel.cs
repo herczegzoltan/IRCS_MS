@@ -439,10 +439,10 @@ namespace IRCS_MS.ViewModel
         {
             bool val = ValidatorIncomingMessage.CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
             //validate EOF
-            if (!val)
-            {
-                MessageBox.Show("Uart Error!");
-            }
+            //if (!val)
+            //{
+            //    //MessageBox.Show("Uart Error!");
+            //}
             return val;
         }
 
@@ -467,42 +467,41 @@ namespace IRCS_MS.ViewModel
 
                             if (ValidationEOF())
                             {
-                                //MessageBox.Show(ValidatorIncomingMessage.ErrorMessageBack(xmlData).ToString());
                                 _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
                                     xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
                                     _extramessages = 0;
 
+
+                                //if the incoming messages's number is equle with the required number from XML file
                                 if (_counterIncomingPackage ==
                                     xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                                 {
-                                    TimeOutValidator(TimeOutValidatorStates.Reset);
+                                    //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
 
                                     MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
-                                    _counterIncomingPackage = 1;
+                                    //_counterIncomingPackage = 1;
                                     _validateFinished = true;
                                     GeneralMessageCollection.LoopCounter = 0;
-
                                 }
                                 else
                                 {
+                                 //when it is not validated yet.   
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
                                     MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("", xmlData) + MessageRecievedText;
                                     GeneralMessageCollection.LoopCounter++;
-
+                                    _validateFinished = false;
                                 }
 
-
-
+                                //if incoming message returns with measure ok or not-> negative logic
                                 if (ValidatorIncomingMessage.ErrorMessageBack(xmlData, ByteMessageBuilder.GetByteIncomingArray()[1]))
                                 {
+                                    //TimeOutValidator(TimeOutValidatorStates.Reset);
+                                    TimeOutValidator(TimeOutValidatorStates.Stop);
+                                    //_counterIncomingPackage = 1;
                                     _validateFinished = true;
+                                    GeneralMessageCollection.LoopCounter = 0;
                                 }
-
-                                //if (xmlData.GetValidator(ByteMessageBuilder.GetByteIncomingArray()[1]) != true)
-                                //{
-                                //    MessageBox.Show(xmlData.GetValidator(ByteMessageBuilder.GetByteIncomingArray()[1]).ToString());
-                                //}
 
                                 if (ReportFieldState)
                                 {
@@ -525,6 +524,11 @@ namespace IRCS_MS.ViewModel
                             }
                             else
                             {
+                                //TimeOutValidator(TimeOutValidatorStates.Reset);
+                                TimeOutValidator(TimeOutValidatorStates.Stop);
+                                //_counterIncomingPackage = 1;
+                                _validateFinished = true;
+                                GeneralMessageCollection.LoopCounter = 0; 
                                 MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
                             }
                         }
@@ -553,6 +557,8 @@ namespace IRCS_MS.ViewModel
                     }
                     if(_validateFinished)
                     {
+
+
                         _counterIncomingPackage = 1;
                         _validateFinished = false;
                     }
@@ -561,8 +567,8 @@ namespace IRCS_MS.ViewModel
                 }
                 catch (Exception ex)
                 {
-
-                    MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
+                    throw;
+                    //MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
                 }
             }
         }
