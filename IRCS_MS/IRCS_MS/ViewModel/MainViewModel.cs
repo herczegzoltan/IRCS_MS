@@ -567,8 +567,8 @@ namespace IRCS_MS.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    throw;
-                    //MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
+                    //throw;
+                    MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
                 }
             }
         }
