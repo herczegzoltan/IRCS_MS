@@ -9,7 +9,7 @@ namespace IRCS_MS.Infrastructure
 
     public static class ValidatorIncomingMessage
     {
-        public static bool CheckRightEOF(string incomingByte, XmlFilter xmlFilter)
+        private static bool CheckRightEOF(string incomingByte, XmlFilter xmlFilter)
         {
             incomingByte = ByteMessageBuilder.ConvertDecimalStringToHexString(incomingByte);
 
@@ -24,6 +24,17 @@ namespace IRCS_MS.Infrastructure
         public static bool ErrorMessageBack(XmlFilter xmlData, string incomingData)
         {
             return !xmlData.GetValidator(incomingData);
+        }
+
+        public static bool ValidationEOF(XmlFilter xmlData)
+        {
+            bool val = CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
+            //validate EOF
+            //if (!val)
+            //{
+            //    //MessageBox.Show("Uart Error!");
+            //}
+            return val;
         }
     }
 }

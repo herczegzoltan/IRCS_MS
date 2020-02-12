@@ -435,17 +435,6 @@ namespace IRCS_MS.ViewModel
         private bool _validateFinished = false;
         private int _savedMeasureCounter = 0;
 
-        private bool ValidationEOF()
-        {
-            bool val = ValidatorIncomingMessage.CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
-            //validate EOF
-            //if (!val)
-            //{
-            //    //MessageBox.Show("Uart Error!");
-            //}
-            return val;
-        }
-
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             if (COMPort.IsOpen)
@@ -467,7 +456,7 @@ namespace IRCS_MS.ViewModel
 
                             TimeOutValidator(TimeOutValidatorStates.Reset);
 
-                            if (ValidationEOF())
+                            if (ValidatorIncomingMessage.ValidationEOF(xmlData))
                             {
                                 _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
                                     xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
