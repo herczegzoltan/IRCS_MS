@@ -51,5 +51,10 @@ namespace IRCS_MS.Helper
 
             return "Error occurred! Logfile was saved to " + docPath.ToString();
         }
+
+        public static string IsRunningStateChecker(bool state)
+        {
+            return state == true ? "Running..." : "Not Running...";
+        }
     }
 }

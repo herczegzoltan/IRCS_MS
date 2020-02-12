@@ -131,7 +131,7 @@ namespace IRCS_MS.ViewModel
             ReadingSerialState();
             
             ReportDataCollector.InitializeLists();
-            IsRunningNow = "Not Running...";
+            IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
         }
 
@@ -454,7 +454,6 @@ namespace IRCS_MS.ViewModel
                 {
                     string incomingByte = COMPort.ReadByte().ToString();
 
-                    IsRunningNow  = WasItRun == true ? "Running..." : "Not Running...";
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
@@ -463,6 +462,9 @@ namespace IRCS_MS.ViewModel
                     {
                         if (WasItRun)
                         {
+
+                            IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(true);
+
                             TimeOutValidator(TimeOutValidatorStates.Reset);
 
                             if (ValidationEOF())
@@ -557,10 +559,9 @@ namespace IRCS_MS.ViewModel
                     }
                     if(_validateFinished)
                     {
-
-
                         _counterIncomingPackage = 1;
                         _validateFinished = false;
+                                                IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
                     }
 
 
