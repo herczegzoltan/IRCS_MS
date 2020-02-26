@@ -22,6 +22,8 @@ namespace IRCS_MS.View
         public ServiceModeWindow()
         {
             InitializeComponent();
+            this.WindowState = WindowState.Maximized;
+
         }
 
         private void OpenMainWindow(object sender, RoutedEventArgs e)
