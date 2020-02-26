@@ -18,6 +18,7 @@ namespace IRCS_MS
         {
             var mainViewModel = new MainViewModel();
             var mainWindow = new MainWindow { DataContext = mainViewModel };
+            MainWindow.WindowState = WindowState.Maximized;
             mainWindow.Show();
         }
     }
