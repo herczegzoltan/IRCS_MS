@@ -10,28 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using IRCS_MS.View;
-using MahApps.Metro.Controls;
 
-namespace IRCS_MS
+namespace IRCS_MS.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindowTest.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class ServiceModeWindow : Window
     {
-        public MainWindow()
+        public ServiceModeWindow()
         {
             InitializeComponent();
         }
 
-        private void OpenServiceModWindow(object sender, RoutedEventArgs e)
+        private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
-            ServiceModeWindow smw = new ServiceModeWindow();
+
+            MainWindow mw = new MainWindow();
             this.Close();
-            smw.Show();
+            mw.Show();
         }
     }
 }

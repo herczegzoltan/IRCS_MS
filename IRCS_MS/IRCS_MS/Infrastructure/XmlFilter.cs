@@ -154,7 +154,6 @@ namespace IRCS_MS.Infrastructure
             command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
             data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
             eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
-            //string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
             string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase)) 
                                              && (string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
                                              && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase)))
@@ -210,34 +209,8 @@ namespace IRCS_MS.Infrastructure
         
         public bool GetValidator(string data)
         {
-            //string defaultValidator = _rootOjectResponse.Answer.Where(x => x.Translate == data && x.Validation == "true")
-            //    .Select(f => f.Validation).FirstOrDefault();
-            //return bool.Parse(defaultValidator);
 
-
-            //bool asd = _rootOjectResponse.Answer.Any(x => x.Validation == "true");
-
-
-            //command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
-            //data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
-            //eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
-            ////string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
-            //bool singleResponse = _rootOjectResponse.Answer.Any(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
-            //                                 && (string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
-            //                                 && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase))
-            //                                 && (string.Equals(x.Validation, "true", StringComparison.OrdinalIgnoreCase)));
-            //return singleResponse;
-
-
-            //string defaultCardName = _rootOject.Card.Where(x => x.Default == "true")
-            //  .Select(n => n.Name).First();
-
-            //return defaultCardName.ToLower();
-
-            //command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
             data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
-            //eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
-            //string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase)
             bool singleResponseTranslate = _rootOjectResponse.Answer.Any(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
                                              && (string.Equals(x.Validation, "true", StringComparison.OrdinalIgnoreCase)));
 

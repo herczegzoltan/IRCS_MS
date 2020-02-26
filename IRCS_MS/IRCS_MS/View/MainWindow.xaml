@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:IRCS_MS"
         mc:Ignorable="d"
 
-        Title="IRCS_MS" Height="1000" Width="2000">
+        Title="IRCS_MS" Height="1080" Width="1920">
 
-    <Grid >
+    <Grid>
 
         <Grid.ColumnDefinitions >
             <ColumnDefinition Width="30"/>
@@ -38,10 +38,10 @@
             <RowDefinition Height="10*"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="10*"/>
-
             <RowDefinition Height="30"/>
 
         </Grid.RowDefinitions>
+
 
         <TextBlock Text="IRCS Measurement System"
                    Grid.Row="1" 
@@ -54,8 +54,6 @@
 
 
         <Image Grid.Row="1" Grid.Column="7" Source="/IRCS_MS;component/Resource/logo_0.png" />
-
-
 
         <TextBlock Text="Com Port Name" Grid.Row="2" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
@@ -106,10 +104,17 @@
                   />
 
 
-        <TextBlock Text="Measurements" Grid.Row="5" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Text="Measurements" 
+                   Grid.Row="5" 
+                   Grid.Column="1" 
+                   FontSize="30" 
+                   HorizontalAlignment="Left" 
+                   VerticalAlignment="Center" 
+                   Visibility="{Binding ServiceModeStateVisibility}"
+                   />
 
 
-        <TextBlock Text="Card type" Grid.Row="6" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Text="Card type"  Grid.Row="6" Grid.Column="1" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <ComboBox SelectedItem="{Binding Path=SelectedCardType,
                   Mode=OneWayToSource}" 
@@ -185,11 +190,10 @@
                 Grid.Column="6" FontSize="30" Height="Auto"
                 Margin="5,5,5,5"/>
 
-        <Button Command="{Binding CmdEnterServiceMode}"  
-                IsEnabled="{Binding CmdEnterServiceModeIsEnabled}" 
-                Content="Enter Service Mode" Grid.Row="6" 
-                Grid.Column="7" FontSize="24" Height="Auto"
-                Margin="5,5,5,5"/>
+        <Button Content="Enter Service Mode" Grid.Row="6" 
+                Grid.Column="7" FontSize="24" Height="60"
+                Margin="5,5,5,0" VerticalAlignment="Top"
+                Click="OpenServiceModWindow"/>
 
         <Button Command="{Binding CmdMeasureOff}" 
                 IsEnabled="{Binding CmdMeasureOffIsEnabled}" 
@@ -205,7 +209,7 @@
                 Grid.Column="6" 
                 FontSize="30"
                 Height="Auto"/>
-     
+
         <CheckBox Content="Reporting" 
                   FontSize="30"
                   Grid.Row="9"  
@@ -232,5 +236,9 @@
                HorizontalAlignment="Left" 
                VerticalAlignment="Center"
                />
+
     </Grid>
+
+
 </Window>
+    

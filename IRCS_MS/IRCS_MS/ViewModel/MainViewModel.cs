@@ -66,8 +66,6 @@ namespace IRCS_MS.ViewModel
 
         public ICommand CmdRun => _run;
 
-        public ICommand CmdEnterServiceMode => _enterServiceMode;
-
 
         private string _stateOfDevice = "State: Not connected!";
 
@@ -88,6 +86,7 @@ namespace IRCS_MS.ViewModel
         private bool _runButtonIsEnabled;
 
         private bool _runningTask;
+
 
         XmlFilter xmlData = null;
 
@@ -117,7 +116,6 @@ namespace IRCS_MS.ViewModel
             _measureOn = new DelegateCommand(SendMeasureOn);
             _measureOff = new DelegateCommand(SendMeasureOff);
             _run = new DelegateCommand(SendRun);
-            _enterServiceMode = new DelegateCommand(EnterServiceMode);
 
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
@@ -313,20 +311,6 @@ namespace IRCS_MS.ViewModel
         }
 
 
-        private void EnterServiceMode()
-        {
-            MessageBox.Show("Not available yet, under development!");
-            /*
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetServiceOn());
-            ByteMessageBuilder.SetByteArray(1, 0x00);
-            ByteMessageBuilder.SetByteArray(2, 0x00);
-            ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-
-            LoopMessagesArrayToSend();
-            */
-        }
-
         private void LoopMessagesArrayToSend()
         {
             ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
@@ -467,7 +451,6 @@ namespace IRCS_MS.ViewModel
                                 if (_counterIncomingPackage ==
                                     xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
                                 {
-                                    //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
 
                                     MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
@@ -1026,7 +1009,9 @@ namespace IRCS_MS.ViewModel
                 OnPropertyChanged("IsRunningNow");
             }
         }
-        
+
+
+
 
         #endregion
     }
