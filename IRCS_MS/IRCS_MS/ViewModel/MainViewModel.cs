@@ -137,6 +137,7 @@ namespace IRCS_MS.ViewModel
             ReportDataCollector.InitializeLists();
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
+            COMPortManager = new SerialPortManagerSingleton();
         }
 
         private void MeasureTypeComboBoxChanged()
