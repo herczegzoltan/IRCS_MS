@@ -17,9 +17,11 @@ using System.Globalization;
 using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
 using IRCS_MS.Helper;
+using System.ComponentModel;
 
 namespace IRCS_MS.ViewModel
 {
+
     public class MainViewModel : NotifyViewModel
     {
         #region Variables
@@ -612,6 +614,9 @@ namespace IRCS_MS.ViewModel
         private string FolderPath = "";
         private string _isRunningNow;
         private string _name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private void FolderDialog()
         {
             string selectedPath;
@@ -1009,8 +1014,6 @@ namespace IRCS_MS.ViewModel
                 OnPropertyChanged("IsRunningNow");
             }
         }
-
-
 
 
         #endregion
