@@ -17,9 +17,12 @@ using System.Globalization;
 using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
 using IRCS_MS.Helper;
+using System.ComponentModel;
+using IRCS_MS.ViewModel.Commands;
 
 namespace IRCS_MS.ViewModel
 {
+
     public class MainViewModel : NotifyViewModel
     {
         #region Variables
@@ -90,7 +93,7 @@ namespace IRCS_MS.ViewModel
 
         XmlFilter xmlData = null;
 
-        SerialPort COMPort = null;
+        SerialPortManagerSingleton COMPortManager = null;
 
         private string _currentDateTime;
 
@@ -106,6 +109,7 @@ namespace IRCS_MS.ViewModel
 
         private Stopwatch _stopWatchTimeOut =null;
 
+        public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
 
         #endregion
         public MainViewModel()
@@ -125,12 +129,15 @@ namespace IRCS_MS.ViewModel
             CardTypes = xmlData.GetCardTypeNames();
 
             UpdateTimeUI();
-            UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
+            UIElementCollectionHelper = new UIElementCollectionHelper(this);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectBeforeClick);
+            
             ReadingSerialState();
             
             ReportDataCollector.InitializeLists();
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
+            COMPortManager = new SerialPortManagerSingleton();
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -147,50 +154,7 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        private void UIElementUpdater(UIElementStateVariations uev)
-        {
-            switch (uev)
-            {
-                case UIElementStateVariations.ConnectBeforeClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
-                    break;
-                case UIElementStateVariations.ConnectAfterClick:
-                    UIElementUpdaterHelper(false, true, false, false, false, true, false);
-                    break;
-                case UIElementStateVariations.DisConnectBase:
-                    UIElementUpdaterHelper(false, true, false, false, false, false, false);
-                    break;
-                case UIElementStateVariations.DisConnectClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
-                    break;
-                case UIElementStateVariations.CardAndMeasureSelected:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
-                    break;
-                case UIElementStateVariations.MeasureOffClick:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
-                    break;
-                case UIElementStateVariations.MeasureOnAfterClick:
-                    UIElementUpdaterHelper(false, true, false, true, true, false, false);
-                    break;
-                default:
-                    break;
-            }
-        }
-        private void UIElementUpdaterHelper(
-            bool connectButton, bool disconnectButton,
-            bool measureOnButton, bool measureOffButton,
-            bool runButton, bool cardAndMeasureType, bool reportField)
-        {
-            CmdConnectIsEnabled = connectButton;
-            CmdDisConnectIsEnabled = disconnectButton;
-            CmdMeasureOnIsEnabled = measureOnButton;
-            CmdMeasureOffIsEnabled = measureOffButton;
-            CmdRunIsEnabled = runButton;
-            CmdCardTypeIsEnabled = cardAndMeasureType;
-            CmdMeasureTypeIsEnabled = cardAndMeasureType;
-            //ReportFieldState = reportField;
-        }
-
+      
         private void UpdateTimeUI()
         {
             Thread _thread = null;
@@ -220,11 +184,12 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
+                COMPortManager.SetUpConnection(SelectedAvailablePort, SelectedBaudRate);
+                //COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
-                    COMPort.Open();
-                    UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
+                    COMPortManager.Open();
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
                 }
@@ -245,8 +210,8 @@ namespace IRCS_MS.ViewModel
 
                     if (_runningTask)
                     {
-                        StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
-                        StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
+                        StateOfDevice = "State: " + (COMPortManager.IsOpen? "Connected!" : "Not connected!");
+                        StateOfDeviceColor = (COMPortManager.IsOpen? "Green" : "Red");
                     }
 
                 }
@@ -256,7 +221,7 @@ namespace IRCS_MS.ViewModel
         private void DisConnect()
         {
             DisConfigureDevice();
-            UIElementUpdater(UIElementStateVariations.DisConnectClick);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.DisConnectClick);
         }
 
         private void ConfigureDevice()
@@ -280,7 +245,7 @@ namespace IRCS_MS.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
             WasItRun = false;
             LoopMessagesArrayToSend();
-            UIElementUpdater(UIElementStateVariations.MeasureOnAfterClick);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
         }
 
         private void SendMeasureOff()
@@ -292,7 +257,7 @@ namespace IRCS_MS.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
             WasItRun = false;
             LoopMessagesArrayToSend();
-            UIElementUpdater(UIElementStateVariations.MeasureOffClick);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOffClick);
         }
 
         private void SendRun()
@@ -338,14 +303,14 @@ namespace IRCS_MS.ViewModel
         private void SendData(byte data)
         {
             var dataArray = new byte[] { data };
-            if (COMPort == null)
+            if (COMPortManager == null)
             {
                 MessageBox.Show("Serial Port is not active!");
             }
             else
             {
-                COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-                COMPort.Write(dataArray, 0, 1);
+                COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                COMPortManager.Write(dataArray, 0, 1);
             }
         }
 
@@ -421,12 +386,11 @@ namespace IRCS_MS.ViewModel
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            if (COMPort.IsOpen)
+            if (COMPortManager.IsOpen)
             {
                 try
                 {
-                    string incomingByte = COMPort.ReadByte().ToString();
-
+                    string incomingByte = COMPortManager.ReadByte().ToString();
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
@@ -535,8 +499,6 @@ namespace IRCS_MS.ViewModel
                         _validateFinished = false;
                                                 IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
                     }
-
-
                 }
                 catch (Exception ex)
                 {
@@ -548,14 +510,13 @@ namespace IRCS_MS.ViewModel
 
         private void WasItDisconnect()
         {
-
             if (xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
             {
-                COMPort.Close();
-                COMPort.Dispose();
+                COMPortManager.Close();
+                COMPortManager.Dispose();
             }
         }
 
@@ -570,7 +531,6 @@ namespace IRCS_MS.ViewModel
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-
 
                     if (xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType).Count == 0)
                     {
@@ -612,6 +572,9 @@ namespace IRCS_MS.ViewModel
         private string FolderPath = "";
         private string _isRunningNow;
         private string _name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         private void FolderDialog()
         {
             string selectedPath;
@@ -738,7 +701,7 @@ namespace IRCS_MS.ViewModel
                 MeasureTypeComboBoxChanged();
                 if (value != null)
                 {
-                    UIElementUpdater(UIElementStateVariations.CardAndMeasureSelected);
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.CardAndMeasureSelected);
                 }
             }
         }
@@ -1009,8 +972,6 @@ namespace IRCS_MS.ViewModel
                 OnPropertyChanged("IsRunningNow");
             }
         }
-
-
 
 
         #endregion
