@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IRCS_MS.View"
         mc:Ignorable="d"
-        Title="ServiceModeWindow" Height="1080" Width="1920" Background="#333333" >
+        Title="ServiceModeWindow" Height="1080" Width="1920" >
     <!-- Background="#333333"-->
     <Window.Resources >
 
@@ -15,12 +15,11 @@
         </Style>
 
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontSize" Value="30"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
-        
+
     </Window.Resources>
     <Grid>
 
@@ -161,7 +160,8 @@
 
             <Button Content="Change"
                 FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+                Margin="5,5,5,5" Width="160" 
+                HorizontalAlignment="Center"/>
 
         </StackPanel>
 

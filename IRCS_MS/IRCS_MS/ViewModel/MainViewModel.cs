@@ -93,7 +93,7 @@ namespace IRCS_MS.ViewModel
 
         XmlFilter xmlData = null;
 
-        SerialPort COMPort = null;
+        SerialPortManagerSingleton COMPortManager = null;
 
         private string _currentDateTime;
 
@@ -183,10 +183,11 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
+                COMPortManager.SetUpConnection(SelectedAvailablePort, SelectedBaudRate);
+                //COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
-                    COMPort.Open();
+                    COMPortManager.Open();
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
@@ -208,8 +209,8 @@ namespace IRCS_MS.ViewModel
 
                     if (_runningTask)
                     {
-                        StateOfDevice = "State: " + (COMPort.IsOpen ? "Connected!" : "Not connected!");
-                        StateOfDeviceColor = (COMPort.IsOpen ? "Green" : "Red");
+                        StateOfDevice = "State: " + (COMPortManager.IsOpen? "Connected!" : "Not connected!");
+                        StateOfDeviceColor = (COMPortManager.IsOpen? "Green" : "Red");
                     }
 
                 }
@@ -301,14 +302,14 @@ namespace IRCS_MS.ViewModel
         private void SendData(byte data)
         {
             var dataArray = new byte[] { data };
-            if (COMPort == null)
+            if (COMPortManager == null)
             {
                 MessageBox.Show("Serial Port is not active!");
             }
             else
             {
-                COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-                COMPort.Write(dataArray, 0, 1);
+                COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                COMPortManager.Write(dataArray, 0, 1);
             }
         }
 
@@ -384,11 +385,11 @@ namespace IRCS_MS.ViewModel
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            if (COMPort.IsOpen)
+            if (COMPortManager.IsOpen)
             {
                 try
                 {
-                    string incomingByte = COMPort.ReadByte().ToString();
+                    string incomingByte = COMPortManager.ReadByte().ToString();
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
@@ -497,8 +498,6 @@ namespace IRCS_MS.ViewModel
                         _validateFinished = false;
                                                 IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
                     }
-
-
                 }
                 catch (Exception ex)
                 {
@@ -510,14 +509,13 @@ namespace IRCS_MS.ViewModel
 
         private void WasItDisconnect()
         {
-
             if (xmlData.GetResponseTranslate
                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
             {
-                COMPort.Close();
-                COMPort.Dispose();
+                COMPortManager.Close();
+                COMPortManager.Dispose();
             }
         }
 
@@ -532,7 +530,6 @@ namespace IRCS_MS.ViewModel
 
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
-
 
                     if (xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType).Count == 0)
                     {
