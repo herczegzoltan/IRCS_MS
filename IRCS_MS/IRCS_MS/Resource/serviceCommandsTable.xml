@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--
+Service Mode Frame, what you send (only bytes) :
+
+0.  >  Service_mode_OnOff  (True,False)
+          1-On
+          0-Off
+1.  >  Service_mode_Command  ()
+ 	SoundBusChange	= 0x01,	//Button-channelben az érték
+	Reset_On		= 0x02,	//Button
+	Reset_Off		= 0x03,	//Button
+	ModulInit		= 0x04,	//Button
+	WriteCommand	= 0x05,	//Button
+	ReadCommand		= 0x06,	//Button
+	FunctionGen_On	= 0x07,	//Button
+	FunctionGen_Off = 0x08,	//Button
+	Analyser_On		= 0x09,	//Button
+	Analyser_Off	= 0x0A,	//Button
+	Psu_On			= 0x0B,	//Button
+	Psu_Off			= 0x0C  //Button
+2.  >  Service_mode_Channel  (combobox element)
+  if(Service_mode_Command == WriteCommand)
+  {
+  IRCS_PSU  = 0x01,
+  IRCS_Disp = 0x02,
+  IRCS_Intercom = 0x03,
+  IRCS_CBLB = 0x04,
+  IRCS_R3er = 0x05
+  }
+  if(Service_mode_Command == ReadCommand)
+  {
+  IRCS_PSU  = 0x01,
+  IRCS_Disp = 0x02,
+  IRCS_Intercom = 0x03,
+  IRCS_CBLB = 0x04,
+  IRCS_R3er = 0x05
+  }
+  if(Service_mode_Command == FunctionGen_On)
+  {
+  FuncGen_SB = 0x02,
+  FuncGen_EXT = 0x03,
+  }
+  if(Service_mode_Command == Analyser_On)
+  {
+  Analyser_SB = 0x04,
+  Analyser_EXT = 0x05,
+  Analyser_TRAFO = 0x06,
+  Analyser_CURRENT = 0x07
+  }
+3.  >  Service_mode_SubChannel  (combobox element)
+  //XML-ben megtalálod szétosztva
+4.  >  Service_mode_Frequency_MSB  (value)
+5.  >  Service_mode_Frequency_LSB  (value) 
+// Ami a frekvencia textboxba lett beírva, azt eltárolod egy 16bites (2 bájtos) változóba és szétbontod két nyolcasra
+a felső nyolcast berakod az MSB-be az alsó nyolcast az LSB-be és azt küldöd el nekem
+6.  >  Service_mode_Frequency_prefix  (value)  
+//kiválasztod a comboboxból a megfelelő prefixumot és az alapján ezeket küldöd nekem:
+	Hz	= 0x01,
+	kHz	= 0x02,
+	MHz = 0x03
+7.  >  Service_mode_Amplitude_MSB  (value)
+8.  >  Service_mode_Amplitude_LSB  (value)
+// Ami az amplitúdó textboxba lett beírva, azt eltárolod egy 16bites (2 bájtos) változóba és szétbontod két nyolcasra
+a felső nyolcast berakod az MSB-be az alsó nyolcast az LSB-be és azt küldöd el nekem
+9.  >  Service_mode_Amplitude_prefix  (value)
+//kiválasztod a comboboxból a megfelelő prefixumot és az alapján ezeket küldöd nekem:
+	mV	= 0x01,
+	V	= 0x02
+10.  >  Service_mode_Data  ()
+//Elég univerzális bájt, lehet benne True/False, lehet valami érték, stb
+if(Service_mode_Command == SoundBusChange)
+  {
+  Ami a textboxban van szám azt ebben a bájtban küldöd el.
+  A mezőt le kell korlátozni, MaxLength = 1 karakter (0-7-ig) (Igazából lehetne combobox is)
+  }
+11.  >  Service_mode_EOF  (0x04)
+
+-->
+
+<RootObject>
+  <DefaultValues>
+    <Record name = "EOF"        value = "0x04"/>
+    <Record name = "PsuOn"  value = "0x0b"/>
+    <Record name = "PsuOff"  value = "0x0c"/>
+    <Record name = "SoundBusChange"  value = "0x01"/>
+    <Record name = "ResetOn"  value = "0x02"/>
+    <Record name = "ResetOff"  value = "0x03"/>
+    <Record name = "ModulInit"  value = "0x04"/>
+    <Record name = "WriteCommand"  value = "0x05"/>
+    <Record name = "ReadCommand"  value = "0x06"/>
+    <Record name = "FunctionGen_On"  value = "0x07"/>
+    <Record name = "FunctionGen_Off"  value = "0x08"/>
+    <Record name = "Analyser_On"  value = "0x09"/>
+    <Record name = "Analyser_Off"  value = "0x0a"/>
+    <Record name = "ServiceOn"  value = "0x01"/>
+    <Record name = "ServiceOff" value = "0x00"/>
+    <Record name = "Run" value = "0x05"/>
+    <Record name = "TimeOutDefault" value ="90000"/>
+  </DefaultValues>
+  
+  <Channel name="IRCS_PSU" value="0x07" iscommon="False" default ="true">
+    <SubChannel name = "SM_PSU_DialTone" value="0x01" />
+    <SubChannel name = "SM_PSU_Ring" value="0x02" />
+  </Channel>
+  <Channel name="IRCS_Disp" value="0x02" iscommon="True">
+    <SubChannel name = "SM_DISP_i2c_SDA"    value="0x01" />
+    <SubChannel name = "SM_DISP_i2c_SCL"   value="0x20" />
+    <SubChannel name = "SM_DISP_Mic"   value="0x21" />
+    <SubChannel name = "SM_DISP_Ls"  value="0x22" />
+    <SubChannel name = "SM_DISP_Amp1" value="0x23" />
+    <SubChannel name = "SM_DISP_Amp2" value="0x24" />
+    <SubChannel name = "SM_DISP_Amp3" value="0x25" />
+    <SubChannel name = "SM_DISP_Phone" value="0x26" />
+    <SubChannel name = "SM_DISP_AD_ch" value="0x27" />
+    <SubChannel name = "SM_DISP_Ring"  value="0x28" />
+    <SubChannel name = "SM_DISP_TVALT"  value="0x28" />
+  </Channel>
+  <Channel name="IRCS_Intercom" value="0x03" iscommon="True">
+    <SubChannel name = "SM_INT_Line1" value="0x01" />
+    <SubChannel name = "SM_INT_Line2" value="0x30" />
+    <SubChannel name = "SM_INT_Line3" value="0x31" />
+    <SubChannel name = "SM_INT_Line4" value="0x32" />
+    <SubChannel name = "SM_INT_Output" value="0x33" />
+    <SubChannel name = "SM_INT_Dir1" value="0x34" />
+    <SubChannel name = "SM_INT_Dir2" value="0x35" />
+    <SubChannel name = "SM_INT_Dir3" value="0x35" />
+    <SubChannel name = "SM_INT_Dir4" value="0x35" />
+  </Channel>
+  <Channel name="IRCS_CBLB" value="0x04" iscommon="True">
+    <SubChannel name = "SM_CBLB_Line1" value="0x01" />
+    <SubChannel name = "SM_CBLB_Line2" value="0x40" />
+    <SubChannel name = "SM_CBLB_Line3" value="0x41" />
+    <SubChannel name = "SM_CBLB_Line4" value="0x42" />
+    <SubChannel name = "SM_CBLB_Line5" value="0x43" />
+    <SubChannel name = "SM_CBLB_Line6" value="0x44" />
+  </Channel>
+  <Channel name="IRCS_R3er" value="0x0a" iscommon="True">
+    <SubChannel name = "SM_R3ER_i2c" value="0x01" />
+    <SubChannel name = "SM_R3ER_Zone" value="0x40" />
+  </Channel>
+  <Channel name="FuncGen_SB" value="0x05" iscommon="False">
+  <!--Ide alcsatornának az épp kiválasztott hangbusz csatornát kell beadni-->
+  </Channel>
+  <Channel name="FuncGen_EXT" value="0x08" iscommon="False">
+    <SubChannel name = "SM_SYS_FuncGen1" value="0x01" />
+    <SubChannel name = "SM_SYS_FuncGen2" value="0x50" />
+    <SubChannel name = "SM_SYS_FuncGen3" value="0x50" />
+    <SubChannel name = "SM_SYS_FuncGen4" value="0x50" />
+  </Channel>
+  <Channel name="Analyser_SB" value="0x06" iscommon="False">
+  <!--Ide alcsatornának az épp kiválasztott hangbusz csatornát kell beadni-->
+  </Channel>
+  <Channel name="Analyser_EXT" value="0x09" iscommon="False">
+    <SubChannel name = "SM_SYS_Analyser_EXT_IPO" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_TK" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_LS" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_AMP1" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_AMP2" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_AMP3" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_SP1" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_SP2" value="0x01" />
+  </Channel>
+  <Channel name="Analyser_TRAFO" value="0x09" iscommon="False">
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_INTERCOM" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_R3ER" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_LB_RING" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_LB_LINE" value="0x01" />
+  </Channel>
+  <Channel name="Analyser_CURRENT" value="0x09" iscommon="False">
+    <SubChannel name = "SM_SYS_Analyser_CURRENT_MAIN" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_CURRENT_INTER" value="0x01" />
+  </Channel>
+</RootObject>
