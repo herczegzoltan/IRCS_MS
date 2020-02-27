@@ -18,6 +18,7 @@ using System.Windows.Forms;
 using MessageBox = System.Windows.Forms.MessageBox;
 using IRCS_MS.Helper;
 using System.ComponentModel;
+using IRCS_MS.ViewModel.Commands;
 
 namespace IRCS_MS.ViewModel
 {
@@ -108,6 +109,7 @@ namespace IRCS_MS.ViewModel
 
         private Stopwatch _stopWatchTimeOut =null;
 
+        public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
 
         #endregion
         public MainViewModel()
@@ -127,7 +129,9 @@ namespace IRCS_MS.ViewModel
             CardTypes = xmlData.GetCardTypeNames();
 
             UpdateTimeUI();
-            UIElementUpdater(UIElementStateVariations.ConnectBeforeClick);
+            UIElementCollectionHelper = new UIElementCollectionHelper(this);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectBeforeClick);
+            
             ReadingSerialState();
             
             ReportDataCollector.InitializeLists();
@@ -149,50 +153,7 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        private void UIElementUpdater(UIElementStateVariations uev)
-        {
-            switch (uev)
-            {
-                case UIElementStateVariations.ConnectBeforeClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
-                    break;
-                case UIElementStateVariations.ConnectAfterClick:
-                    UIElementUpdaterHelper(false, true, false, false, false, true, false);
-                    break;
-                case UIElementStateVariations.DisConnectBase:
-                    UIElementUpdaterHelper(false, true, false, false, false, false, false);
-                    break;
-                case UIElementStateVariations.DisConnectClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
-                    break;
-                case UIElementStateVariations.CardAndMeasureSelected:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
-                    break;
-                case UIElementStateVariations.MeasureOffClick:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
-                    break;
-                case UIElementStateVariations.MeasureOnAfterClick:
-                    UIElementUpdaterHelper(false, true, false, true, true, false, false);
-                    break;
-                default:
-                    break;
-            }
-        }
-        private void UIElementUpdaterHelper(
-            bool connectButton, bool disconnectButton,
-            bool measureOnButton, bool measureOffButton,
-            bool runButton, bool cardAndMeasureType, bool reportField)
-        {
-            CmdConnectIsEnabled = connectButton;
-            CmdDisConnectIsEnabled = disconnectButton;
-            CmdMeasureOnIsEnabled = measureOnButton;
-            CmdMeasureOffIsEnabled = measureOffButton;
-            CmdRunIsEnabled = runButton;
-            CmdCardTypeIsEnabled = cardAndMeasureType;
-            CmdMeasureTypeIsEnabled = cardAndMeasureType;
-            //ReportFieldState = reportField;
-        }
-
+      
         private void UpdateTimeUI()
         {
             Thread _thread = null;
@@ -226,7 +187,7 @@ namespace IRCS_MS.ViewModel
                 try
                 {
                     COMPort.Open();
-                    UIElementUpdater(UIElementStateVariations.ConnectAfterClick);
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
                 }
@@ -258,7 +219,7 @@ namespace IRCS_MS.ViewModel
         private void DisConnect()
         {
             DisConfigureDevice();
-            UIElementUpdater(UIElementStateVariations.DisConnectClick);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.DisConnectClick);
         }
 
         private void ConfigureDevice()
@@ -282,7 +243,7 @@ namespace IRCS_MS.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
             WasItRun = false;
             LoopMessagesArrayToSend();
-            UIElementUpdater(UIElementStateVariations.MeasureOnAfterClick);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
         }
 
         private void SendMeasureOff()
@@ -294,7 +255,7 @@ namespace IRCS_MS.ViewModel
             ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
             WasItRun = false;
             LoopMessagesArrayToSend();
-            UIElementUpdater(UIElementStateVariations.MeasureOffClick);
+            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOffClick);
         }
 
         private void SendRun()
@@ -428,7 +389,6 @@ namespace IRCS_MS.ViewModel
                 try
                 {
                     string incomingByte = COMPort.ReadByte().ToString();
-
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
@@ -743,7 +703,7 @@ namespace IRCS_MS.ViewModel
                 MeasureTypeComboBoxChanged();
                 if (value != null)
                 {
-                    UIElementUpdater(UIElementStateVariations.CardAndMeasureSelected);
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.CardAndMeasureSelected);
                 }
             }
         }
