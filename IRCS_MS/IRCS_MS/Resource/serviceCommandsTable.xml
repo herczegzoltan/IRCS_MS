@@ -80,8 +80,6 @@ if(Service_mode_Command == SoundBusChange)
 <RootObject>
   <DefaultValues>
     <Record name = "EOF"        value = "0x04"/>
-    <Record name = "PsuOn"  value = "0x0b"/>
-    <Record name = "PsuOff"  value = "0x0c"/>
     <Record name = "SoundBusChange"  value = "0x01"/>
     <Record name = "ResetOn"  value = "0x02"/>
     <Record name = "ResetOff"  value = "0x03"/>
@@ -92,82 +90,85 @@ if(Service_mode_Command == SoundBusChange)
     <Record name = "FunctionGen_Off"  value = "0x08"/>
     <Record name = "Analyser_On"  value = "0x09"/>
     <Record name = "Analyser_Off"  value = "0x0a"/>
+    <Record name = "PsuOn"  value = "0x0b"/>
+    <Record name = "PsuOff"  value = "0x0c"/>
     <Record name = "ServiceOn"  value = "0x01"/>
     <Record name = "ServiceOff" value = "0x00"/>
     <Record name = "Run" value = "0x05"/>
     <Record name = "TimeOutDefault" value ="90000"/>
   </DefaultValues>
   
-  <Channel name="IRCS_PSU" value="0x07" iscommon="False" default ="true">
-    <SubChannel name = "SM_PSU_DialTone" value="0x01" />
-    <SubChannel name = "SM_PSU_Ring" value="0x02" />
+  <Channel name="IRCS_PSU" value="0x01" iscommon="False" default ="true">
+    <SubChannel name = "SM_PSU_DialTone" value="0x11" />
+    <SubChannel name = "SM_PSU_Ring" value="0x12" />
   </Channel>
   <Channel name="IRCS_Disp" value="0x02" iscommon="True">
-    <SubChannel name = "SM_DISP_i2c_SDA"    value="0x01" />
-    <SubChannel name = "SM_DISP_i2c_SCL"   value="0x20" />
-    <SubChannel name = "SM_DISP_Mic"   value="0x21" />
-    <SubChannel name = "SM_DISP_Ls"  value="0x22" />
-    <SubChannel name = "SM_DISP_Amp1" value="0x23" />
-    <SubChannel name = "SM_DISP_Amp2" value="0x24" />
-    <SubChannel name = "SM_DISP_Amp3" value="0x25" />
-    <SubChannel name = "SM_DISP_Phone" value="0x26" />
-    <SubChannel name = "SM_DISP_AD_ch" value="0x27" />
-    <SubChannel name = "SM_DISP_Ring"  value="0x28" />
-    <SubChannel name = "SM_DISP_TVALT"  value="0x28" />
+    <SubChannel name = "SM_DISP_i2c_SDA"    value="0x21" />
+    <SubChannel name = "SM_DISP_i2c_SCL"   value="0x22" />
+    <SubChannel name = "SM_DISP_Mic"   value="0x24" />
+    <SubChannel name = "SM_DISP_Ls"  value="0x25" />
+    <SubChannel name = "SM_DISP_Amp1" value="0x27" />
+    <SubChannel name = "SM_DISP_Amp2" value="0x28" />
+    <SubChannel name = "SM_DISP_Amp3" value="0x29" />
+    <SubChannel name = "SM_DISP_Phone" value="0x2a" />
+    <SubChannel name = "SM_DISP_AD_ch" value="0x2b" />
+    <SubChannel name = "SM_DISP_Ring"  value="0x2c" />
+    <SubChannel name = "SM_DISP_TVALT"  value="0x2d" />
   </Channel>
   <Channel name="IRCS_Intercom" value="0x03" iscommon="True">
-    <SubChannel name = "SM_INT_Line1" value="0x01" />
-    <SubChannel name = "SM_INT_Line2" value="0x30" />
-    <SubChannel name = "SM_INT_Line3" value="0x31" />
-    <SubChannel name = "SM_INT_Line4" value="0x32" />
-    <SubChannel name = "SM_INT_Output" value="0x33" />
-    <SubChannel name = "SM_INT_Dir1" value="0x34" />
-    <SubChannel name = "SM_INT_Dir2" value="0x35" />
-    <SubChannel name = "SM_INT_Dir3" value="0x35" />
-    <SubChannel name = "SM_INT_Dir4" value="0x35" />
+    <SubChannel name = "SM_INT_Line1" value="0x31" />
+    <SubChannel name = "SM_INT_Line2" value="0x32" />
+    <SubChannel name = "SM_INT_Line3" value="0x33" />
+    <SubChannel name = "SM_INT_Line4" value="0x34" />
+    <SubChannel name = "SM_INT_Output" value="0x35" />
+    <SubChannel name = "SM_INT_Opto" value="0x36" />
+    <SubChannel name = "SM_INT_Dir1" value="0x37" />
+    <SubChannel name = "SM_INT_Dir2" value="0x38" />
+    <SubChannel name = "SM_INT_Dir3" value="0x39" />
+    <SubChannel name = "SM_INT_Dir4" value="0x3a" />
   </Channel>
   <Channel name="IRCS_CBLB" value="0x04" iscommon="True">
-    <SubChannel name = "SM_CBLB_Line1" value="0x01" />
-    <SubChannel name = "SM_CBLB_Line2" value="0x40" />
-    <SubChannel name = "SM_CBLB_Line3" value="0x41" />
-    <SubChannel name = "SM_CBLB_Line4" value="0x42" />
-    <SubChannel name = "SM_CBLB_Line5" value="0x43" />
-    <SubChannel name = "SM_CBLB_Line6" value="0x44" />
+    <SubChannel name = "SM_CBLB_Line1" value="0x41" />
+    <SubChannel name = "SM_CBLB_Line2" value="0x42" />
+    <SubChannel name = "SM_CBLB_Line3" value="0x43" />
+    <SubChannel name = "SM_CBLB_Line4" value="0x44" />
+    <SubChannel name = "SM_CBLB_Line5" value="0x45" />
+    <SubChannel name = "SM_CBLB_Line6" value="0x46" />
   </Channel>
-  <Channel name="IRCS_R3er" value="0x0a" iscommon="True">
-    <SubChannel name = "SM_R3ER_i2c" value="0x01" />
-    <SubChannel name = "SM_R3ER_Zone" value="0x40" />
+  <Channel name="IRCS_R3er" value="0x05" iscommon="True">
+    <SubChannel name = "SM_R3ER_i2c" value="0x51" />
+    <SubChannel name = "SM_R3ER_Zone" value="0x52" />
   </Channel>
   <Channel name="FuncGen_SB" value="0x05" iscommon="False">
   <!--Ide alcsatornának az épp kiválasztott hangbusz csatornát kell beadni-->
   </Channel>
   <Channel name="FuncGen_EXT" value="0x08" iscommon="False">
-    <SubChannel name = "SM_SYS_FuncGen1" value="0x01" />
-    <SubChannel name = "SM_SYS_FuncGen2" value="0x50" />
-    <SubChannel name = "SM_SYS_FuncGen3" value="0x50" />
-    <SubChannel name = "SM_SYS_FuncGen4" value="0x50" />
+    <SubChannel name = "SM_SYS_FuncGen1" value="0xc2" />
+    <SubChannel name = "SM_SYS_FuncGen2" value="0xc3" />
+    <SubChannel name = "SM_SYS_FuncGen3" value="0xc4" />
+    <SubChannel name = "SM_SYS_FuncGen4" value="0xc5" />
   </Channel>
   <Channel name="Analyser_SB" value="0x06" iscommon="False">
   <!--Ide alcsatornának az épp kiválasztott hangbusz csatornát kell beadni-->
   </Channel>
   <Channel name="Analyser_EXT" value="0x09" iscommon="False">
-    <SubChannel name = "SM_SYS_Analyser_EXT_IPO" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_TK" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_LS" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_AMP1" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_AMP2" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_AMP3" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_SP1" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_EXT_SP2" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_IPO" value="0xc6" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_TK" value="0xc7" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_LS" value="0xc8" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_AMP1" value="0xc9" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_AMP2" value="0xca" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_AMP3" value="0xcb" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_SP1" value="0xcc" />
+    <SubChannel name = "SM_SYS_Analyser_EXT_SP2" value="0xcd" />
   </Channel>
   <Channel name="Analyser_TRAFO" value="0x09" iscommon="False">
-    <SubChannel name = "SM_SYS_Analyser_TRAFO_INTERCOM" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_TRAFO_R3ER" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_TRAFO_LB_RING" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_TRAFO_LB_LINE" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_INTERCOM" value="0xce" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_R3ER" value="0xcf" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_LB_RING" value="0xd0" />
+    <SubChannel name = "SM_SYS_Analyser_TRAFO_LB_LINE" value="0xd1" />
   </Channel>
   <Channel name="Analyser_CURRENT" value="0x09" iscommon="False">
-    <SubChannel name = "SM_SYS_Analyser_CURRENT_MAIN" value="0x01" />
-    <SubChannel name = "SM_SYS_Analyser_CURRENT_INTER" value="0x01" />
+    <SubChannel name = "SM_SYS_Analyser_CURRENT_MAIN" value="0xd2" />
+    <SubChannel name = "SM_SYS_Analyser_CURRENT_INTER" value="0xd3" />
   </Channel>
 </RootObject>
