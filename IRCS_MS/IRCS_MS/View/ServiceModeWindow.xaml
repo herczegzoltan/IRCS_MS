@@ -120,13 +120,16 @@
                 Grid.Column="2"
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            
-            <Button Content="PSU ON"  FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
-            <Button Content="PSU OFF"
-                FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+            <Button Command="{Binding CmdPsuOn}" 
+                    Content="PSU ON"  FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"
+                    />
+
+            <Button Command="{Binding CmdPsuOff}" 
+                    Content="PSU OFF"
+                    FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
         </StackPanel>
 
@@ -135,14 +138,16 @@
         <StackPanel Grid.Row="4" 
                 Grid.Column="2"
                 Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                HorizontalAlignment="Center">
 
-            <Button Content="Reset On"  FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+            <Button Command="{Binding CmdResetOn}" 
+                    Content="Reset On"  FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
-            <Button Content="Reset Off"
-                FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+            <Button Command="{Binding CmdResetOff}"
+                    Content="Reset Off"
+                    FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
         </StackPanel>
 
@@ -152,25 +157,25 @@
                 HorizontalAlignment="Center">
 
             <TextBox  FontSize="25" 
-                  Margin="10"
-                  MaxLength="18"
-                  Width="150"
-                  HorizontalAlignment="Left"
-                  />
+                      Margin="10"
+                      MaxLength="18"
+                      Width="150"
+                      HorizontalAlignment="Left"/>
 
-            <Button Content="Change"
-                FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" 
-                HorizontalAlignment="Center"/>
+            <Button Command="{Binding CmdChange}"
+                    Content="Change"
+                    FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" 
+                    HorizontalAlignment="Center"/>
 
         </StackPanel>
 
 
-        <Button Content="Modul Init" Grid.Row="5" 
+        <Button Command="{Binding CmdModulInit}"
+                Content="Modul Init" Grid.Row="5" 
                 Grid.Column="2" FontSize="30" Height="Auto"
                 Margin="5,5,5,5"
                 Width="330"/>
-
 
         <ComboBox SelectedItem="{Binding Path=SelectedMeasureType,
                   Mode=OneWayToSource}" 
@@ -193,11 +198,15 @@
                 Grid.Column="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
-            <Button Content="Write" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
 
-            <Button Content="Read" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
+
+            <Button Command="{Binding CmdWrite}"
+                    Content="Write" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
+
+            <Button Command="{Binding CmdRead}"
+                    Content="Read" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
 
         </StackPanel>
 
@@ -206,19 +215,17 @@
             Grid.Row="10" Grid.Column="1" 
             Grid.RowSpan="6" Grid.ColumnSpan="2"
             FontSize="20"
-            
             />
-
 
         <StackPanel Grid.Row="11" 
                 Grid.Column="2"
                 Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                HorizontalAlignment="Center">
 
             <TextBox  FontSize="25" 
-                  Margin="10"
-                  MaxLength="18"
-                  Width="150"
+                      Margin="10"
+                      MaxLength="18"
+                      Width="150"
                   />
             <ComboBox Margin="10"
                   Grid.Column="2"
@@ -245,8 +252,6 @@
                   />
         </StackPanel>
 
-
-
         <ComboBox Margin="10"
                   Grid.Column="2"
                   Grid.Row="13"
@@ -264,11 +269,14 @@
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
 
-            <Button Content="On" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
 
-            <Button Content="Off" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
+            <Button Command="{Binding CmdFcnGenOn}"
+                    Content="On" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
+
+            <Button Command="{Binding CmdFcnGenOff}"
+                    Content="Off" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
 
         </StackPanel>
 
@@ -291,7 +299,8 @@
                   FontSize="16"
                   />
 
-        <Button Content="Run" 
+        <Button Command="{Binding CmdAnalGenRun}" 
+                Content="Run" 
                 Grid.Row="19" Grid.Column="2" 
                 FontSize="30" Height="Auto" Margin="30,5,5,5" 
                 Width="100"
@@ -357,7 +366,6 @@
                 FontSize="30" Height="Auto" Margin="5,5,5,5" 
                 Width="100"
                 Click="OpenMainWindow"
-
             />
 
     </Grid>

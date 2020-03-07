@@ -10,5 +10,10 @@ namespace IRCS_MS.ViewModel
     public class ServiceModeViewModel: NotifyViewModel
     {
 
+        //
+        private void SendCommand()
+        {
+            
+        }
     }
 }
