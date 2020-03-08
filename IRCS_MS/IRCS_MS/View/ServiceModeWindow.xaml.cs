@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IRCS_MS.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ namespace IRCS_MS.View
     /// <summary>
     /// Interaction logic for MainWindowTest.xaml
     /// </summary>
-    public partial class ServiceModeWindow : Window
+    public partial class ServiceModeWindow
     {
         public ServiceModeWindow()
         {
@@ -29,9 +30,11 @@ namespace IRCS_MS.View
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
 
-            MainWindow mw = new MainWindow();
             this.Close();
-            mw.Show();
+
+            var mainViewModel = new MainViewModel();
+            var mainWindow = new MainWindow { DataContext = mainViewModel };
+            mainWindow.Show();
         }
     }
 }

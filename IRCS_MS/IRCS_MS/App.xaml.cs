@@ -1,4 +1,5 @@
-﻿using IRCS_MS.ViewModel;
+﻿using IRCS_MS.View;
+using IRCS_MS.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -16,9 +17,19 @@ namespace IRCS_MS
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            var smainViewModel = new ServiceModeViewModel();
+            var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };
+            //smainWindow.Close();
+
             var mainViewModel = new MainViewModel();
             var mainWindow = new MainWindow { DataContext = mainViewModel };
             mainWindow.Show();
+
+
+          
+
+
+            // mainWindow.Show();
         }
     }
 }

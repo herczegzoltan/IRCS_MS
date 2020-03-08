@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:IRCS_MS.View"
+        xmlns:local="clr-namespace:IRCS_MS"
         mc:Ignorable="d"
         Title="ServiceModeWindow" Height="1080" Width="1920" >
-    <!-- Background="#333333"-->
     <Window.Resources >
 
         <Style TargetType="Label">
@@ -73,6 +72,7 @@
 
 
         <Image Grid.Row="1" Grid.Column="5" Source="/IRCS_MS;component/Resource/logo_0.png" />
+        
 
         <!--Column 1-->
         <GroupBox 
@@ -82,15 +82,15 @@
             FontSize="20"
             />
 
-
-
-        <Button Content="Connect" 
+        <Button Command="{Binding ConnectCommand}" 
+                Content="Connect" 
                 Grid.Row="2"
                 Grid.Column="1" 
                 FontSize="30" Height="Auto"
                 Margin="10,5,10,5" 
                 Width="200"/>
-        
+
+
         <TextBlock Text="Power Supply" Grid.Row="3" Grid.Column="1" />
         <TextBlock Text="Reset" Grid.Row="4" Grid.Column="1" />
         <TextBlock Text="Sound Bus channel" Grid.Row="6" Grid.Column="1" />
@@ -108,7 +108,8 @@
         <!--Column 2-->
 
 
-        <Button Content="Disconnect" 
+        <Button Command="{Binding DisConnectCommand}" 
+                Content="Disconnect" 
                 Grid.Row="2"
                 Grid.Column="2" 
                 FontSize="30" Height="Auto"
@@ -121,12 +122,12 @@
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
 
-            <Button Command="{Binding CmdPsuOn}" 
+            <Button Command="{Binding PsuOnCommand}" 
                     Content="PSU ON"  FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"
                     />
 
-            <Button Command="{Binding CmdPsuOff}" 
+            <Button Command="{Binding PsuOffCommand}" 
                     Content="PSU OFF"
                     FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
@@ -140,11 +141,11 @@
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
 
-            <Button Command="{Binding CmdResetOn}" 
+            <Button Command="{Binding ResetOnCommand}" 
                     Content="Reset On"  FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
-            <Button Command="{Binding CmdResetOff}"
+            <Button Command="{Binding ResetOffCommand}"
                     Content="Reset Off"
                     FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
@@ -162,7 +163,7 @@
                       Width="150"
                       HorizontalAlignment="Left"/>
 
-            <Button Command="{Binding CmdChange}"
+            <Button Command="{Binding ChangeCommand}"
                     Content="Change"
                     FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="160" 
@@ -171,7 +172,7 @@
         </StackPanel>
 
 
-        <Button Command="{Binding CmdModulInit}"
+        <Button Command="{Binding ModulInitCommand}"
                 Content="Modul Init" Grid.Row="5" 
                 Grid.Column="2" FontSize="30" Height="Auto"
                 Margin="5,5,5,5"
@@ -200,11 +201,11 @@
                 HorizontalAlignment="Center">
 
 
-            <Button Command="{Binding CmdWrite}"
+            <Button Command="{Binding SystemBusWriteCommand}"
                     Content="Write" FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
 
-            <Button Command="{Binding CmdRead}"
+            <Button Command="{Binding SystemBusReadCommand}"
                     Content="Read" FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
 
@@ -270,11 +271,11 @@
                     HorizontalAlignment="Center">
 
 
-            <Button Command="{Binding CmdFcnGenOn}"
+            <Button Command="{Binding FcnGenOnCommand}"
                     Content="On" FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
 
-            <Button Command="{Binding CmdFcnGenOff}"
+            <Button Command="{Binding FcnGenOffCommand}"
                     Content="Off" FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
 
@@ -299,7 +300,7 @@
                   FontSize="16"
                   />
 
-        <Button Command="{Binding CmdAnalGenRun}" 
+        <Button Command="{Binding AnalGenRunCommand}" 
                 Content="Run" 
                 Grid.Row="19" Grid.Column="2" 
                 FontSize="30" Height="Auto" Margin="30,5,5,5" 
