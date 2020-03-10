@@ -218,12 +218,13 @@ namespace IRCS_MS.ViewModel
             });
         }
 
+        #region Commands
+
         private void DisConnect()
         {
             DisConfigureDevice();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.DisConnectClick);
         }
-
         private void ConfigureDevice()
         {
             ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
@@ -275,6 +276,7 @@ namespace IRCS_MS.ViewModel
             LoopMessagesArrayToSend();
         }
 
+        #endregion
 
         private void LoopMessagesArrayToSend()
         {
@@ -458,7 +460,6 @@ namespace IRCS_MS.ViewModel
                                         PopUpQuestionbox();
                                     }
                                 }
-
                             }
                             else
                             {

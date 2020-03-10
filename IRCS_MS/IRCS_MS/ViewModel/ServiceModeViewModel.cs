@@ -1,6 +1,7 @@
 ﻿
 using IRCS_MS.Infrastructure;
 using IRCS_MS.Model;
+using IRCS_MS.ViewModel.Helper;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -55,10 +56,32 @@ namespace IRCS_MS.ViewModel
             _analGenRunCommand = new DelegateCommand(Temp);
         }
 
+        private string _MyProp;
 
         public void Temp()
         {
-            MessageBox.Show("asd");
+            ConnectToDeviceCommand asd = new ConnectToDeviceCommand(this);
+
+            asd.dd();
+
+            MessageBox.Show(MyProp);
+        }
+
+
+
+
+
+        public string MyProp
+        {
+            get
+            {
+                return _MyProp;
+            }
+            set
+            {
+                _MyProp = value;
+                OnPropertyChanged("MyProp");
+            }
         }
     }
 }

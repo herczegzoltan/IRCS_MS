@@ -24,14 +24,12 @@ namespace IRCS_MS.View
         {
             InitializeComponent();
             this.WindowState = WindowState.Maximized;
-
         }
 
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
 
             this.Close();
-
             var mainViewModel = new MainViewModel();
             var mainWindow = new MainWindow { DataContext = mainViewModel };
             mainWindow.Show();
