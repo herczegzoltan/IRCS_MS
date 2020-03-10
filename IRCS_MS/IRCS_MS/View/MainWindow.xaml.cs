@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IRCS_MS.View;
+using IRCS_MS.ViewModel;
 using MahApps.Metro.Controls;
 
 namespace IRCS_MS
@@ -26,14 +27,20 @@ namespace IRCS_MS
         {
             InitializeComponent();
             this.WindowState = WindowState.Maximized;
-
         }
 
         private void OpenServiceModWindow(object sender, RoutedEventArgs e)
         {
-            ServiceModeWindow smw = new ServiceModeWindow();
             this.Close();
-            smw.Show();
+
+           // ServiceModeWindow smw = new ServiceModeWindow();
+
+            var smainViewModel = new ServiceModeViewModel();
+            var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };
+            smainWindow.Show();
+
+            //this.Close();
+            //smw.Show();
         }
     }
 }

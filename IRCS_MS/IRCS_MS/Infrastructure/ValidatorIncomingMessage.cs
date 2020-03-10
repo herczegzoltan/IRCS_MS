@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace IRCS_MS.Infrastructure
 {
-
     public static class ValidatorIncomingMessage
     {
         private static bool CheckRightEOF(string incomingByte, XmlFilter xmlFilter)
@@ -19,7 +18,6 @@ namespace IRCS_MS.Infrastructure
             }
             return false;
         }
-
 
         public static bool ErrorMessageBack(XmlFilter xmlData, string incomingData)
         {

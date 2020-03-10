@@ -218,12 +218,13 @@ namespace IRCS_MS.ViewModel
             });
         }
 
+        #region Commands
+
         private void DisConnect()
         {
             DisConfigureDevice();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.DisConnectClick);
         }
-
         private void ConfigureDevice()
         {
             ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
@@ -275,6 +276,7 @@ namespace IRCS_MS.ViewModel
             LoopMessagesArrayToSend();
         }
 
+        #endregion
 
         private void LoopMessagesArrayToSend()
         {
@@ -458,7 +460,6 @@ namespace IRCS_MS.ViewModel
                                         PopUpQuestionbox();
                                     }
                                 }
-
                             }
                             else
                             {
@@ -525,7 +526,7 @@ namespace IRCS_MS.ViewModel
             if (ReportDataCollector.GetTotal().Any())
             {
                if (FolderPath != "")
-                {
+               {
                     string FileName = $"IRCS_{SelectedCardType}_{ReportDataCollector.GetTotal().First().ElementAt(0)}_"+
                       $"{ulong.Parse(ReportDataCollector.GetTotal().Last().ElementAt(0)) - ulong.Parse(ReportDataCollector.GetTotal().First().ElementAt(0)) + 1}";
 

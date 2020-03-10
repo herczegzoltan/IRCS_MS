@@ -9,6 +9,8 @@ namespace IRCS_MS.Helper
 {
     public sealed class SerialPortManagerSingleton : SerialPort
     {
+
+
         private SerialPort _serialPort = null;
 
         private static SerialPortManagerSingleton instance = null;

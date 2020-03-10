@@ -3,10 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:IRCS_MS.View"
+        xmlns:local="clr-namespace:IRCS_MS"
         mc:Ignorable="d"
         Title="ServiceModeWindow" Height="1080" Width="1920" >
-    <!-- Background="#333333"-->
     <Window.Resources >
 
         <Style TargetType="Label">
@@ -73,6 +72,7 @@
 
 
         <Image Grid.Row="1" Grid.Column="5" Source="/IRCS_MS;component/Resource/logo_0.png" />
+        
 
         <!--Column 1-->
         <GroupBox 
@@ -82,15 +82,15 @@
             FontSize="20"
             />
 
-
-
-        <Button Content="Connect" 
+        <Button Command="{Binding ConnectCommand}" 
+                Content="Connect" 
                 Grid.Row="2"
                 Grid.Column="1" 
                 FontSize="30" Height="Auto"
                 Margin="10,5,10,5" 
                 Width="200"/>
-        
+
+
         <TextBlock Text="Power Supply" Grid.Row="3" Grid.Column="1" />
         <TextBlock Text="Reset" Grid.Row="4" Grid.Column="1" />
         <TextBlock Text="Sound Bus channel" Grid.Row="6" Grid.Column="1" />
@@ -108,7 +108,8 @@
         <!--Column 2-->
 
 
-        <Button Content="Disconnect" 
+        <Button Command="{Binding DisConnectCommand}" 
+                Content="Disconnect" 
                 Grid.Row="2"
                 Grid.Column="2" 
                 FontSize="30" Height="Auto"
@@ -120,13 +121,16 @@
                 Grid.Column="2"
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
-            
-            <Button Content="PSU ON"  FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
-            <Button Content="PSU OFF"
-                FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+            <Button Command="{Binding PsuOnCommand}" 
+                    Content="PSU ON"  FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"
+                    />
+
+            <Button Command="{Binding PsuOffCommand}" 
+                    Content="PSU OFF"
+                    FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
         </StackPanel>
 
@@ -135,14 +139,16 @@
         <StackPanel Grid.Row="4" 
                 Grid.Column="2"
                 Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                HorizontalAlignment="Center">
 
-            <Button Content="Reset On"  FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+            <Button Command="{Binding ResetOnCommand}" 
+                    Content="Reset On"  FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
-            <Button Content="Reset Off"
-                FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
+            <Button Command="{Binding ResetOffCommand}"
+                    Content="Reset Off"
+                    FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" HorizontalAlignment="Center"/>
 
         </StackPanel>
 
@@ -152,25 +158,25 @@
                 HorizontalAlignment="Center">
 
             <TextBox  FontSize="25" 
-                  Margin="10"
-                  MaxLength="18"
-                  Width="150"
-                  HorizontalAlignment="Left"
-                  />
+                      Margin="10"
+                      MaxLength="18"
+                      Width="150"
+                      HorizontalAlignment="Left"/>
 
-            <Button Content="Change"
-                FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="160" 
-                HorizontalAlignment="Center"/>
+            <Button Command="{Binding ChangeCommand}"
+                    Content="Change"
+                    FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="160" 
+                    HorizontalAlignment="Center"/>
 
         </StackPanel>
 
 
-        <Button Content="Modul Init" Grid.Row="5" 
+        <Button Command="{Binding ModulInitCommand}"
+                Content="Modul Init" Grid.Row="5" 
                 Grid.Column="2" FontSize="30" Height="Auto"
                 Margin="5,5,5,5"
                 Width="330"/>
-
 
         <ComboBox SelectedItem="{Binding Path=SelectedMeasureType,
                   Mode=OneWayToSource}" 
@@ -193,11 +199,15 @@
                 Grid.Column="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
-            <Button Content="Write" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
 
-            <Button Content="Read" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
+
+            <Button Command="{Binding SystemBusWriteCommand}"
+                    Content="Write" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
+
+            <Button Command="{Binding SystemBusReadCommand}"
+                    Content="Read" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
 
         </StackPanel>
 
@@ -206,19 +216,17 @@
             Grid.Row="10" Grid.Column="1" 
             Grid.RowSpan="6" Grid.ColumnSpan="2"
             FontSize="20"
-            
             />
-
 
         <StackPanel Grid.Row="11" 
                 Grid.Column="2"
                 Orientation="Horizontal"
-                    HorizontalAlignment="Center">
+                HorizontalAlignment="Center">
 
             <TextBox  FontSize="25" 
-                  Margin="10"
-                  MaxLength="18"
-                  Width="150"
+                      Margin="10"
+                      MaxLength="18"
+                      Width="150"
                   />
             <ComboBox Margin="10"
                   Grid.Column="2"
@@ -245,8 +253,6 @@
                   />
         </StackPanel>
 
-
-
         <ComboBox Margin="10"
                   Grid.Column="2"
                   Grid.Row="13"
@@ -264,11 +270,14 @@
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
 
-            <Button Content="On" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
 
-            <Button Content="Off" FontSize="30" Height="Auto"
-                Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
+            <Button Command="{Binding FcnGenOnCommand}"
+                    Content="On" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
+
+            <Button Command="{Binding FcnGenOffCommand}"
+                    Content="Off" FontSize="30" Height="Auto"
+                    Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
 
         </StackPanel>
 
@@ -291,7 +300,8 @@
                   FontSize="16"
                   />
 
-        <Button Content="Run" 
+        <Button Command="{Binding AnalGenRunCommand}" 
+                Content="Run" 
                 Grid.Row="19" Grid.Column="2" 
                 FontSize="30" Height="Auto" Margin="30,5,5,5" 
                 Width="100"
@@ -357,7 +367,6 @@
                 FontSize="30" Height="Auto" Margin="5,5,5,5" 
                 Width="100"
                 Click="OpenMainWindow"
-
             />
 
     </Grid>

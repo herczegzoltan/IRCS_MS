@@ -80,8 +80,8 @@
     <Compile Include="Helper\SerialPortManagerSingleton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ViewModel\Helper\ConnectToDeviceCommand.cs" />
     <Compile Include="ViewModel\Helper\UIElementHelper.cs" />
+    <Compile Include="ViewModel\ServiceModeDataReceivedEventHandler.cs" />
     <Compile Include="ViewModel\ServiceModeViewModel.cs" />
     <Compile Include="View\ServiceModeWindow.xaml.cs">
       <DependentUpon>ServiceModeWindow.xaml</DependentUpon>
@@ -168,6 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\serviceCommandsTable.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Document\Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
