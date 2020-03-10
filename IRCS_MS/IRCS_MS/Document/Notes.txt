@@ -1,0 +1,5 @@
+﻿Neccessery Documents 
+TODO : Common drive folder
+- UML diagram
+- Interfaces, binding, layers of the application check any example (Example was sent)
+- 

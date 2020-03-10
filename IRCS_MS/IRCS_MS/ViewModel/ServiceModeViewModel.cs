@@ -1,7 +1,6 @@
 ﻿
 using IRCS_MS.Infrastructure;
 using IRCS_MS.Model;
-using IRCS_MS.ViewModel.Helper;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -10,6 +9,9 @@ namespace IRCS_MS.ViewModel
 {
     public class ServiceModeViewModel : NotifyViewModel
     {
+
+
+        //COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
 
         private ICommand _connectCommand;
         private ICommand _disConnectCommand;
@@ -60,9 +62,7 @@ namespace IRCS_MS.ViewModel
 
         public void Temp()
         {
-            ConnectToDeviceCommand asd = new ConnectToDeviceCommand(this);
 
-            asd.dd();
 
             MessageBox.Show(MyProp);
         }
