@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <!--
 Service Mode Frame, what you send (only bytes) :
-
+//ha van olyan bájt ami nem kell az legyen 0
 0.  >  Service_mode_OnOff  (True,False)
-          1-On
-          0-Off
+          1-On  //service_modeban mindig 1
+          0-Off //kivéve exit gomb
 1.  >  Service_mode_Command  ()
  	SoundBusChange	= 0x01,	//Button-channelben az érték
 	Reset_On		= 0x02,	//Button
