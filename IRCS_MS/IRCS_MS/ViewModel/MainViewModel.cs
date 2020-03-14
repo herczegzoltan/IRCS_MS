@@ -93,7 +93,7 @@ namespace IRCS_MS.ViewModel
 
         XmlFilter xmlData = null;
 
-        SerialPortManagerSingleton COMPortManager = null;
+        SerialPort COMPort = null;
 
         private string _currentDateTime;
 
@@ -137,7 +137,6 @@ namespace IRCS_MS.ViewModel
             ReportDataCollector.InitializeLists();
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
-            COMPortManager = new SerialPortManagerSingleton();
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -184,11 +183,10 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                COMPortManager.SetUpConnection(SelectedAvailablePort, SelectedBaudRate);
-                //COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
+                COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
                 try
                 {
-                    COMPortManager.Open();
+                    COMPort.Open();
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
@@ -210,8 +208,8 @@ namespace IRCS_MS.ViewModel
 
                     if (_runningTask)
                     {
-                        StateOfDevice = "State: " + (COMPortManager.IsOpen? "Connected!" : "Not connected!");
-                        StateOfDeviceColor = (COMPortManager.IsOpen? "Green" : "Red");
+                        StateOfDevice = "State: " + (COMPort.IsOpen? "Connected!" : "Not connected!");
+                        StateOfDeviceColor = (COMPort.IsOpen? "Green" : "Red");
                     }
 
                 }
@@ -305,14 +303,14 @@ namespace IRCS_MS.ViewModel
         private void SendData(byte data)
         {
             var dataArray = new byte[] { data };
-            if (COMPortManager == null)
+            if (COMPort == null)
             {
                 MessageBox.Show("Serial Port is not active!");
             }
             else
             {
-                COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-                COMPortManager.Write(dataArray, 0, 1);
+                COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                COMPort.Write(dataArray, 0, 1);
             }
         }
 
@@ -388,11 +386,11 @@ namespace IRCS_MS.ViewModel
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            if (COMPortManager.IsOpen)
+            if (COMPort.IsOpen)
             {
                 try
                 {
-                    string incomingByte = COMPortManager.ReadByte().ToString();
+                    string incomingByte = COMPort.ReadByte().ToString();
 
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
 
@@ -516,8 +514,8 @@ namespace IRCS_MS.ViewModel
                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
             {
-                COMPortManager.Close();
-                COMPortManager.Dispose();
+                COMPort.Close();
+                COMPort.Dispose();
             }
         }
 
