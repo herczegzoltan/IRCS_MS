@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="IRCS_MS.Helper.GeneralMessageCollection" Collapsed="true">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAgABAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Helper\GeneralCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.ByteMessageBuilder" Collapsed="true">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAACEAAAQAIggAAgAAEAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Infrastructure\ByteMessageBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.MessageBoxWrapper" Collapsed="true">
+    <Position X="13.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\MessageBoxWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.RelayCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEACAAQAAECAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.RelayCommand&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAQAAECAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.DelegateCommand" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEACAAQAAECAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\RelayCommand.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.ReportCreator" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAACMABAAAAAAQEAAQAgAAAABIAAABAAABAAAA=</HashCode>
+      <FileName>Infrastructure\ReportCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.ReportDataCollector" Collapsed="true">
+    <Position X="13.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAIAAAAAACAAAABEAIAAAAABAAAEAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\ReportDataCollector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.ReportDataHelper" Collapsed="true">
+    <Position X="15.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAEAAAAAEAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\ReportDataHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.SerialCommunicationSettings" Collapsed="true">
+    <Position X="11.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\SerialCommunicationSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.ValidatorIncomingMessage" Collapsed="true">
+    <Position X="8.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAABAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Infrastructure\ValidatorIncomingMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Infrastructure.XmlFilter" Collapsed="true">
+    <Position X="10" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAQAaAAgghCAAQQAAQAEEAACBRAAoACQAAEAgBACAA=</HashCode>
+      <FileName>Infrastructure\XmlFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.Answer" Collapsed="true">
+    <Position X="8.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAABAAABAAAABAAAAAEAAAAAAA=</HashCode>
+      <FileName>Model\Answer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.Card" Collapsed="true">
+    <Position X="11.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAIAQACAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Card.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.DefaultValues" Collapsed="true">
+    <Position X="13.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Model\DefaultValues.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.Measure" Collapsed="true">
+    <Position X="11.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Measure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.NotifyViewModel" Collapsed="true">
+    <Position X="4.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\NotifyViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="IRCS_MS.Model.Record" Collapsed="true">
+    <Position X="15.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Model\Record.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.RootObject" Collapsed="true">
+    <Position X="8.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\RootObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Model.RootObjectResponse" Collapsed="true">
+    <Position X="10" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Model\RootObjectResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.Resource.XmlProcessor" Collapsed="true">
+    <Position X="11.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Resource\XmlProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="IRCS_MS.View.ServiceModeWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>View\ServiceModeWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="IRCS_MS.ViewModel.Commands.UIElementCollectionHelper" Collapsed="true">
+    <Position X="15.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAACAgAAAAAAAAAA=</HashCode>
+      <FileName>ViewModel\Helper\UIElementHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.ViewModel.MainViewModel" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAZDYqQkQbCwggFYAAQnkCbgtQoAqhAUGjcYELBl0Nk=</HashCode>
+      <FileName>ViewModel\MainViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IRCS_MS.ViewModel.ServiceModeViewModel" Collapsed="true">
+    <Position X="5.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEEiABAIICSAggBoIAMCgBAAABAAAAACEBJAgAAAAAA=</HashCode>
+      <FileName>ViewModel\ServiceModeViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="IRCS_MS.Model.TimeOutValidatorStates" Collapsed="true">
+    <Position X="8.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Model\TimeOutValidatorStates.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="IRCS_MS.Model.UIElementStateVariations" Collapsed="true">
+    <Position X="10" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAEAABAAAAAAAQALAAAAAAA=</HashCode>
+      <FileName>Model\UIElementStateVariations.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
