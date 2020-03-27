@@ -17,8 +17,8 @@ namespace IRCS_MS
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var smainViewModel = new ServiceModeViewModel();
-            var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };
+            //var smainViewModel = new ServiceModeViewModel();
+            //var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };
             //smainWindow.Close();
 
             var mainViewModel = new MainViewModel();

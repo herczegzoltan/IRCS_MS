@@ -29,10 +29,10 @@ namespace IRCS_MS.View
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
 
-            this.Close();
             var mainViewModel = new MainViewModel();
             var mainWindow = new MainWindow { DataContext = mainViewModel };
             mainWindow.Show();
+            this.Close();
         }
     }
 }

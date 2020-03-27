@@ -31,14 +31,14 @@ namespace IRCS_MS
 
         private void OpenServiceModWindow(object sender, RoutedEventArgs e)
         {
-            this.Close();
+           
 
            // ServiceModeWindow smw = new ServiceModeWindow();
 
             var smainViewModel = new ServiceModeViewModel();
             var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };
             smainWindow.Show();
-
+            this.Close();
             //this.Close();
             //smw.Show();
         }
