@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IRCS_MS.Infrastructure.Message
+namespace IRCS_MS.ViewModel.ServiceVMHelper
 {
     public class IncomingMessageProcessor
     {
-        private readonly NotifyViewModel _notifyViewModel;
+        private readonly ServiceModeViewModel _serviceModeViewModel;
 
-        public IncomingMessageProcessor(NotifyViewModel _notifyViewModel)
+        public IncomingMessageProcessor(ServiceModeViewModel serviceModeViewModel, )
         {
-            _notifyViewModel = _notifyViewModel;
+            _serviceModeViewModel = serviceModeViewModel;
         }
 
         public void Test()

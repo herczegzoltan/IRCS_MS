@@ -83,7 +83,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Infrastructure\Message\IncomingMessageProcessor.cs" />
+    <Compile Include="ViewModel\ServiceVMHelper\IncomingMessageProcessor.cs" />
+    <Compile Include="ViewModel\MainVMHelper\IncomingMessageProcessor.cs" />
     <Compile Include="ViewModel\Helper\UIElementHelper.cs" />
     <Compile Include="ViewModel\ServiceModeViewModel.cs" />
     <Compile Include="View\ServiceModeWindow.xaml.cs">

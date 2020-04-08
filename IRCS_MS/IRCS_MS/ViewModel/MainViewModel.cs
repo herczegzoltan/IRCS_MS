@@ -178,9 +178,6 @@ namespace IRCS_MS.ViewModel
             if (SelectedAvailablePort == null)
             {
                 MessageBox.Show("No selected COM Port!");
-
-                //ValidatorIncomingMessage
-
             }
             else if (SelectedBaudRate == 0)
             {
