@@ -101,9 +101,9 @@
     <Compile Include="Infrastructure\MessageBoxWrapper.cs" />
     <Compile Include="Infrastructure\Report\ReportDataCollector.cs" />
     <Compile Include="Infrastructure\Report\ReportDataHelper.cs" />
-    <Compile Include="Infrastructure\ByteMessageBuilder.cs" />
+    <Compile Include="Infrastructure\Message\ByteMessageBuilder.cs" />
     <Compile Include="Infrastructure\Report\ReportCreator.cs" />
-    <Compile Include="Infrastructure\ValidatorIncomingMessage.cs" />
+    <Compile Include="Infrastructure\Message\ValidatorIncomingMessage.cs" />
     <Compile Include="Infrastructure\XmlHandler\XmlFilter.cs" />
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\Card.cs" />

@@ -18,7 +18,5 @@ namespace IRCS_MS.Infrastructure.Message
             _mainViewModel = mainViewModel;
         }
 
-
-
     }
 }
