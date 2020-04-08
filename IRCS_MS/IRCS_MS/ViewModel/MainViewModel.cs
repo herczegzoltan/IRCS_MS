@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IRCS_MS.Infrastructure;
+using IRCS_MS.Infrastructure.Message;
 using System.IO.Ports;
 using System.Windows;
 using System.Threading;
-using IRCS_MS.Resource;
 using System.Xml.Linq;
 using System.Diagnostics;
 using System.IO;
@@ -19,6 +18,8 @@ using MessageBox = System.Windows.Forms.MessageBox;
 using IRCS_MS.Helper;
 using System.ComponentModel;
 using IRCS_MS.ViewModel.Commands;
+using IRCS_MS.Infrastructure.XmlHandler;
+using IRCS_MS.Infrastructure;
 
 namespace IRCS_MS.ViewModel
 {
@@ -90,8 +91,8 @@ namespace IRCS_MS.ViewModel
 
         private bool _runningTask;
 
-
         XmlFilter xmlData = null;
+        //XmlFilter xmlData = null;
 
         SerialPort COMPort = null;
 
@@ -138,9 +139,6 @@ namespace IRCS_MS.ViewModel
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
 
-            
-
-
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -180,6 +178,8 @@ namespace IRCS_MS.ViewModel
             if (SelectedAvailablePort == null)
             {
                 MessageBox.Show("No selected COM Port!");
+
+                //ValidatorIncomingMessage
 
             }
             else if (SelectedBaudRate == 0)

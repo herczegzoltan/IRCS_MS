@@ -1,4 +1,6 @@
 ﻿using IRCS_MS.Infrastructure;
+using IRCS_MS.Infrastructure.Message;
+using IRCS_MS.Infrastructure.XmlHandler;
 using System;
 using System.Collections.Generic;
 using System.IO;

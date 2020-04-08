@@ -8,15 +8,20 @@ using System.Threading.Tasks;
 
 namespace IRCS_MS.Infrastructure.Message
 {
-
     public class IncomingMessageProcessor
     {
-        private readonly MainViewModel _mainViewModel;
+        private readonly NotifyViewModel _notifyViewModel;
 
-        public IncomingMessageProcessor(MainViewModel mainViewModel)
+        public IncomingMessageProcessor(NotifyViewModel _notifyViewModel)
         {
-            _mainViewModel = mainViewModel;
+            _notifyViewModel = _notifyViewModel;
         }
+
+        public void Test()
+        {
+            
+        }
+
 
     }
 }

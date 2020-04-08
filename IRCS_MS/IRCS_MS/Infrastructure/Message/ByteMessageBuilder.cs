@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IRCS_MS.Infrastructure
+namespace IRCS_MS.Infrastructure.Message
 {
     public static class ByteMessageBuilder
     {

@@ -1,5 +1,5 @@
-﻿using IRCS_MS.Model;
-using IRCS_MS.Resource;
+﻿using IRCS_MS.Infrastructure.Message;
+using IRCS_MS.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace IRCS_MS.Infrastructure
+namespace IRCS_MS.Infrastructure.XmlHandler
 {
     public sealed class XmlFilter
     {

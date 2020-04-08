@@ -9,7 +9,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using IRCS_MS.Model;
 
-namespace IRCS_MS.Resource
+namespace IRCS_MS.Infrastructure.XmlHandler
 {
     public static class XmlProcessor
     {
