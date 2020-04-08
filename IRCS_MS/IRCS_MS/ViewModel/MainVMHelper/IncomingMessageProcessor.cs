@@ -1,4 +1,5 @@
-﻿using IRCS_MS.Model;
+﻿using IRCS_MS.Infrastructure.Message;
+using IRCS_MS.Model;
 using IRCS_MS.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace IRCS_MS.ViewModel.MainVMHelper
     {
         private readonly MainViewModel _mainViewModel;
         private readonly SerialPort _serialPort;
+        private const int NUMBEROFINBYTES = 2;
+        private int NumberOfInBytesCounter = 0;
 
         public IncomingMessageProcessor(MainViewModel mainViewModel, SerialPort serialPort)
         {
@@ -25,10 +28,29 @@ namespace IRCS_MS.ViewModel.MainVMHelper
             ReadAndProcessIncomingMessage();
         }
 
+
+        //todo: increase counter
         private void ReadAndProcessIncomingMessage()
         {
             if (_serialPort.IsOpen)
             {
+                try
+                {
+                    string incomingByte = _serialPort.ReadByte().ToString();
+
+                    ByteMessageBuilder.SetByteIncomingArray(NumberOfInBytesCounter, incomingByte); //34 0 13
+
+                    if (NumberOfInBytesCounter == NUMBEROFINBYTES)
+                    {
+
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
         }
     }
