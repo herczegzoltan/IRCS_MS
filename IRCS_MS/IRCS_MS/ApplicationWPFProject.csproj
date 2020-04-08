@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\Message\IncomingMessageProcessor.cs" />
     <Compile Include="ViewModel\Helper\UIElementHelper.cs" />
     <Compile Include="ViewModel\ServiceModeViewModel.cs" />
     <Compile Include="View\ServiceModeWindow.xaml.cs">
@@ -98,12 +99,12 @@
     </Compile>
     <Compile Include="Helper\GeneralCollection.cs" />
     <Compile Include="Infrastructure\MessageBoxWrapper.cs" />
-    <Compile Include="Infrastructure\ReportDataCollector.cs" />
-    <Compile Include="Infrastructure\ReportDataHelper.cs" />
+    <Compile Include="Infrastructure\Report\ReportDataCollector.cs" />
+    <Compile Include="Infrastructure\Report\ReportDataHelper.cs" />
     <Compile Include="Infrastructure\ByteMessageBuilder.cs" />
-    <Compile Include="Infrastructure\ReportCreator.cs" />
+    <Compile Include="Infrastructure\Report\ReportCreator.cs" />
     <Compile Include="Infrastructure\ValidatorIncomingMessage.cs" />
-    <Compile Include="Infrastructure\XmlFilter.cs" />
+    <Compile Include="Infrastructure\XmlHandler\XmlFilter.cs" />
     <Compile Include="Model\Answer.cs" />
     <Compile Include="Model\Card.cs" />
     <Compile Include="Model\DefaultValues.cs" />
@@ -113,7 +114,7 @@
     <Compile Include="Model\RootObject.cs" />
     <Compile Include="Model\TimeOutValidatorStates.cs" />
     <Compile Include="Model\UIElementStateVariations.cs" />
-    <Compile Include="Resource\XmlProcessor.cs" />
+    <Compile Include="Infrastructure\XmlHandler\XmlProcessor.cs" />
     <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Infrastructure\SerialCommunicationSettings.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

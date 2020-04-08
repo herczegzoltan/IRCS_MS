@@ -137,6 +137,10 @@ namespace IRCS_MS.ViewModel
             ReportDataCollector.InitializeLists();
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
+
+            
+
+
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -176,6 +180,7 @@ namespace IRCS_MS.ViewModel
             if (SelectedAvailablePort == null)
             {
                 MessageBox.Show("No selected COM Port!");
+
             }
             else if (SelectedBaudRate == 0)
             {
