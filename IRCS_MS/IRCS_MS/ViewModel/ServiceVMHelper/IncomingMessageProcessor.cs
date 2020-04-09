@@ -12,7 +12,7 @@ namespace IRCS_MS.ViewModel.ServiceVMHelper
     {
         private readonly ServiceModeViewModel _serviceModeViewModel;
 
-        public IncomingMessageProcessor(ServiceModeViewModel serviceModeViewModel, )
+        public IncomingMessageProcessor(ServiceModeViewModel serviceModeViewModel)
         {
             _serviceModeViewModel = serviceModeViewModel;
         }
