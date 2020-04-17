@@ -1,4 +1,5 @@
-﻿using IRCS_MS.Infrastructure.Message;
+﻿using IRCS_MS.Helper;
+using IRCS_MS.Infrastructure.Message;
 using IRCS_MS.Model;
 using IRCS_MS.ViewModel;
 using System;
@@ -25,6 +26,7 @@ namespace IRCS_MS.ViewModel.MainVMHelper
 
         public void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
+
             ReadAndProcessIncomingMessage();
         }
 
@@ -42,6 +44,15 @@ namespace IRCS_MS.ViewModel.MainVMHelper
 
                     if (NumberOfInBytesCounter == NUMBEROFINBYTES)
                     {
+
+                        if (_mainViewModel.WasItRun)
+                        {
+
+                            _mainViewModel.IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(true);
+
+                            _mainViewModel.TimeOutValidator(TimeOutValidatorStates.Reset);
+
+                        }
 
                     }
 

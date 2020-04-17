@@ -179,5 +179,8 @@
   <ItemGroup>
     <Resource Include="Document\XMLFile1.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Document\ClassDescription.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

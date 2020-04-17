@@ -98,7 +98,7 @@ namespace IRCS_MS.ViewModel
 
         private string _currentDateTime;
 
-        private bool WasItRun = false;
+        public bool WasItRun = false;
 
         private int countBytes = 0;
 
