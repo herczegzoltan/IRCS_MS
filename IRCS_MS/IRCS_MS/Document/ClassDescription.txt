@@ -1,9 +1,0 @@
-﻿
-
---------------------------------------
-Helper
-Infrastructure
-Model
-Resource
-View
-ViewModel
