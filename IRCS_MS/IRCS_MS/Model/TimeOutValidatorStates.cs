@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IRCS_MS.Model
 {
-    enum TimeOutValidatorStates
+    public enum TimeOutValidatorStates
     {
         Start,
         Reset,

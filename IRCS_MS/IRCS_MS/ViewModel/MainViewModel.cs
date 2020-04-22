@@ -337,7 +337,7 @@ namespace IRCS_MS.ViewModel
             MessageBoxWrapper.Show(text, header, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
-        private void TimeOutValidator(TimeOutValidatorStates tovs)
+        public void TimeOutValidator(TimeOutValidatorStates tovs)
         {
             switch (tovs)
             {
