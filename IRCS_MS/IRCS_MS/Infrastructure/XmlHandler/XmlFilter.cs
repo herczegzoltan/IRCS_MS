@@ -258,6 +258,12 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
         #region Service Mode Filters
 
+        public List<string> ServiceModeGetChannelNames()
+        {
+            IEnumerable<String> channelTypes = _rootServiceObject.Channel.Select(x => x.Name);
+
+            return new List<string>(channelTypes);
+        }
 
         #endregion
     }

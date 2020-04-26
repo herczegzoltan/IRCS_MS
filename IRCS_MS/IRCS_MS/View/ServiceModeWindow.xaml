@@ -181,7 +181,7 @@
 
         <ComboBox SelectedItem="{Binding Path=SelectedMeasureType,
                   Mode=OneWayToSource}" 
-                  ItemsSource="{Binding MeasureTypes}"
+                  ItemsSource="{Binding ChannelTypes}"
                   Margin="10"
                   Grid.Column="2"
                   Grid.Row="7"

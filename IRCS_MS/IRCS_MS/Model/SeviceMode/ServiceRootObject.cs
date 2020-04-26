@@ -12,7 +12,7 @@ namespace IRCS_MS.Model.SeviceMode
     public class ServiceRootObject
     {
         [XmlElement("Channel")]
-        public List<Channel> Card { get; set; }
+        public List<Channel> Channel { get; set; }
 
         [XmlElement("DefaultValues")]
         public DefaultValues ValuesCommands { get; set; }

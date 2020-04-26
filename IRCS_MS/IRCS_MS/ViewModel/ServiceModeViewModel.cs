@@ -1,6 +1,8 @@
 ﻿
 using IRCS_MS.Infrastructure;
+using IRCS_MS.Infrastructure.XmlHandler;
 using IRCS_MS.Model;
+using System.Collections.Generic;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -10,6 +12,7 @@ namespace IRCS_MS.ViewModel
     public class ServiceModeViewModel : NotifyViewModel
     {
 
+        private List<string> _channelTypes;
 
         //COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
 
@@ -41,6 +44,9 @@ namespace IRCS_MS.ViewModel
         public ICommand FcnGenOffCommand => _fcnGenOffCommand;
         public ICommand AnalGenRunCommand => _analGenRunCommand;
 
+        XmlFilter xmlData = null;
+
+
         public ServiceModeViewModel()
         {
             _connectCommand = new DelegateCommand(Temp);
@@ -56,6 +62,10 @@ namespace IRCS_MS.ViewModel
             _fcnGenOnCommand = new DelegateCommand(Temp);
             _fcnGenOffCommand = new DelegateCommand(Temp);
             _analGenRunCommand = new DelegateCommand(Temp);
+
+            xmlData = new XmlFilter();
+            ChannelTypes = xmlData.ServiceModeGetChannelNames();
+
         }
 
         private string _MyProp;
@@ -63,6 +73,22 @@ namespace IRCS_MS.ViewModel
         public void Temp()
         {
             MessageBox.Show(MyProp);
+        }
+
+        #region Properties
+
+
+        public List<string> ChannelTypes
+        {
+            get
+            {
+                return _channelTypes;
+            }
+            set
+            {
+                _channelTypes = value;
+                OnPropertyChanged("CardTypes");
+            }
         }
 
         public string MyProp
@@ -77,5 +103,6 @@ namespace IRCS_MS.ViewModel
                 OnPropertyChanged("MyProp");
             }
         }
+        #endregion
     }
 }

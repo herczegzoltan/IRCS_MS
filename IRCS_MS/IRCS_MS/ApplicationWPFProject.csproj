@@ -176,7 +176,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resource\serviceCommandsTable.xml" />
+    <EmbeddedResource Include="Resource\serviceCommandsTable.xml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Document\Notes.txt" />
