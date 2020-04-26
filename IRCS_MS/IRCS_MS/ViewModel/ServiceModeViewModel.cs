@@ -16,8 +16,6 @@ namespace IRCS_MS.ViewModel
 
         //COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
 
-        private ICommand _connectCommand;
-        private ICommand _disConnectCommand;
         private ICommand _psuOnCommand;
         private ICommand _psuOffCommand;
         private ICommand _resetOnCommand;
@@ -30,8 +28,6 @@ namespace IRCS_MS.ViewModel
         private ICommand _fcnGenOffCommand;
         private ICommand _analGenRunCommand;
 
-        public ICommand ConnectCommand => _connectCommand;
-        public ICommand DisConnectCommand => _disConnectCommand;
         public ICommand PsuOnCommand => _psuOnCommand;
         public ICommand PsuOffCommand => _psuOffCommand;
         public ICommand ResetOnCommand => _resetOnCommand;
@@ -49,8 +45,6 @@ namespace IRCS_MS.ViewModel
 
         public ServiceModeViewModel()
         {
-            _connectCommand = new DelegateCommand(Temp);
-            _disConnectCommand = new DelegateCommand(Temp);
             _psuOnCommand = new DelegateCommand(Temp);
             _psuOffCommand = new DelegateCommand(Temp);
             _resetOnCommand = new DelegateCommand(Temp);

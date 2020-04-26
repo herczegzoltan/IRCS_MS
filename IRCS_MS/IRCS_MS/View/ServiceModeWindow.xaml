@@ -53,8 +53,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
-
-            <RowDefinition Height="*"/>
             <RowDefinition Height="10"/>
 
         </Grid.RowDefinitions>
@@ -78,46 +76,31 @@
         <GroupBox 
             Header="System Bus"
             Grid.Row="1" Grid.Column="1" 
-            Grid.RowSpan="9" Grid.ColumnSpan="2"
+            Grid.RowSpan="8" Grid.ColumnSpan="2"
             FontSize="20"
             />
 
-        <Button Command="{Binding ConnectCommand}" 
-                Content="Connect" 
-                Grid.Row="2"
-                Grid.Column="1" 
-                FontSize="30" Height="Auto"
-                Margin="10,5,10,5" 
-                Width="200"/>
 
 
-        <TextBlock Text="Power Supply" Grid.Row="3" Grid.Column="1" />
-        <TextBlock Text="Reset" Grid.Row="4" Grid.Column="1" />
-        <TextBlock Text="Sound Bus channel" Grid.Row="6" Grid.Column="1" />
-        <TextBlock Text="Card" Grid.Row="7" Grid.Column="1" />
-        <TextBlock Text="Function" Grid.Row="8" Grid.Column="1" />
+        <TextBlock Text="Power Supply" Grid.Row="2" Grid.Column="1" />
+        <TextBlock Text="Reset" Grid.Row="3" Grid.Column="1" />
+        <TextBlock Text="Sound Bus channel" Grid.Row="5" Grid.Column="1" />
+        <TextBlock Text="Card" Grid.Row="6" Grid.Column="1" />
+        <TextBlock Text="Function" Grid.Row="7" Grid.Column="1" />
 
-        <TextBlock Text="Frequency" Grid.Row="11" Grid.Column="1"/>
-        <TextBlock Text="Amplitude" Grid.Row="12" Grid.Column="1" />
-        <TextBlock Text="Channel" Grid.Row="13" Grid.Column="1" />
-        <TextBlock Text="Sub Channel" Grid.Row="14" Grid.Column="1" />
+        <TextBlock Text="Frequency" Grid.Row="10" Grid.Column="1"/>
+        <TextBlock Text="Amplitude" Grid.Row="11" Grid.Column="1" />
+        <TextBlock Text="Channel" Grid.Row="12" Grid.Column="1" />
+        <TextBlock Text="Sub Channel" Grid.Row="13" Grid.Column="1" />
         
-        <TextBlock Text="Channel" Grid.Row="17" Grid.Column="1" />
-        <TextBlock Text="Sub Channel" Grid.Row="18" Grid.Column="1" />
+        <TextBlock Text="Channel" Grid.Row="16" Grid.Column="1" />
+        <TextBlock Text="Sub Channel" Grid.Row="17" Grid.Column="1" />
 
         <!--Column 2-->
 
 
-        <Button Command="{Binding DisConnectCommand}" 
-                Content="Disconnect" 
-                Grid.Row="2"
-                Grid.Column="2" 
-                FontSize="30" Height="Auto"
-                Margin="10,5,10,5" 
-                Width="200"/>
-
-
-        <StackPanel Grid.Row="3" 
+     
+        <StackPanel Grid.Row="2" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
@@ -136,7 +119,7 @@
 
 
 
-        <StackPanel Grid.Row="4" 
+        <StackPanel Grid.Row="3" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
@@ -152,14 +135,13 @@
 
         </StackPanel>
 
-        <StackPanel Grid.Row="6" 
+        <StackPanel Grid.Row="5" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
 
-            <TextBox  FontSize="25" 
+            <ComboBox FontSize="16" 
                       Margin="10"
-                      MaxLength="18"
                       Width="150"
                       HorizontalAlignment="Left"
                       Text="{Binding MyProp}"/>
@@ -174,7 +156,7 @@
 
 
         <Button Command="{Binding ModulInitCommand}"
-                Content="Modul Init" Grid.Row="5" 
+                Content="Modul Init" Grid.Row="4" 
                 Grid.Column="2" FontSize="30" Height="Auto"
                 Margin="5,5,5,5"
                 Width="330"/>
@@ -184,7 +166,7 @@
                   ItemsSource="{Binding ChannelTypes}"
                   Margin="10"
                   Grid.Column="2"
-                  Grid.Row="7"
+                  Grid.Row="6"
                   FontSize="16"
                   />
         <ComboBox SelectedItem="{Binding Path=SelectedMeasureType,
@@ -192,11 +174,11 @@
                   ItemsSource="{Binding MeasureTypes}"
                   Margin="10"
                   Grid.Column="2"
-                  Grid.Row="8"
+                  Grid.Row="7"
                   FontSize="16"
                   />
 
-        <StackPanel Grid.Row="9" 
+        <StackPanel Grid.Row="8" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
@@ -214,12 +196,12 @@
 
         <GroupBox 
             Header="Function Generator"
-            Grid.Row="10" Grid.Column="1" 
+            Grid.Row="9" Grid.Column="1" 
             Grid.RowSpan="6" Grid.ColumnSpan="2"
             FontSize="20"
             />
 
-        <StackPanel Grid.Row="11" 
+        <StackPanel Grid.Row="10" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                 HorizontalAlignment="Center">
@@ -236,7 +218,7 @@
                   Width="150"
                   />
         </StackPanel>
-        <StackPanel Grid.Row="12" 
+        <StackPanel Grid.Row="11" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
@@ -256,17 +238,17 @@
 
         <ComboBox Margin="10"
                   Grid.Column="2"
-                  Grid.Row="13"
+                  Grid.Row="12"
                   FontSize="16"
                   />
 
         <ComboBox Margin="10"
                   Grid.Column="2"
-                  Grid.Row="14"
+                  Grid.Row="13"
                   FontSize="16"
                   />
 
-        <StackPanel Grid.Row="15" 
+        <StackPanel Grid.Row="14" 
                 Grid.Column="2"
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
@@ -285,25 +267,25 @@
 
         <GroupBox 
             Header="Analyser Generator"
-            Grid.Row="16" Grid.Column="1" 
+            Grid.Row="15" Grid.Column="1" 
             Grid.RowSpan="6" Grid.ColumnSpan="2"
             FontSize="20"
             />
 
         <ComboBox Margin="10"
                   Grid.Column="2"
-                  Grid.Row="17"
+                  Grid.Row="16"
                   FontSize="16"
                   />
         <ComboBox Margin="10"
                   Grid.Column="2"
-                  Grid.Row="18"
+                  Grid.Row="17"
                   FontSize="16"
                   />
 
         <Button Command="{Binding AnalGenRunCommand}" 
                 Content="Run" 
-                Grid.Row="19" Grid.Column="2" 
+                Grid.Row="18" Grid.Column="2" 
                 FontSize="30" Height="Auto" Margin="30,5,5,5" 
                 Width="100"
                 HorizontalAlignment="Center"
