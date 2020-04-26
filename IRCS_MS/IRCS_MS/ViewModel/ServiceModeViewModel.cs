@@ -27,7 +27,11 @@ namespace IRCS_MS.ViewModel
         public PsuOnCommand PsuOnCommand { get; set; }
         public ResetOffCommand ResetOffCommand { get; set; }
         public ResetOnCommand ResetOnCommand { get; set; }
-
+        public AnalGenRunCommand AnalGenRunCommand { get; set; }
+        public ChangeCommand ChangeCommand { get; set; }
+        public FcnGenOffCommand FcnGenOffCommand { get; set; }
+        public FcnGenOnCommand FcnGenOnCommand { get; set; }
+        public ModulInitCommand ModulInitCommand { get; set; }
 
         XmlFilter xmlData = null;
 
@@ -46,6 +50,11 @@ namespace IRCS_MS.ViewModel
             PsuOnCommand = new PsuOnCommand(this);
             ResetOffCommand = new ResetOffCommand(this);
             ResetOnCommand = new ResetOnCommand(this);
+            AnalGenRunCommand = new AnalGenRunCommand(this);
+            ChangeCommand = new ChangeCommand(this);
+            FcnGenOffCommand = new FcnGenOffCommand(this);
+            FcnGenOnCommand = new FcnGenOnCommand(this);
+            ModulInitCommand = new ModulInitCommand(this);
 
 
             xmlData = new XmlFilter();

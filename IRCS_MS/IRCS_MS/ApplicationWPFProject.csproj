@@ -91,6 +91,11 @@
     <Compile Include="ViewModel\MainViewModelCommands\RunCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\ConnectCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\DisConnectCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\AnalGenRunCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\FcnGenOffCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\FcnGenOnCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\ChangeCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\ModulInitCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\PsuOnCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\PsuOffCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\ResetOnCommand.cs" />
