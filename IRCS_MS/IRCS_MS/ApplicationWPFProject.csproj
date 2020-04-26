@@ -125,7 +125,6 @@
     <Compile Include="Model\TimeOutValidatorStates.cs" />
     <Compile Include="Model\UIElementStateVariations.cs" />
     <Compile Include="Infrastructure\XmlHandler\XmlProcessor.cs" />
-    <Compile Include="Infrastructure\RelayCommand.cs" />
     <Compile Include="Infrastructure\SerialCommunicationSettings.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
@@ -138,7 +137,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\NotifyViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
