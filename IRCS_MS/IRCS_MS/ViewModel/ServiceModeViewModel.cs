@@ -13,12 +13,12 @@ namespace IRCS_MS.ViewModel
 {
     public class ServiceModeViewModel : INotifyPropertyChanged
     {
-
         private List<string> _channelTypes;
         private List<string> _subChannelTypes;
         private string _selectedChannelType;
         private List<string> _frequencyTypes;
         private List<string> _amplitudeTypes;
+        SerialPortManager COMPort;
 
         #region Commands
 
@@ -47,6 +47,7 @@ namespace IRCS_MS.ViewModel
 
         public ServiceModeViewModel()
         {
+
             SystemBusWriteCommand = new SystemBusWriteCommand(this);
             SystemBusReadCommand = new SystemBusReadCommand(this);
             PsuOffCommand = new PsuOffCommand(this);
@@ -64,13 +65,22 @@ namespace IRCS_MS.ViewModel
             ChannelTypes = xmlData.ServiceModeGetChannelNames();
             FrequencyTypes = xmlData.ServiceModeGetDefaultValuesByTag("frequency");
             AmplitudeTypes = xmlData.ServiceModeGetDefaultValuesByTag("amplitude");
+            COMPort = SerialPortManager.Instance;
+
         }
 
         public void Temp()
         {
-            MessageBox.Show("asd");
-        }
+            MessageBox.Show(COMPort.GetHashCode().ToString());
 
+//            MessageBox.Show("asd");
+        }
+        // TODO: event unsub before opening this UI and subscrube for this and reverse
+        //
+
+        
+
+        
         #region Properties
 
         public List<string> ChannelTypes

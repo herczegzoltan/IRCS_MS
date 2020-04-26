@@ -77,7 +77,8 @@ namespace IRCS_MS.ViewModel
 
         XmlFilter xmlData = null;
 
-        SerialPort COMPort = null;
+        SerialPortManager COMPort;
+        //SerialPort COMPort = null;
 
         private string _currentDateTime;
 
@@ -168,7 +169,11 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
+                //COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
+                COMPort = SerialPortManager.Instance;
+                COMPort.BaudRate = SelectedBaudRate;
+                COMPort.PortName = SelectedAvailablePort;
+                MessageBox.Show(COMPort.GetHashCode().ToString());
                 try
                 {
                     COMPort.Open();

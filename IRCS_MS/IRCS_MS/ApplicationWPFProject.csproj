@@ -83,6 +83,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\SerialPortManager.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Model\SeviceMode\Channel.cs" />
     <Compile Include="Model\SeviceMode\ServiceRootObject.cs" />
     <Compile Include="Model\SeviceMode\SubChannel.cs" />
