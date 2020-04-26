@@ -86,6 +86,10 @@
     <Compile Include="Model\SeviceMode\Channel.cs" />
     <Compile Include="Model\SeviceMode\ServiceRootObject.cs" />
     <Compile Include="Model\SeviceMode\SubChannel.cs" />
+    <Compile Include="ViewModel\MainViewModelCommands\RunCommand.cs" />
+    <Compile Include="ViewModel\MainViewModelCommands\ConnectCommand.cs" />
+    <Compile Include="ViewModel\MainViewModelCommands\DisConnectCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeCommands\SystemBusWriteCommand.cs" />
     <Compile Include="ViewModel\ServiceVMHelper\IncomingMessageProcessor.cs" />
     <Compile Include="ViewModel\MainVMHelper\IncomingMessageProcessor.cs" />
     <Compile Include="ViewModel\Helper\UIElementHelper.cs" />
@@ -184,9 +188,7 @@
   <ItemGroup>
     <Resource Include="Document\XMLFile1.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModel\ServiceModeCommand\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resource\help.txt" />
   </ItemGroup>

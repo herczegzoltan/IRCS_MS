@@ -20,14 +20,18 @@ using System.ComponentModel;
 using IRCS_MS.ViewModel.Commands;
 using IRCS_MS.Infrastructure.XmlHandler;
 using IRCS_MS.Infrastructure;
+using IRCS_MS.ViewModel.MainViewModelCommands;
 
 namespace IRCS_MS.ViewModel
 {
 
-    public class MainViewModel : NotifyViewModel
+    public class MainViewModel : INotifyPropertyChanged
     {
+
+        public ConnectCommand ConnectCommand { get; set; }
+
         #region Variables
-        private ICommand _connectCommand;
+        //private ICommand _connectCommand;
 
         private ICommand _disConnectCommand;
 
@@ -60,7 +64,7 @@ namespace IRCS_MS.ViewModel
 
         private int _selectedBaudRate = 0;
 
-        public ICommand CmdConnect => _connectCommand;
+        //public ICommand CmdConnect => _connectCommand;
 
         public ICommand CmdDisConnect => _disConnectCommand;
 
@@ -115,12 +119,15 @@ namespace IRCS_MS.ViewModel
         #endregion
         public MainViewModel()
         {
+
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-            _connectCommand = new DelegateCommand(ConnectToDevice);
-            _disConnectCommand = new DelegateCommand(DisConnect);
-            _measureOn = new DelegateCommand(SendMeasureOn);
-            _measureOff = new DelegateCommand(SendMeasureOff);
-            _run = new DelegateCommand(SendRun);
+            // _connectCommand = new DelegateCommand(ConnectToDevice);
+            ConnectCommand = new ConnectCommand(this);
+
+            //_disConnectCommand = new DelegateCommand(DisConnect);
+            //_measureOn = new DelegateCommand(SendMeasureOn);
+            //_measureOff = new DelegateCommand(SendMeasureOff);
+            //_run = new DelegateCommand(SendRun);
 
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
@@ -173,7 +180,7 @@ namespace IRCS_MS.ViewModel
             });
         }
 
-        private void ConnectToDevice()
+        public void ConnectToDevice()
         {
             if (SelectedAvailablePort == null)
             {
@@ -574,8 +581,13 @@ namespace IRCS_MS.ViewModel
         private string _isRunningNow;
         private string _name;
 
+
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         private void FolderDialog()
         {
             string selectedPath;

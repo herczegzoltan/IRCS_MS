@@ -242,13 +242,20 @@
                   />
         </StackPanel>
 
-        <ComboBox Margin="10"
+        <ComboBox SelectedItem="{Binding Path=SelectedChannelType,
+                  Mode=OneWayToSource}" 
+                  ItemsSource="{Binding ChannelTypes}"
+            
+                  Margin="10"
                   Grid.Column="2"
                   Grid.Row="12"
                   FontSize="16"
                   />
 
-        <ComboBox Margin="10"
+        <ComboBox SelectedItem="{Binding Path=SelectedSubChannelType,
+                  Mode=OneWayToSource}" 
+                  ItemsSource="{Binding SubChannelTypes}"
+                  Margin="10"
                   Grid.Column="2"
                   Grid.Row="13"
                   FontSize="16"
@@ -278,12 +285,18 @@
             FontSize="20"
             />
 
-        <ComboBox Margin="10"
+        <ComboBox SelectedItem="{Binding Path=SelectedChannelType,
+                  Mode=OneWayToSource}" 
+                  ItemsSource="{Binding ChannelTypes}" 
+                  Margin="10"
                   Grid.Column="2"
                   Grid.Row="16"
                   FontSize="16"
                   />
-        <ComboBox Margin="10"
+        <ComboBox SelectedItem="{Binding Path=SelectedSubChannelType,
+                  Mode=OneWayToSource}" 
+                  ItemsSource="{Binding SubChannelTypes}" 
+                  Margin="10"
                   Grid.Column="2"
                   Grid.Row="17"
                   FontSize="16"

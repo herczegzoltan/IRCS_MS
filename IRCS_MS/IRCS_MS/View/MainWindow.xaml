@@ -67,7 +67,7 @@
                   FontSize="16"/>
 
         <Button IsEnabled="{Binding CmdConnectIsEnabled}" 
-                Command="{Binding CmdConnect}" 
+                Command="{Binding ConnectCommand}" 
                 Content="Connect" 
                 Grid.Row="3"
                 Grid.Column="2" 
