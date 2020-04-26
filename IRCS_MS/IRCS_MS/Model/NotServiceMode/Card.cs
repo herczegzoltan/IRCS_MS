@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using IRCS_MS.Model.Common;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace IRCS_MS.Model
+namespace IRCS_MS.Model.NotServiceMode
 {
     public class Card
     {
@@ -19,8 +20,5 @@ namespace IRCS_MS.Model
 
         [XmlAttribute("default")]
         public string Default{ get; set; }
-
-
-
     }
 }

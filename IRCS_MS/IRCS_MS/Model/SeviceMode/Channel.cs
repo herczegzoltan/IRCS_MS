@@ -20,7 +20,5 @@ namespace IRCS_MS.Model.SeviceMode
         [XmlAttribute("default")]
         public string Default { get; set; }
 
-
-
     }
 }

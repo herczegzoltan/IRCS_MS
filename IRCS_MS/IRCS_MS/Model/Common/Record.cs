@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace IRCS_MS.Model
+namespace IRCS_MS.Model.Common
 {
     public class Record
     {

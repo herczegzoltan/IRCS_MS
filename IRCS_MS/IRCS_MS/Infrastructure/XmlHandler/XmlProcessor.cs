@@ -8,6 +8,9 @@ using System.IO;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using IRCS_MS.Model;
+using IRCS_MS.Model.InComing;
+using IRCS_MS.Model.NotServiceMode;
+using IRCS_MS.Model.SeviceMode;
 
 namespace IRCS_MS.Infrastructure.XmlHandler
 {
@@ -50,5 +53,25 @@ namespace IRCS_MS.Infrastructure.XmlHandler
                 }
             }
         }
+
+        public static ServiceRootObject GetXmlServiceRootObjectCommands()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ServiceRootObject));
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            const string xmlRead = "IRCS_MS.Resource.serviceCommandsTable.xml";
+
+            using (Stream stream = assembly.GetManifestResourceStream(xmlRead))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    ServiceRootObject result = (ServiceRootObject)serializer.Deserialize(reader);
+
+                    return result;
+                }
+            }
+        }
+
     }
 }

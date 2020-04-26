@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace IRCS_MS.Model
+namespace IRCS_MS.Model.Common
 {
     public class Measure
     {

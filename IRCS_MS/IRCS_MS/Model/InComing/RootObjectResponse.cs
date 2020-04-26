@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace IRCS_MS.Model
+namespace IRCS_MS.Model.InComing
 {
     [XmlRoot("RootObjectResponse")]
     public class RootObjectResponse
