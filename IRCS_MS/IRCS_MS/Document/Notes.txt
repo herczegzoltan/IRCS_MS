@@ -3,3 +3,8 @@ TODO
 - UML diagram
 - Interfaces, binding, layers of the application check any example (Example was sent)
 - Each class write one summary sentence
+
+
+Bug & Questions
+
+Q: Azt mondtad, hogy sound bus channel az egy user input, de a te progidban az egy combobox. Most akkor textbox vagy combobox legyen?
