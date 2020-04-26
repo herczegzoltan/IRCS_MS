@@ -7,16 +7,16 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.MainViewModelCommands
 {
-    public class DisConnectCommand :ICommand
+    public class MeasureOffCommand : ICommand
     {
 
         public MainViewModel VM { get; set; }
 
-        public DisConnectCommand(MainViewModel vM)
+        public MeasureOffCommand(MainViewModel vM)
         {
             VM = vM;
         }
-        public event EventHandler CanExecuteChanged
+        public event EventHandler CanExecuteChanged 
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.MainViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.DisConnect();
+            VM.SendMeasureOff();
         }
     }
 }

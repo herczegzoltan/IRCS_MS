@@ -86,7 +86,7 @@
         <TextBlock Text="Baudrate" Grid.Row="2" Grid.Column="5" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         <Button IsEnabled="{Binding CmdDisConnectIsEnabled}"
-                Command="{Binding CmdDisConnect}" 
+                Command="{Binding DisConnectCommand}" 
                 Content="Disconnect" 
                 Grid.Row="3" Grid.Column="6" 
                 FontSize="30" Height="Auto" Margin="5,5,5,5" 
@@ -184,7 +184,7 @@
 
         <TextBlock Text="{Binding CurrentDateTime}" Grid.Row="12" Grid.Column="2" Grid.ColumnSpan="2" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <Button Command="{Binding CmdMeasureOn}"  
+        <Button Command="{Binding MeasureOnCommand}"  
                 IsEnabled="{Binding CmdMeasureOnIsEnabled}" 
                 Content="Measure ON" Grid.Row="6" 
                 Grid.Column="6" FontSize="30" Height="Auto"
@@ -195,14 +195,14 @@
                 Margin="5,0,5,11" VerticalAlignment="Bottom"
                 Click="OpenServiceModWindow"/>
 
-        <Button Command="{Binding CmdMeasureOff}" 
+        <Button Command="{Binding MeasureOffCommand}" 
                 IsEnabled="{Binding CmdMeasureOffIsEnabled}" 
                 Content="Measure OFF" 
                 Margin="5,5,5,5" 
                 Grid.Row="7" 
                 Grid.Column="6" FontSize="30" Height="Auto"/>
 
-        <Button Command="{Binding CmdRun}"    
+        <Button Command="{Binding RunCommand}"    
                 IsEnabled="{Binding CmdRunIsEnabled}"
                 Content="Run" Margin="5,5,5,5"
                 Grid.Row="8"

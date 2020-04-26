@@ -86,6 +86,8 @@
     <Compile Include="Model\SeviceMode\Channel.cs" />
     <Compile Include="Model\SeviceMode\ServiceRootObject.cs" />
     <Compile Include="Model\SeviceMode\SubChannel.cs" />
+    <Compile Include="ViewModel\MainViewModelCommands\MeasureOffCommand.cs" />
+    <Compile Include="ViewModel\MainViewModelCommands\MeasureOnCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\RunCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\ConnectCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\DisConnectCommand.cs" />

@@ -29,21 +29,12 @@ namespace IRCS_MS.ViewModel
     {
 
         public ConnectCommand ConnectCommand { get; set; }
+        public DisConnectCommand DisConnectCommand { get; set; }
+        public MeasureOffCommand MeasureOffCommand { get; set; }
+        public MeasureOnCommand MeasureOnCommand { get; set; }
+        public RunCommand RunCommand { get; set; }
 
         #region Variables
-        //private ICommand _connectCommand;
-
-        private ICommand _disConnectCommand;
-
-        private ICommand _measureOn;
-
-        private ICommand _measureOff;
-
-        private ICommand _run;
-
-        private ICommand _enterServiceMode;
-
-
         private List<string> _availablePorts;
 
         private List<int> _baudRates;
@@ -63,17 +54,6 @@ namespace IRCS_MS.ViewModel
         private string _messageRecievedText;
 
         private int _selectedBaudRate = 0;
-
-        //public ICommand CmdConnect => _connectCommand;
-
-        public ICommand CmdDisConnect => _disConnectCommand;
-
-        public ICommand CmdMeasureOn => _measureOn;
-
-        public ICommand CmdMeasureOff => _measureOff;
-
-        public ICommand CmdRun => _run;
-
 
         private string _stateOfDevice = "State: Not connected!";
 
@@ -96,7 +76,6 @@ namespace IRCS_MS.ViewModel
         private bool _runningTask;
 
         XmlFilter xmlData = null;
-        //XmlFilter xmlData = null;
 
         SerialPort COMPort = null;
 
@@ -121,14 +100,11 @@ namespace IRCS_MS.ViewModel
         {
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-            // _connectCommand = new DelegateCommand(ConnectToDevice);
             ConnectCommand = new ConnectCommand(this);
-
-            //_disConnectCommand = new DelegateCommand(DisConnect);
-            //_measureOn = new DelegateCommand(SendMeasureOn);
-            //_measureOff = new DelegateCommand(SendMeasureOff);
-            //_run = new DelegateCommand(SendRun);
-
+            DisConnectCommand = new DisConnectCommand(this);
+            MeasureOffCommand = new MeasureOffCommand(this);
+            MeasureOnCommand = new MeasureOnCommand(this);
+            RunCommand = new RunCommand(this);
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
@@ -227,7 +203,7 @@ namespace IRCS_MS.ViewModel
 
         #region Commands
 
-        private void DisConnect()
+        public void DisConnect()
         {
             DisConfigureDevice();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.DisConnectClick);
@@ -244,7 +220,7 @@ namespace IRCS_MS.ViewModel
             LoopMessagesArrayToSend();
         }
 
-        private void SendMeasureOn()
+        public void SendMeasureOn()
         {
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
             ByteMessageBuilder.SetByteArray(1, 0x00);
@@ -256,7 +232,7 @@ namespace IRCS_MS.ViewModel
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
         }
 
-        private void SendMeasureOff()
+        public void SendMeasureOff()
         {
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
             ByteMessageBuilder.SetByteArray(1, 0x00);
@@ -268,7 +244,7 @@ namespace IRCS_MS.ViewModel
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOffClick);
         }
 
-        private void SendRun()
+        public void SendRun()
         {
             //stopwatch
             TimeOutValidator(TimeOutValidatorStates.Start);
