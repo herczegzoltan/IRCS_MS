@@ -20,6 +20,7 @@ namespace IRCS_MS.ViewModel
         private List<string> _frequencyTypes;
         private List<string> _amplitudeTypes;
 
+        #region Commands
 
         public SystemBusWriteCommand SystemBusWriteCommand { get; set; }
         public SystemBusReadCommand SystemBusReadCommand { get; set; }
@@ -32,6 +33,8 @@ namespace IRCS_MS.ViewModel
         public FcnGenOffCommand FcnGenOffCommand { get; set; }
         public FcnGenOnCommand FcnGenOnCommand { get; set; }
         public ModulInitCommand ModulInitCommand { get; set; }
+
+        #endregion
 
         XmlFilter xmlData = null;
 
@@ -61,9 +64,7 @@ namespace IRCS_MS.ViewModel
             ChannelTypes = xmlData.ServiceModeGetChannelNames();
             FrequencyTypes = xmlData.ServiceModeGetDefaultValuesByTag("frequency");
             AmplitudeTypes = xmlData.ServiceModeGetDefaultValuesByTag("amplitude");
-
         }
-
 
         public void Temp()
         {
@@ -71,7 +72,6 @@ namespace IRCS_MS.ViewModel
         }
 
         #region Properties
-
 
         public List<string> ChannelTypes
         {
