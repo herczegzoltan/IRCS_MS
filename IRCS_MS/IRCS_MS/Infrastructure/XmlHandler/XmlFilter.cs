@@ -275,6 +275,23 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return new List<string>(subChannelList);
         }
 
+        public List<string> ServiceModeGetDefaultValuesByTag(string input)
+        {
+            IEnumerable<String> result = _rootServiceObject.DefaultValues.Record.Where(x => string.Equals(x.Tag, input, StringComparison.OrdinalIgnoreCase))
+                             .Select(m => m.Name);
+
+            //IEnumerable<String> measureList = result.SelectMany(s => s);
+
+            return new List<string>(result);
+        }
+
+        //IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
+        //                     .Select(m => m.Measure.Select(l => l.Name));
+
+        //IEnumerable<String> measureList = measure.SelectMany(s => s);
+
+        //    return new List<string>(measureList);
+
         #endregion
     }
 }

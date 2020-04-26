@@ -211,7 +211,10 @@
                       MaxLength="18"
                       Width="150"
                   />
-            <ComboBox Margin="10"
+            <ComboBox SelectedItem="{Binding Path=SelectedFrequencyType,
+                  Mode=OneWayToSource}" 
+                  ItemsSource="{Binding FrequencyTypes}"
+                  Margin="10"
                   Grid.Column="2"
                   Grid.Row="11"
                   FontSize="16"
@@ -228,7 +231,10 @@
                   MaxLength="18"
                   Width="150"
                   />
-            <ComboBox Margin="10"
+            <ComboBox SelectedItem="{Binding Path=SelectedAmplitudeType,
+                  Mode=OneWayToSource}" 
+                  ItemsSource="{Binding AmplitudeTypes}"
+                  Margin="10"
                   Grid.Column="2"
                   Grid.Row="11"
                   FontSize="16"

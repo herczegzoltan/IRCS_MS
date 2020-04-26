@@ -7,5 +7,6 @@ namespace IRCS_MS.Model.Common
     {
         [XmlElement("Record")]
         public List<Record> Record { get; set; }
+
     }
 }

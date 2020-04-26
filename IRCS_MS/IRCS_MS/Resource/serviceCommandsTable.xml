@@ -99,6 +99,14 @@ if(Service_mode_Command == SoundBusChange)
     <Record name = "ServiceOff" value = "0x00"/>
     <Record name = "Run" value = "0x05"/>
     <Record name = "TimeOutDefault" value ="90000"/>
+
+    <Record name = "Hz" value ="0x01" tag="frequency"/>
+    <Record name = "kHz" value ="0x02" tag="frequency"/>
+    <Record name = "MHz" value =" 0x03" tag="frequency"/>
+
+    <Record name = "mV" value ="0x01" tag="amplitude"/>
+    <Record name = "V" value ="0x02" tag="amplitude"/>
+
   </DefaultValues>
   
   <Channel name="IRCS_PSU" value="0x01" iscommon="False" default ="true">

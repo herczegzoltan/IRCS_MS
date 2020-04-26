@@ -15,6 +15,6 @@ namespace IRCS_MS.Model.SeviceMode
         public List<Channel> Channel { get; set; }
 
         [XmlElement("DefaultValues")]
-        public DefaultValues ValuesCommands { get; set; }
+        public DefaultValues DefaultValues { get; set; }
     }
 }

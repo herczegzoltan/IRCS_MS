@@ -14,5 +14,8 @@ namespace IRCS_MS.Model.Common
 
         [XmlAttribute("value")]
         public string Value { get; set; }
+
+        [XmlAttribute("tag")]
+        public string Tag { get; set; }
     }
 }

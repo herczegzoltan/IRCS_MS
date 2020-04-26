@@ -15,6 +15,8 @@ namespace IRCS_MS.ViewModel
         private List<string> _channelTypes;
         private List<string> _subChannelTypes;
         private string _selectedChannelType;
+        private List<string> _frequencyTypes;
+        private List<string> _amplitudeTypes;
 
         //COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
 
@@ -44,7 +46,6 @@ namespace IRCS_MS.ViewModel
 
         XmlFilter xmlData = null;
 
-
         public ServiceModeViewModel()
         {
             _psuOnCommand = new DelegateCommand(Temp);
@@ -61,6 +62,8 @@ namespace IRCS_MS.ViewModel
 
             xmlData = new XmlFilter();
             ChannelTypes = xmlData.ServiceModeGetChannelNames();
+            FrequencyTypes = xmlData.ServiceModeGetDefaultValuesByTag("frequency");
+            AmplitudeTypes = xmlData.ServiceModeGetDefaultValuesByTag("amplitude");
 
         }
 
@@ -114,6 +117,31 @@ namespace IRCS_MS.ViewModel
 
             }
         }
+        public List<string> FrequencyTypes
+        {
+            get
+            {
+                return _frequencyTypes;
+            }
+            set
+            {
+                _frequencyTypes = value;
+                OnPropertyChanged("FrequencyTypes");
+            }
+        }
+        public List<string> AmplitudeTypes
+        {
+            get
+            {
+                return _amplitudeTypes;
+            }
+            set
+            {
+                _amplitudeTypes = value;
+                OnPropertyChanged("AmplitudeTypes");
+            }
+        }
+        
         #endregion
     }
 }
