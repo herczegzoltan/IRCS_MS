@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace IRCS_MS.Model
+namespace IRCS_MS.Model.SeviceMode
 {
     [XmlRoot("RootObject")]
-    public class RootObject
+    public class ServiceRootObject
     {
-        [XmlElement("Card")]
-        public List<Card> Card { get; set; }
+        [XmlElement("Channel")]
+        public List<Channel> Card { get; set; }
 
         [XmlElement("DefaultValues")]
-        public DefaultValues ValuesCommands { get; set;}
+        public DefaultValues ValuesCommands { get; set; }
     }
 }

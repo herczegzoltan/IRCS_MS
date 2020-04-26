@@ -62,14 +62,8 @@ namespace IRCS_MS.ViewModel
 
         public void Temp()
         {
-
-
             MessageBox.Show(MyProp);
         }
-
-
-
-
 
         public string MyProp
         {

@@ -161,7 +161,8 @@
                       Margin="10"
                       MaxLength="18"
                       Width="150"
-                      HorizontalAlignment="Left"/>
+                      HorizontalAlignment="Left"
+                      Text="{Binding MyProp}"/>
 
             <Button Command="{Binding ChangeCommand}"
                     Content="Change"

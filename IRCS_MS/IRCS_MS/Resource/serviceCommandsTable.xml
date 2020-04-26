@@ -74,7 +74,10 @@ if(Service_mode_Command == SoundBusChange)
   A mezőt le kell korlátozni, MaxLength = 1 karakter (0-7-ig) (Igazából lehetne combobox is)
   }
 11.  >  Service_mode_EOF  (0x04)
-
+//
+//
+//
+//
 -->
 
 <RootObject>
