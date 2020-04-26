@@ -161,7 +161,7 @@
                 Margin="5,5,5,5"
                 Width="330"/>
 
-        <ComboBox SelectedItem="{Binding Path=SelectedMeasureType,
+        <ComboBox SelectedItem="{Binding Path=SelectedChannelType,
                   Mode=OneWayToSource}" 
                   ItemsSource="{Binding ChannelTypes}"
                   Margin="10"
@@ -169,9 +169,9 @@
                   Grid.Row="6"
                   FontSize="16"
                   />
-        <ComboBox SelectedItem="{Binding Path=SelectedMeasureType,
+        <ComboBox SelectedItem="{Binding Path=SelectedSubChannelTypes,
                   Mode=OneWayToSource}" 
-                  ItemsSource="{Binding MeasureTypes}"
+                  ItemsSource="{Binding SubChannelTypes}"
                   Margin="10"
                   Grid.Column="2"
                   Grid.Row="7"
@@ -294,9 +294,9 @@
         <!--colum 5-->
         <ScrollViewer 
             Margin="30,10,30,10"
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.Column="3"
-            Grid.RowSpan="7"
+            Grid.RowSpan="8"
             Grid.ColumnSpan="2"
             Background="Black">
             <TextBlock Text=""
@@ -313,7 +313,7 @@
             Margin="30,10,30,10"
             Grid.Row="9"
             Grid.Column="3"
-            Grid.RowSpan="3"
+            Grid.RowSpan="6"
             Background="Black"
             Grid.ColumnSpan="2">
             <TextBlock Text=""
@@ -328,9 +328,9 @@
 
         <ScrollViewer 
             Margin="30,10,30,10"
-            Grid.Row="12"
+            Grid.Row="15"
             Grid.Column="3"
-            Grid.RowSpan="3"
+            Grid.RowSpan="4"
             Grid.ColumnSpan="2"
             Background="Black">
             <TextBlock Text=""

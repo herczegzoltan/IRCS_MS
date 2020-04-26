@@ -265,6 +265,16 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return new List<string>(channelTypes);
         }
 
+        public List<string> ServiceModeGetSubChannelNames(string channelType)
+        {
+            IEnumerable<IEnumerable<String>> subCahnnel = _rootServiceObject.Channel.Where(x => string.Equals(x.Name, channelType, StringComparison.OrdinalIgnoreCase))
+                                         .Select(m => m.Measure.Select(l => l.Name));
+
+            IEnumerable<String> subChannelList = subCahnnel.SelectMany(s => s);
+
+            return new List<string>(subChannelList);
+        }
+
         #endregion
     }
 }

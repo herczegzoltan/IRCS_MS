@@ -13,6 +13,8 @@ namespace IRCS_MS.ViewModel
     {
 
         private List<string> _channelTypes;
+        private List<string> _subChannelTypes;
+        private string _selectedChannelType;
 
         //COMPortManager.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
 
@@ -62,11 +64,10 @@ namespace IRCS_MS.ViewModel
 
         }
 
-        private string _MyProp;
 
         public void Temp()
         {
-            MessageBox.Show(MyProp);
+           // MessageBox.Show(MyProp);
         }
 
         #region Properties
@@ -81,20 +82,36 @@ namespace IRCS_MS.ViewModel
             set
             {
                 _channelTypes = value;
-                OnPropertyChanged("CardTypes");
+                OnPropertyChanged("ChannelTypes");
             }
         }
 
-        public string MyProp
+        public List<string> SubChannelTypes
         {
             get
             {
-                return _MyProp;
+                return _subChannelTypes;
             }
             set
             {
-                _MyProp = value;
-                OnPropertyChanged("MyProp");
+                _subChannelTypes = value;
+                OnPropertyChanged("SubChannelTypes");
+            }
+        }
+
+        public string SelectedChannelType
+        {
+            get
+            {
+                return _selectedChannelType;
+            }
+
+            set
+            {
+                _selectedChannelType = value;
+                OnPropertyChanged("ChannelTypes");
+                SubChannelTypes = xmlData.ServiceModeGetSubChannelNames(SelectedChannelType);
+
             }
         }
         #endregion
