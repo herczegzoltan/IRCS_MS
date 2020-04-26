@@ -91,9 +91,12 @@
     <Compile Include="ViewModel\MainViewModelCommands\RunCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\ConnectCommand.cs" />
     <Compile Include="ViewModel\MainViewModelCommands\DisConnectCommand.cs" />
-    <Compile Include="ViewModel\ServiceModeCommands\SystemBusWriteCommand.cs" />
-    <Compile Include="ViewModel\ServiceVMHelper\IncomingMessageProcessor.cs" />
-    <Compile Include="ViewModel\MainVMHelper\IncomingMessageProcessor.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\PsuOnCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\PsuOffCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\ResetOnCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\ResetOffCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\SystemBusReadCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\SystemBusWriteCommand.cs" />
     <Compile Include="ViewModel\Helper\UIElementHelper.cs" />
     <Compile Include="ViewModel\ServiceModeViewModel.cs" />
     <Compile Include="View\ServiceModeWindow.xaml.cs">

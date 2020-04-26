@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace IRCS_MS.ViewModel.ServiceModeCommands
+namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
 {
-    public class SystemBusWriteCommand : ICommand
+    public class ResetOffCommand : ICommand
     {
         public ServiceModeViewModel VM { get; set; }
 
-        public SystemBusWriteCommand(ServiceModeViewModel vM)
+        public ResetOffCommand(ServiceModeViewModel vM)
         {
             VM = vM;
         }
