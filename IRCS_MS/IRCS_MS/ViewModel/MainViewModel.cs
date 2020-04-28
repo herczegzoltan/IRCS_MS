@@ -173,7 +173,6 @@ namespace IRCS_MS.ViewModel
                 COMPort = SerialPortManager.Instance;
                 COMPort.BaudRate = SelectedBaudRate;
                 COMPort.PortName = SelectedAvailablePort;
-                MessageBox.Show(COMPort.GetHashCode().ToString());
                 try
                 {
                     COMPort.Open();

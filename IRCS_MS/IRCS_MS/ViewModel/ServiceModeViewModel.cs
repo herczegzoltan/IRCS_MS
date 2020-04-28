@@ -71,9 +71,7 @@ namespace IRCS_MS.ViewModel
 
         public void Temp()
         {
-            MessageBox.Show(COMPort.GetHashCode().ToString());
-
-//            MessageBox.Show("asd");
+            MessageBox.Show("asd");
         }
         // TODO: event unsub before opening this UI and subscrube for this and reverse
         //
