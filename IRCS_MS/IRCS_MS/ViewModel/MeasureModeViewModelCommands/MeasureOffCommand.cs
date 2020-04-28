@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.MainViewModelCommands
 {
-    public class ConnectCommand : ICommand
+    public class MeasureOffCommand : ICommand
     {
 
-        public MainViewModel VM { get; set; }
+        public MeasureModeViewModel VM { get; set; }
 
-        public ConnectCommand(MainViewModel vM)
+        public MeasureOffCommand(MeasureModeViewModel vM)
         {
             VM = vM;
         }
@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.MainViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.ConnectToDevice();
+            VM.SendMeasureOff();
         }
     }
 }

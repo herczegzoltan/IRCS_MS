@@ -7,16 +7,15 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.MainViewModelCommands
 {
-    public class DisConnectCommand :ICommand
+    public class ConnectCommand : ICommand
     {
+        public MeasureModeViewModel VM { get; set; }
 
-        public MainViewModel VM { get; set; }
-
-        public DisConnectCommand(MainViewModel vM)
+        public ConnectCommand(MeasureModeViewModel vM)
         {
             VM = vM;
         }
-        public event EventHandler CanExecuteChanged
+        public event EventHandler CanExecuteChanged 
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
@@ -30,7 +29,7 @@ namespace IRCS_MS.ViewModel.MainViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.DisConnect();
+            VM.ConnectToDevice();
         }
     }
 }

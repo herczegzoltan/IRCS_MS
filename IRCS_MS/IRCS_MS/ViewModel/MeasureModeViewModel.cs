@@ -25,9 +25,8 @@ using IRCS_MS.ViewModel.MainViewModelCommands;
 namespace IRCS_MS.ViewModel
 {
 
-    public class MainViewModel : INotifyPropertyChanged
+    public class MeasureModeViewModel : INotifyPropertyChanged
     {
-
         public ConnectCommand ConnectCommand { get; set; }
         public DisConnectCommand DisConnectCommand { get; set; }
         public MeasureOffCommand MeasureOffCommand { get; set; }
@@ -97,7 +96,7 @@ namespace IRCS_MS.ViewModel
         public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
 
         #endregion
-        public MainViewModel()
+        public MeasureModeViewModel()
         {
 
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");

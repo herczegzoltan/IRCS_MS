@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.MainViewModelCommands
 {
-    public class MeasureOffCommand : ICommand
+    public class MeasureOnCommand : ICommand
     {
 
-        public MainViewModel VM { get; set; }
+        public MeasureModeViewModel VM { get; set; }
 
-        public MeasureOffCommand(MainViewModel vM)
+        public MeasureOnCommand(MeasureModeViewModel vM)
         {
             VM = vM;
         }
@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.MainViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.SendMeasureOff();
+            VM.SendMeasureOn();
         }
     }
 }

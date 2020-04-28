@@ -7,16 +7,16 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.MainViewModelCommands
 {
-    public class MeasureOnCommand : ICommand
+    public class RunCommand : ICommand
     {
 
-        public MainViewModel VM { get; set; }
+        public MeasureModeViewModel VM { get; set; }
 
-        public MeasureOnCommand(MainViewModel vM)
+        public RunCommand(MeasureModeViewModel vM)
         {
             VM = vM;
         }
-        public event EventHandler CanExecuteChanged 
+        public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.MainViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.SendMeasureOn();
+            VM.SendRun();
         }
     }
 }

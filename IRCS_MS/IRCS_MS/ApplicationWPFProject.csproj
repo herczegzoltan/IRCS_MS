@@ -83,17 +83,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\ByteMessageBuilderRepository.cs" />
+    <Compile Include="Infrastructure\ByteMessageConverter.cs" />
     <Compile Include="Infrastructure\SerialPortManager.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Model\SeviceMode\Channel.cs" />
     <Compile Include="Model\SeviceMode\ServiceRootObject.cs" />
     <Compile Include="Model\SeviceMode\SubChannel.cs" />
-    <Compile Include="ViewModel\MainViewModelCommands\MeasureOffCommand.cs" />
-    <Compile Include="ViewModel\MainViewModelCommands\MeasureOnCommand.cs" />
-    <Compile Include="ViewModel\MainViewModelCommands\RunCommand.cs" />
-    <Compile Include="ViewModel\MainViewModelCommands\ConnectCommand.cs" />
-    <Compile Include="ViewModel\MainViewModelCommands\DisConnectCommand.cs" />
+    <Compile Include="ViewModel\MeasureModeViewModelCommands\MeasureOffCommand.cs" />
+    <Compile Include="ViewModel\MeasureModeViewModelCommands\MeasureOnCommand.cs" />
+    <Compile Include="ViewModel\MeasureModeViewModelCommands\RunCommand.cs" />
+    <Compile Include="ViewModel\MeasureModeViewModelCommands\ConnectCommand.cs" />
+    <Compile Include="ViewModel\MeasureModeViewModelCommands\DisConnectCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\AnalGenRunCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\FcnGenOffCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\FcnGenOnCommand.cs" />
@@ -137,7 +139,7 @@
     <Compile Include="Model\UIElementStateVariations.cs" />
     <Compile Include="Infrastructure\XmlHandler\XmlProcessor.cs" />
     <Compile Include="Infrastructure\SerialCommunicationSettings.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MeasureModeViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

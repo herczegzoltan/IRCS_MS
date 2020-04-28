@@ -21,7 +21,7 @@ namespace IRCS_MS
             //var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };
             //smainWindow.Close();
 
-            var mainViewModel = new MainViewModel();
+            var mainViewModel = new MeasureModeViewModel();
             var mainWindow = new MainWindow { DataContext = mainViewModel };
             mainWindow.Show();
 

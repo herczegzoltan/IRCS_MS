@@ -10,9 +10,9 @@ namespace IRCS_MS.ViewModel.Commands
     public class UIElementCollectionHelper
     {
 
-        public MainViewModel MV { get; set; }
+        public MeasureModeViewModel MV { get; set; }
 
-        public UIElementCollectionHelper(MainViewModel mv)
+        public UIElementCollectionHelper(MeasureModeViewModel mv)
         {
             MV = mv;
         }

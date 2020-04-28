@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.MainViewModelCommands
 {
-    public class RunCommand : ICommand
+    public class DisConnectCommand :ICommand
     {
 
-        public MainViewModel VM { get; set; }
+        public MeasureModeViewModel VM { get; set; }
 
-        public RunCommand(MainViewModel vM)
+        public DisConnectCommand(MeasureModeViewModel vM)
         {
             VM = vM;
         }
@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.MainViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.SendRun();
+            VM.DisConnect();
         }
     }
 }

@@ -8,7 +8,6 @@ namespace IRCS_MS.Infrastructure.Message
 {
     public static class ByteMessageBuilder
     {
-        private static List<byte> listOfBytes = new List<byte>() { };
 
         private static byte[] _arrayByteOutgoing = new byte[5] { 0x00, 0x00, 0x00, 0x00,0x00  };
 
