@@ -9,8 +9,8 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using IRCS_MS.Model;
 using IRCS_MS.Model.InComing;
-using IRCS_MS.Model.NotServiceMode;
-using IRCS_MS.Model.SeviceMode;
+using IRCS_MS.Model.MeasureMode;
+using IRCS_MS.Model.ServiceMode;
 
 namespace IRCS_MS.Infrastructure.XmlHandler
 {

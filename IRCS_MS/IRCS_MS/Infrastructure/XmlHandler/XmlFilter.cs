@@ -1,8 +1,8 @@
 ﻿using IRCS_MS.Infrastructure.Message;
 using IRCS_MS.Model;
 using IRCS_MS.Model.InComing;
-using IRCS_MS.Model.NotServiceMode;
-using IRCS_MS.Model.SeviceMode;
+using IRCS_MS.Model.MeasureMode;
+using IRCS_MS.Model.ServiceMode;
 using System;
 using System.Collections.Generic;
 using System.Linq;

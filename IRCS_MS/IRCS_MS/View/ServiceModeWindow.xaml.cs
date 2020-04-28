@@ -30,7 +30,7 @@ namespace IRCS_MS.View
         {
 
             var mainViewModel = new MeasureModeViewModel();
-            var mainWindow = new MainWindow { DataContext = mainViewModel };
+            var mainWindow = new MeasureModeWindow { DataContext = mainViewModel };
             mainWindow.Show();
             this.Close();
         }

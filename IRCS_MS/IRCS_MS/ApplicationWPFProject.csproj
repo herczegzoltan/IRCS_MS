@@ -84,13 +84,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\ByteMessageBuilderRepository.cs" />
-    <Compile Include="Infrastructure\ByteMessageConverter.cs" />
+    <Compile Include="Infrastructure\ByteMessages.cs" />
     <Compile Include="Infrastructure\SerialPortManager.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Model\SeviceMode\Channel.cs" />
-    <Compile Include="Model\SeviceMode\ServiceRootObject.cs" />
-    <Compile Include="Model\SeviceMode\SubChannel.cs" />
+    <Compile Include="Model\ServiceMode\Channel.cs" />
+    <Compile Include="Model\ServiceMode\ServiceRootObject.cs" />
+    <Compile Include="Model\ServiceMode\SubChannel.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\MeasureOffCommand.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\MeasureOnCommand.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\RunCommand.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="View\ServiceModeWindow.xaml.cs">
       <DependentUpon>ServiceModeWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\MainWindow.xaml">
+    <Page Include="View\MeasureModeWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -129,19 +129,19 @@
     <Compile Include="Infrastructure\Message\ValidatorIncomingMessage.cs" />
     <Compile Include="Infrastructure\XmlHandler\XmlFilter.cs" />
     <Compile Include="Model\InComing\Answer.cs" />
-    <Compile Include="Model\NotServiceMode\Card.cs" />
+    <Compile Include="Model\MeasureMode\Card.cs" />
     <Compile Include="Model\Common\DefaultValues.cs" />
     <Compile Include="Model\Common\Measure.cs" />
     <Compile Include="Model\Common\Record.cs" />
     <Compile Include="Model\InComing\RootObjectResponse.cs" />
-    <Compile Include="Model\NotServiceMode\RootObject.cs" />
+    <Compile Include="Model\MeasureMode\RootObject.cs" />
     <Compile Include="Model\TimeOutValidatorStates.cs" />
     <Compile Include="Model\UIElementStateVariations.cs" />
     <Compile Include="Infrastructure\XmlHandler\XmlProcessor.cs" />
     <Compile Include="Infrastructure\SerialCommunicationSettings.cs" />
     <Compile Include="ViewModel\MeasureModeViewModel.cs" />
-    <Compile Include="View\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="View\MeasureModeWindow.xaml.cs">
+      <DependentUpon>MeasureModeWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\ServiceModeWindow.xaml">
