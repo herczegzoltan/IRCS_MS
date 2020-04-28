@@ -5,6 +5,17 @@ TODO
 - Each class write one summary sentence
 
 
+service mode responses:
+6 byte
+
+0.byte command
+1.byte Data0
+2.byte Data1
+3.byte Data2
+4.byte Data3
+5.byte EOF-0x04
+
+
 Bug & Questions
 
 Q: Azt mondtad, hogy sound bus channel az egy user input, de a te progidban az egy combobox. Most akkor textbox vagy combobox legyen?
