@@ -193,7 +193,8 @@
         <Button Content="Enter Service Mode" Grid.Row="6" 
                 Grid.Column="7" FontSize="24" Height="60"
                 Margin="5,0,5,11" VerticalAlignment="Bottom"
-                Click="OpenServiceModWindow"/>
+                Click="OpenServiceModWindow"
+                IsEnabled="False"/>
 
         <Button Command="{Binding MeasureOffCommand}" 
                 IsEnabled="{Binding CmdMeasureOffIsEnabled}" 

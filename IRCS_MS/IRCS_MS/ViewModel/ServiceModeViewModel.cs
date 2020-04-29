@@ -66,7 +66,6 @@ namespace IRCS_MS.ViewModel
             FrequencyTypes = xmlData.ServiceModeGetDefaultValuesByTag("frequency");
             AmplitudeTypes = xmlData.ServiceModeGetDefaultValuesByTag("amplitude");
             COMPort = SerialPortManager.Instance;
-
         }
 
         public void Temp()
