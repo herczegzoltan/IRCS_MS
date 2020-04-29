@@ -15,6 +15,7 @@ service mode responses:
 4.byte Data3
 5.byte EOF-0x04
 
+A uC reset gomb meleg resetet okoz. utána újra kell kapcsolódni, stb.
 
 Bug & Questions
 
