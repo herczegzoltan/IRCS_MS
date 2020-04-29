@@ -29,8 +29,8 @@ namespace IRCS_MS.View
         private void OpenMainWindow(object sender, RoutedEventArgs e)
         {
 
-            var mainViewModel = new MainViewModel();
-            var mainWindow = new MainWindow { DataContext = mainViewModel };
+            var mainViewModel = new MeasureModeViewModel();
+            var mainWindow = new MeasureModeWindow { DataContext = mainViewModel };
             mainWindow.Show();
             this.Close();
         }

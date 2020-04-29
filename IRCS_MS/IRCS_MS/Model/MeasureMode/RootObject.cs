@@ -6,15 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace IRCS_MS.Model.SeviceMode
+namespace IRCS_MS.Model.MeasureMode
 {
     [XmlRoot("RootObject")]
-    public class ServiceRootObject
+    public class RootObject
     {
-        [XmlElement("Channel")]
-        public List<Channel> Channel { get; set; }
+        [XmlElement("Card")]
+        public  List<Card> Card { get; set; }
 
         [XmlElement("DefaultValues")]
-        public DefaultValues DefaultValues { get; set; }
+        public DefaultValues ValuesCommands { get; set;}
     }
 }

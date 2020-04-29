@@ -1,10 +1,9 @@
-﻿using IRCS_MS.Model.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace IRCS_MS.Model.NotServiceMode
+namespace IRCS_MS.Model.ServiceMode
 {
-    public class Card
+     public class Channel
     {
         [XmlAttribute("name")]
         public string Name { get; set; }
@@ -12,13 +11,14 @@ namespace IRCS_MS.Model.NotServiceMode
         [XmlAttribute("value")]
         public string Value { get; set; }
 
-        [XmlElement("Measure")]
-        public List<Measure> Measure { get; set; }
+        [XmlElement("SubChannel")]
+        public List<SubChannel> Measure { get; set; }
 
         [XmlAttribute("iscommon")]
         public string IsCommonIncluded { get; set; }
 
         [XmlAttribute("default")]
-        public string Default{ get; set; }
+        public string Default { get; set; }
+
     }
 }

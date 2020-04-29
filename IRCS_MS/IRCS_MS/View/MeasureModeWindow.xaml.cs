@@ -21,9 +21,9 @@ namespace IRCS_MS
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MeasureModeWindow
     {
-        public MainWindow()
+        public MeasureModeWindow()
         {
             InitializeComponent();
             this.WindowState = WindowState.Maximized;
