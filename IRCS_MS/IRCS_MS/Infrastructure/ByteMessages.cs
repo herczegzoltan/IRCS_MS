@@ -12,7 +12,7 @@ namespace IRCS_MS.Infrastructure
 
         public byte[] MeasureModeOutgoing = new byte[5] { 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-        public byte[] ServiceModeIncoming = new byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        public string[] ServiceModeIncoming = new string[6] { "", "", "", "", "", ""};
 
         public byte[] ServiceModeOutgoing = new byte[12] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 

@@ -264,6 +264,10 @@ namespace IRCS_MS.ViewModel
             ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
 
+
+            ByteMessageBuilderRepository.ClearArray(ByteMessages.Instance.MeasureModeIncoming);
+            
+
             for (int i = 0; i < ByteMessages.Instance.MeasureModeOutgoing.Length; i++)
             {
                 SendData(ByteMessages.Instance.MeasureModeOutgoing[i]);
@@ -371,7 +375,7 @@ namespace IRCS_MS.ViewModel
                     //int testValue = COMPort.ReadByte();
                     //MessageRecievedText += testValue;
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
-                    //ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeIncoming, countBytes, incomingByte);
+                    ByteMessageBuilderRepository.SetStrArrayByIndex(ByteMessages.Instance.MeasureModeIncoming, countBytes, incomingByte);
 
                     
                     //all bytes arrived

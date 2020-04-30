@@ -19,7 +19,7 @@ namespace IRCS_MS.Infrastructure
         }
         private void ResetByteMessages()
         {
-            ByteMessageBuilderRepository.ClearByteArray(_byteMessages.MeasureModeOutgoing);
+            ByteMessageBuilderRepository.ClearArray(_byteMessages.MeasureModeOutgoing);
         }
 
         public void MeasureModeConnectConfigureDevice()
