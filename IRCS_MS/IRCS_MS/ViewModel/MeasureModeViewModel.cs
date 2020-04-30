@@ -260,9 +260,9 @@ namespace IRCS_MS.ViewModel
 
         private void LoopMessagesArrayToSend()
         {
-            ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
-            ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
-            ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
+            //ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
+            //ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
+            //ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
 
 
             ByteMessageBuilderRepository.ClearArray(ByteMessages.Instance.MeasureModeIncoming);
@@ -374,9 +374,8 @@ namespace IRCS_MS.ViewModel
                     string incomingByte = COMPort.ReadByte().ToString();
                     //int testValue = COMPort.ReadByte();
                     //MessageRecievedText += testValue;
-                    ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+                    //ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
                     ByteMessageBuilderRepository.SetStrArrayByIndex(ByteMessages.Instance.MeasureModeIncoming, countBytes, incomingByte);
-
                     
                     //all bytes arrived
                     if (countBytes == 2)
@@ -416,7 +415,7 @@ namespace IRCS_MS.ViewModel
                                 }
 
                                 //if incoming message returns with measure ok or not-> negative logic
-                                if (ValidatorIncomingMessage.ErrorMessageBack(xmlData, ByteMessageBuilder.GetByteIncomingArray()[1]))
+                                if (ValidatorIncomingMessage.ErrorMessageBack(xmlData, ByteMessages.Instance.MeasureModeIncoming[1]))
                                 {
                                     //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
@@ -430,7 +429,7 @@ namespace IRCS_MS.ViewModel
                                     _savedMeasureCounter++;
 
                                     string reportInsertData = xmlData.GetResponseData(
-                                        ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()));
+                                        ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()));
 
                                     ReportDataCollector.AddToVertical(reportInsertData);
 
@@ -457,15 +456,15 @@ namespace IRCS_MS.ViewModel
                         {
                             MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
                                                 xmlData.GetResponseTranslate
-                                                (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                                ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-                                                ByteMessageBuilder.GetByteIncomingArray()[2].ToString())
+                                                (ByteMessages.Instance.MeasureModeIncoming[0].ToString(),
+                                                ByteMessages.Instance.MeasureModeIncoming[1].ToString(),
+                                                ByteMessages.Instance.MeasureModeIncoming[2].ToString())
                                                 + "\n" + MessageRecievedText + "\n";
                         }
 
                         countBytes = 0;
                         WasItDisconnect();
-                        ByteMessageBuilder.ResetByteIncomingArray();
+                        ByteMessageBuilderRepository.ClearArray(ByteMessages.Instance.MeasureModeIncoming);
                     }
                     else
                     {
@@ -494,9 +493,9 @@ namespace IRCS_MS.ViewModel
         private void WasItDisconnect()
         {
             if (xmlData.GetResponseTranslate
-                                               (ByteMessageBuilder.GetByteIncomingArray()[0].ToString(),
-                                               ByteMessageBuilder.GetByteIncomingArray()[1].ToString(),
-                                               ByteMessageBuilder.GetByteIncomingArray()[2].ToString()) == "Disconnected")
+                                               (ByteMessages.Instance.MeasureModeIncoming[0].ToString(),
+                                               ByteMessages.Instance.MeasureModeIncoming[1].ToString(),
+                                               ByteMessages.Instance.MeasureModeIncoming[2].ToString()) == "Disconnected")
             {
                 COMPort.Close();
                 COMPort.Dispose();

@@ -11,7 +11,7 @@ namespace IRCS_MS.Infrastructure.Message
     {
         private static bool CheckRightEOF(string incomingByte, XmlFilter xmlFilter)
         {
-            incomingByte = ByteMessageBuilder.ConvertDecimalStringToHexString(incomingByte);
+            incomingByte = ConverterRepository.ConvertDecimalStringToHexString(incomingByte);
 
             if (xmlFilter.GetEOF() == incomingByte)
             {
@@ -27,7 +27,7 @@ namespace IRCS_MS.Infrastructure.Message
 
         public static bool ValidationEOF(XmlFilter xmlData)
         {
-            bool val = CheckRightEOF(ByteMessageBuilder.GetByteIncomingArray()[2].ToString(), xmlData);
+            bool val = CheckRightEOF(ByteMessages.Instance.MeasureModeIncoming[2].ToString(), xmlData);
             //validate EOF
             //if (!val)
             //{

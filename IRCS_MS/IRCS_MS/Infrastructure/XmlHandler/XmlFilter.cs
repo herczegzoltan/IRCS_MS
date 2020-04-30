@@ -159,9 +159,9 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
         public string GetResponseTranslate(string command, string data, string eof)
         {
-            command = ByteMessageBuilder.ConvertDecimalStringToHexString(command);
-            data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
-            eof = ByteMessageBuilder.ConvertDecimalStringToHexString(eof);
+            command = ConverterRepository.ConvertDecimalStringToHexString(command);
+            data = ConverterRepository.ConvertDecimalStringToHexString(data);
+            eof = ConverterRepository.ConvertDecimalStringToHexString(eof);
             string singleResponseTranslate = _rootOjectResponse.Answer.Where(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase)) 
                                              && (string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
                                              && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase)))
@@ -218,7 +218,7 @@ namespace IRCS_MS.Infrastructure.XmlHandler
         public bool GetValidator(string data)
         {
 
-            data = ByteMessageBuilder.ConvertDecimalStringToHexString(data);
+            data = ConverterRepository.ConvertDecimalStringToHexString(data);
             bool singleResponseTranslate = _rootOjectResponse.Answer.Any(x => (string.Equals(x.Data, data, StringComparison.OrdinalIgnoreCase))
                                              && (string.Equals(x.Validation, "true", StringComparison.OrdinalIgnoreCase)));
 

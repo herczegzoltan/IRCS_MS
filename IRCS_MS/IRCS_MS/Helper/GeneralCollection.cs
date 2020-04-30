@@ -22,13 +22,13 @@ namespace IRCS_MS.Helper
         {
             return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
                               xmlData.GetSelectedCardTypeName
-                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString()))
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString()))
                               + " -> " +
                               xmlData.GetCurrentMeasurement(xmlData.GetSelectedCardTypeName
-                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[0].ToString())), LoopCounter)
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString())), LoopCounter)
                               + " -> " +
                               xmlData.GetResponseData
-                              (ByteMessageBuilder.ConvertDecimalStringToHexString(ByteMessageBuilder.GetByteIncomingArray()[1].ToString()))
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()))
                               + customText + "\n";
         }
 
