@@ -43,6 +43,9 @@ namespace IRCS_MS.ViewModel.Commands
                 case UIElementStateVariations.MeasureOnAfterClick:
                     UIElementUpdaterHelper(false, true, false, true, true, false, false);
                     break;
+                case UIElementStateVariations.MeasureOnAfterClickVoip:
+                    UIElementUpdaterHelper(false, true, false, true, false, false, false);
+                    break;
                 default:
                     break;
             }
