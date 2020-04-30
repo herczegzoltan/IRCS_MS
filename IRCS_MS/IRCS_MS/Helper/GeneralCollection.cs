@@ -18,16 +18,16 @@ namespace IRCS_MS.Helper
         }
         public static int LoopCounter = 0;
 
-        public static string GeneralMessageRecived(string customText, XmlFilter xmlData)
+        public static string GeneralMessageRecivedTranslation(string customText)
         {
             return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
-                              xmlData.GetSelectedCardTypeName
+                              XmlFilter.Instance.GetSelectedCardTypeName
                               (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString()))
                               + " -> " +
-                              xmlData.GetCurrentMeasurement(xmlData.GetSelectedCardTypeName
+                              XmlFilter.Instance.GetCurrentMeasurement(XmlFilter.Instance.GetSelectedCardTypeName
                               (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString())), LoopCounter)
                               + " -> " +
-                              xmlData.GetResponseData
+                              XmlFilter.Instance.GetResponseData
                               (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()))
                               + customText + "\n";
         }

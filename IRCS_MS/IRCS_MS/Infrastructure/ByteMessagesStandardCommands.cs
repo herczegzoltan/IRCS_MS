@@ -10,12 +10,10 @@ namespace IRCS_MS.Infrastructure
     public class ByteMessagesStandardCommands
     {
         private readonly ByteMessages _byteMessages;
-        private readonly XmlFilter _xmlData;
 
         public ByteMessagesStandardCommands()
         {
             _byteMessages = ByteMessages.Instance;
-            _xmlData = XmlFilter.Instance;
         }
         private void ResetByteMessages()
         {
@@ -25,39 +23,39 @@ namespace IRCS_MS.Infrastructure
         public void MeasureModeConnectConfigureDevice()
         {
             ResetByteMessages();
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, _xmlData.GetConnect());
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, _xmlData.GetEOF());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, XmlFilter.Instance.GetConnect());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
         
         public void MeasureModeDisConfigureDevice()
         {
             ResetByteMessages();
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, _xmlData.GetDisConnect());
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, _xmlData.GetEOF());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, XmlFilter.Instance.GetDisConnect());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
 
         public void MeasureModeMeasureOn()
         {
             ResetByteMessages();
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, _xmlData.GetMeasureOn());
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, _xmlData.GetEOF());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, XmlFilter.Instance.GetMeasureOn());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
 
         public void MeasureModeMeasureOff()
         {
             ResetByteMessages();
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, _xmlData.GetMeasureOff());
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, _xmlData.GetEOF());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, XmlFilter.Instance.GetMeasureOff());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
 
         public void MeasureModeSendRun(string cardType, string measureType)
         {
             ResetByteMessages();
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, _xmlData.GetMeasureOn());
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 1, _xmlData.GetSelectedCardTypeValue(cardType));
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 2, _xmlData.GetSelectedMeasurementValue(cardType, measureType));
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 3, _xmlData.GetRun());
-            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, _xmlData.GetEOF());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, XmlFilter.Instance.GetMeasureOn());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 1, XmlFilter.Instance.GetSelectedCardTypeValue(cardType));
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 2, XmlFilter.Instance.GetSelectedMeasurementValue(cardType, measureType));
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 3, XmlFilter.Instance.GetRun());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
     }
 }

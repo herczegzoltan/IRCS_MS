@@ -9,25 +9,25 @@ namespace IRCS_MS.Infrastructure.Message
 {
     public static class ValidatorIncomingMessage
     {
-        private static bool CheckRightEOF(string incomingByte, XmlFilter xmlFilter)
+        private static bool CheckRightEOF(string incomingByte)
         {
             incomingByte = ConverterRepository.ConvertDecimalStringToHexString(incomingByte);
 
-            if (xmlFilter.GetEOF() == incomingByte)
+            if (XmlFilter.Instance.GetEOF() == incomingByte)
             {
                 return true;
             }
             return false;
         }
 
-        public static bool ErrorMessageBack(XmlFilter xmlData, string incomingData)
+        public static bool ErrorMessageBack(string incomingData)
         {
-            return !xmlData.GetValidator(incomingData);
+            return !XmlFilter.Instance.GetValidator(incomingData);
         }
 
-        public static bool ValidationEOF(XmlFilter xmlData)
+        public static bool ValidationEOF()
         {
-            bool val = CheckRightEOF(ByteMessages.Instance.MeasureModeIncoming[2].ToString(), xmlData);
+            bool val = CheckRightEOF(ByteMessages.Instance.MeasureModeIncoming[2].ToString());
             //validate EOF
             //if (!val)
             //{

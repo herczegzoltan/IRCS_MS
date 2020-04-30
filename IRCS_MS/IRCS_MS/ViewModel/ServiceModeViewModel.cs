@@ -18,7 +18,7 @@ namespace IRCS_MS.ViewModel
         private string _selectedChannelType;
         private List<string> _frequencyTypes;
         private List<string> _amplitudeTypes;
-        SerialPortManager COMPort;
+        // COMPort;
 
         #region Commands
 
@@ -36,7 +36,6 @@ namespace IRCS_MS.ViewModel
 
         #endregion
 
-        XmlFilter xmlData = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -47,7 +46,6 @@ namespace IRCS_MS.ViewModel
 
         public ServiceModeViewModel()
         {
-
             SystemBusWriteCommand = new SystemBusWriteCommand(this);
             SystemBusReadCommand = new SystemBusReadCommand(this);
             PsuOffCommand = new PsuOffCommand(this);
@@ -60,12 +58,10 @@ namespace IRCS_MS.ViewModel
             FcnGenOnCommand = new FcnGenOnCommand(this);
             ModulInitCommand = new ModulInitCommand(this);
 
-
-            xmlData = new XmlFilter();
-            ChannelTypes = xmlData.ServiceModeGetChannelNames();
-            FrequencyTypes = xmlData.ServiceModeGetDefaultValuesByTag("frequency");
-            AmplitudeTypes = xmlData.ServiceModeGetDefaultValuesByTag("amplitude");
-            COMPort = SerialPortManager.Instance;
+            ChannelTypes = XmlFilter.Instance.ServiceModeGetChannelNames();
+            FrequencyTypes = XmlFilter.Instance.ServiceModeGetDefaultValuesByTag("frequency");
+            AmplitudeTypes = XmlFilter.Instance.ServiceModeGetDefaultValuesByTag("amplitude");
+            //COMPort = SerialPortManager.Instance;
         }
 
         public void Temp()
@@ -117,7 +113,7 @@ namespace IRCS_MS.ViewModel
             {
                 _selectedChannelType = value;
                 OnPropertyChanged("ChannelTypes");
-                SubChannelTypes = xmlData.ServiceModeGetSubChannelNames(SelectedChannelType);
+                SubChannelTypes = XmlFilter.Instance.ServiceModeGetSubChannelNames(SelectedChannelType);
 
             }
         }

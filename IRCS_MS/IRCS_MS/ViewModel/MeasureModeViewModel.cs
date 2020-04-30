@@ -74,11 +74,6 @@ namespace IRCS_MS.ViewModel
 
         private bool _runningTask;
 
-        XmlFilter xmlData = null;
-
-        SerialPortManager COMPort;
-        //SerialPort COMPort = null;
-
         ByteMessagesStandardCommands byteMessagesStandardCommands;
              
         private string _currentDateTime;
@@ -113,8 +108,7 @@ namespace IRCS_MS.ViewModel
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
 
-            xmlData = new XmlFilter();
-            CardTypes = xmlData.GetCardTypeNames();
+            CardTypes = XmlFilter.Instance.GetCardTypeNames();
 
             byteMessagesStandardCommands = new ByteMessagesStandardCommands();
 
@@ -174,13 +168,11 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                //COMPort = new SerialPort(SelectedAvailablePort, SelectedBaudRate);
-                COMPort = SerialPortManager.Instance;
-                COMPort.BaudRate = SelectedBaudRate;
-                COMPort.PortName = SelectedAvailablePort;
+                SerialPortManager.Instance.BaudRate = SelectedBaudRate;
+                SerialPortManager.Instance.PortName = SelectedAvailablePort;
                 try
                 {
-                    COMPort.Open();
+                    SerialPortManager.Instance.Open();
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
@@ -202,8 +194,8 @@ namespace IRCS_MS.ViewModel
 
                     if (_runningTask)
                     {
-                        StateOfDevice = "State: " + (COMPort.IsOpen? "Connected!" : "Not connected!");
-                        StateOfDeviceColor = (COMPort.IsOpen? "Green" : "Red");
+                        StateOfDevice = "State: " + (SerialPortManager.Instance.IsOpen? "Connected!" : "Not connected!");
+                        StateOfDeviceColor = (SerialPortManager.Instance.IsOpen? "Green" : "Red");
                     }
 
                 }
@@ -260,13 +252,7 @@ namespace IRCS_MS.ViewModel
 
         private void LoopMessagesArrayToSend()
         {
-            //ByteMessageBuilder.SetByteIncomingArray(0, String.Empty);
-            //ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
-            //ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
-
-
             ByteMessageBuilderRepository.ClearArray(ByteMessages.Instance.MeasureModeIncoming);
-            
 
             for (int i = 0; i < ByteMessages.Instance.MeasureModeOutgoing.Length; i++)
             {
@@ -284,14 +270,14 @@ namespace IRCS_MS.ViewModel
         private void SendData(byte data)
         {
             var dataArray = new byte[] { data };
-            if (COMPort == null)
+            if (SerialPortManager.Instance == null)
             {
                 MessageBox.Show("Serial Port is not active!");
             }
             else
             {
-                COMPort.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
-                COMPort.Write(dataArray, 0, 1);
+                SerialPortManager.Instance.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                SerialPortManager.Instance.Write(dataArray, 0, 1);
             }
         }
 
@@ -348,9 +334,9 @@ namespace IRCS_MS.ViewModel
                     {
                         Thread.Sleep(100);
 
-                        if (_stopWatchTimeOut.ElapsedMilliseconds > xmlData.GetDefaultTimeOutValue())
+                        if (_stopWatchTimeOut.ElapsedMilliseconds > XmlFilter.Instance.GetDefaultTimeOutValue())
                         {
-                            MessageBox.Show($"TimeOut error! > {xmlData.GetDefaultTimeOutValue()} ms");
+                            MessageBox.Show($"TimeOut error! > {XmlFilter.Instance.GetDefaultTimeOutValue()} ms");
                             TimeOutValidator(TimeOutValidatorStates.Reset);
                         }
                     }
@@ -367,14 +353,12 @@ namespace IRCS_MS.ViewModel
 
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            if (COMPort.IsOpen)
+            if (SerialPortManager.Instance.IsOpen)
             {
                 try
                 {
-                    string incomingByte = COMPort.ReadByte().ToString();
-                    //int testValue = COMPort.ReadByte();
-                    //MessageRecievedText += testValue;
-                    //ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+                    string incomingByte = SerialPortManager.Instance.ReadByte().ToString();
+
                     ByteMessageBuilderRepository.SetStrArrayByIndex(ByteMessages.Instance.MeasureModeIncoming, countBytes, incomingByte);
                     
                     //all bytes arrived
@@ -387,20 +371,20 @@ namespace IRCS_MS.ViewModel
 
                             TimeOutValidator(TimeOutValidatorStates.Reset);
 
-                            if (ValidatorIncomingMessage.ValidationEOF(xmlData))
+                            if (ValidatorIncomingMessage.ValidationEOF())
                             {
-                                _extramessages = xmlData.IsCommonIncluded(SelectedCardType) == true ?
-                                    xmlData.GetNumberOfExpectedMeasureState(xmlData.GetDefaultName()) * xmlData.DefaultNumbersOfBytes :
+                                _extramessages = XmlFilter.Instance.IsCommonIncluded(SelectedCardType) == true ?
+                                    XmlFilter.Instance.GetNumberOfExpectedMeasureState(XmlFilter.Instance.GetDefaultName()) * XmlFilter.Instance.DefaultNumbersOfBytes :
                                     _extramessages = 0;
 
 
                                 //if the incoming messages's number is equle with the required number from XML file
                                 if (_counterIncomingPackage ==
-                                    xmlData.GetNumberOfExpectedMeasureState(SelectedCardType) * xmlData.DefaultNumbersOfBytes + _extramessages)
+                                    XmlFilter.Instance.GetNumberOfExpectedMeasureState(SelectedCardType) * XmlFilter.Instance.DefaultNumbersOfBytes + _extramessages)
                                 {
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
 
-                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived(" -> Validate OK", xmlData) + MessageRecievedText;
+                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation(" -> Validate OK") + MessageRecievedText;
                                     //_counterIncomingPackage = 1;
                                     _validateFinished = true;
                                     GeneralMessageCollection.LoopCounter = 0;
@@ -409,13 +393,13 @@ namespace IRCS_MS.ViewModel
                                 {
                                  //when it is not validated yet.   
                                     TimeOutValidator(TimeOutValidatorStates.Reset);
-                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("", xmlData) + MessageRecievedText;
+                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation("") + MessageRecievedText;
                                     GeneralMessageCollection.LoopCounter++;
                                     _validateFinished = false;
                                 }
 
                                 //if incoming message returns with measure ok or not-> negative logic
-                                if (ValidatorIncomingMessage.ErrorMessageBack(xmlData, ByteMessages.Instance.MeasureModeIncoming[1]))
+                                if (ValidatorIncomingMessage.ErrorMessageBack(ByteMessages.Instance.MeasureModeIncoming[1]))
                                 {
                                     //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
@@ -428,7 +412,7 @@ namespace IRCS_MS.ViewModel
                                 {
                                     _savedMeasureCounter++;
 
-                                    string reportInsertData = xmlData.GetResponseData(
+                                    string reportInsertData = XmlFilter.Instance.GetResponseData(
                                         ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()));
 
                                     ReportDataCollector.AddToVertical(reportInsertData);
@@ -455,7 +439,7 @@ namespace IRCS_MS.ViewModel
                         else
                         {
                             MessageRecievedText = "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
-                                                xmlData.GetResponseTranslate
+                                                XmlFilter.Instance.GetResponseTranslate
                                                 (ByteMessages.Instance.MeasureModeIncoming[0].ToString(),
                                                 ByteMessages.Instance.MeasureModeIncoming[1].ToString(),
                                                 ByteMessages.Instance.MeasureModeIncoming[2].ToString())
@@ -492,13 +476,13 @@ namespace IRCS_MS.ViewModel
 
         private void WasItDisconnect()
         {
-            if (xmlData.GetResponseTranslate
+            if (XmlFilter.Instance.GetResponseTranslate
                                                (ByteMessages.Instance.MeasureModeIncoming[0].ToString(),
                                                ByteMessages.Instance.MeasureModeIncoming[1].ToString(),
                                                ByteMessages.Instance.MeasureModeIncoming[2].ToString()) == "Disconnected")
             {
-                COMPort.Close();
-                COMPort.Dispose();
+                SerialPortManager.Instance.Close();
+                SerialPortManager.Instance.Dispose();
             }
         }
 
@@ -514,28 +498,28 @@ namespace IRCS_MS.ViewModel
                     //"IRCS_"CardName"_"kezdőszám"_"hány darab kártya lett mérve".xls;
                     ReportDataHelper.InitializeMeasure(FileName, FolderPath);
 
-                    if (xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType).Count == 0)
+                    if (XmlFilter.Instance.GetMeasurementsWithoutAutoMeasure(SelectedCardType).Count == 0)
                     {
                         //only automeasure 
                         ReportDataHelper.PassListTOReport(
 
-                        xmlData.GetMeasurements(xmlData.GetDefaultName()), ReportDataCollector.GetTotal(), Name, new List<string>() { });
+                        XmlFilter.Instance.GetMeasurements(XmlFilter.Instance.GetDefaultName()), ReportDataCollector.GetTotal(), Name, new List<string>() { });
                     }
                     else
                     {
-                        if (xmlData.IsCommonIncluded(SelectedCardType))
+                        if (XmlFilter.Instance.IsCommonIncluded(SelectedCardType))
                         {
                             ReportDataHelper.PassListTOReport(
 
-                                xmlData.GetMeasurementsWithoutAutoMeasure(xmlData.GetDefaultName())
-                                    .Concat(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
+                                XmlFilter.Instance.GetMeasurementsWithoutAutoMeasure(XmlFilter.Instance.GetDefaultName())
+                                    .Concat(XmlFilter.Instance.GetMeasurementsWithoutAutoMeasure(SelectedCardType))
                                     .ToList()
 
-                                , ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(true,xmlData,SelectedCardType));
+                                , ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(true,SelectedCardType));
                         }
                         else
                         {
-                            ReportDataHelper.PassListTOReport(xmlData.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(false, xmlData, SelectedCardType));
+                            ReportDataHelper.PassListTOReport(XmlFilter.Instance.GetMeasurementsWithoutAutoMeasure(SelectedCardType), ReportDataCollector.GetTotal(), Name, ReportDataCollector.FillColumnForReport(false,SelectedCardType));
                         }
                     }
 
@@ -654,8 +638,7 @@ namespace IRCS_MS.ViewModel
             {
                 _selectedCardType = value;
                 OnPropertyChanged("CardTypes");
-                MeasureTypes = xmlData.GetMeasurements(SelectedCardType);
-
+                MeasureTypes = XmlFilter.Instance.GetMeasurements(SelectedCardType);
             }
         }
 

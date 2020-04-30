@@ -47,7 +47,7 @@ namespace IRCS_MS.Infrastructure
             return HorizontalList;
         }
 
-        public static List<string> FillColumnForReport(bool IsCommonInclided, XmlFilter xmlData, string selectedCardType)
+        public static List<string> FillColumnForReport(bool IsCommonInclided, string selectedCardType)
         {
             List<string> temp = new List<string>() { };
 
@@ -55,7 +55,7 @@ namespace IRCS_MS.Infrastructure
             {
                 temp.Add("");
                 temp.Add("");
-                temp.Add(xmlData.GetDefaultName());
+                temp.Add(XmlFilter.Instance.GetDefaultName());
                 temp.Add("");
                 temp.Add("");
                 temp.Add(selectedCardType);
@@ -65,7 +65,7 @@ namespace IRCS_MS.Infrastructure
             {
                 temp.Add("");
                 temp.Add("");
-                temp.Add(xmlData.GetDefaultName());
+                temp.Add(XmlFilter.Instance.GetDefaultName());
                 return temp;
             }
         }
