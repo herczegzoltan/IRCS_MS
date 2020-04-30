@@ -18,8 +18,6 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
         private RootObjectResponse _rootOjectResponse;
 
-        private ServiceRootObject _rootServiceObject;
-
 
         public readonly int DefaultNumbersOfBytes = 3;
 
@@ -28,8 +26,6 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             _rootOject = XmlProcessor.GetXmlRootObjectCommands();
 
             _rootOjectResponse = XmlProcessor.GetXmlRootObjectResponse();
-
-            _rootServiceObject = XmlProcessor.GetXmlServiceRootObjectCommands();
 
             GetEOF();
         }

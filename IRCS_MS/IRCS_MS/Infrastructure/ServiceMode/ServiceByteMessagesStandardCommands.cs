@@ -17,6 +17,8 @@ namespace IRCS_MS.Infrastructure.ServiceMode
         public void SystemBusPsuOn()
         {
             ResetByteMessages();
+
+        
         }
         
         public void SystemBusPsuOff()

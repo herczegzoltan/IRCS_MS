@@ -91,6 +91,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Infrastructure\ServiceMode\ServiceByteMessagesStandardCommands.cs" />
+    <Compile Include="Infrastructure\XmlHandler\XmlFilterServiceMode.cs" />
     <Compile Include="Model\ServiceMode\Channel.cs" />
     <Compile Include="Model\ServiceMode\ServiceRootObject.cs" />
     <Compile Include="Model\ServiceMode\SubChannel.cs" />
