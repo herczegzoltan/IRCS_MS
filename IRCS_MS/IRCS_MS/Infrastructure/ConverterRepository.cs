@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IRCS_MS.Infrastructure
 {
-    public static class ByteMessageConverterRepository
+    public static class ConverterRepository
     {
         public static byte ConvertStringToByte(string strByte)
         {

@@ -8,7 +8,7 @@ namespace IRCS_MS.Infrastructure
 {
     public sealed class ByteMessages
     {
-        public byte[] MeasureModeIncoming = new byte[3] { 0x00, 0x00, 0x00 };
+        public string[] MeasureModeIncoming = new string[3] { "", "","" };
 
         public byte[] MeasureModeOutgoing = new byte[5] { 0x00, 0x00, 0x00, 0x00, 0x00 };
 

@@ -43,6 +43,7 @@ namespace IRCS_MS.Infrastructure.Message
             return _arrayByteOutgoing;
         }
 
+        //0x11 -> 17
         public static byte ConvertStringToByte(string strByte)
         {
             int value = Convert.ToInt32(strByte, 16);
@@ -51,6 +52,8 @@ namespace IRCS_MS.Infrastructure.Message
             return byteVal;
         }
 
+        //4 -> 0x04
+        //17  -> 0x11
         public static string ConvertDecimalStringToHexString(string decimalNumber)
         {
             int number = int.Parse(decimalNumber);
@@ -58,7 +61,6 @@ namespace IRCS_MS.Infrastructure.Message
             if (hex.Length == 3)
             {
                 hex = hex.Insert(2, "0");
-
             }
             return hex;
         }

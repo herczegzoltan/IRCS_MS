@@ -25,10 +25,6 @@ namespace IRCS_MS
             var mainWindow = new MeasureModeWindow { DataContext = mainViewModel };
             mainWindow.Show();
 
-
-          
-
-
             // mainWindow.Show();
         }
     }

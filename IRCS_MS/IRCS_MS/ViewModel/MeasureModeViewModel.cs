@@ -368,9 +368,12 @@ namespace IRCS_MS.ViewModel
                 try
                 {
                     string incomingByte = COMPort.ReadByte().ToString();
-
+                    //int testValue = COMPort.ReadByte();
+                    //MessageRecievedText += testValue;
                     ByteMessageBuilder.SetByteIncomingArray(countBytes, incomingByte); //34 0 13
+                    //ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeIncoming, countBytes, incomingByte);
 
+                    
                     //all bytes arrived
                     if (countBytes == 2)
                     {
@@ -473,7 +476,7 @@ namespace IRCS_MS.ViewModel
                     {
                         _counterIncomingPackage = 1;
                         _validateFinished = false;
-                                                IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
+                        IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
                     }
                 }
                 catch (Exception ex)
@@ -549,13 +552,6 @@ namespace IRCS_MS.ViewModel
         private string _isRunningNow;
         private string _name;
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         private void FolderDialog()
         {
             string selectedPath;
@@ -584,7 +580,12 @@ namespace IRCS_MS.ViewModel
         }
 
         #region Properties
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
         public string SelectedAvailablePort
         {
             get

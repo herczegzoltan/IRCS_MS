@@ -17,7 +17,7 @@ namespace IRCS_MS.Infrastructure
 
         public static byte[] SetByteArrayByIndex(byte[] byteArray, int index, string value)
         {
-            byteArray[index] = ByteMessageConverterRepository.ConvertStringToByte(value);
+            byteArray[index] = ConverterRepository.ConvertStringToByte(value);
 
             return byteArray;
         }

@@ -84,7 +84,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\ByteMessageBuilderRepository.cs" />
-    <Compile Include="Infrastructure\ByteMessageConverterRepository.cs" />
+    <Compile Include="Infrastructure\ConverterRepository.cs" />
     <Compile Include="Infrastructure\ByteMessages.cs" />
     <Compile Include="Infrastructure\ByteMessagesStandardCommands.cs" />
     <Compile Include="Infrastructure\SerialPortManager.cs">
