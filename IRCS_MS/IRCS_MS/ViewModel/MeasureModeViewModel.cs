@@ -651,7 +651,7 @@ namespace IRCS_MS.ViewModel
                 {
                     connectionTimer.Elapsed -= OnTimedEvent;
                     connectionTimer.Enabled = false;
-                    UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
                 }
 
                 MessageRecievedText += " Received:" + receiveString.ToString() + "\r\n";
@@ -678,7 +678,7 @@ namespace IRCS_MS.ViewModel
                 connectionTimer.Enabled = false;
                 connectionTimer.Elapsed -= OnTimedEvent;
                 MessageRecievedText += "\r\nVoIP connecting error! Try RUN.\r\n";
-                UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+                UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
             }
         }
 
