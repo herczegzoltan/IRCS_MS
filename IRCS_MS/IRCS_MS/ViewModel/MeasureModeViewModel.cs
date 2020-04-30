@@ -236,18 +236,59 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOn()
         {
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
-            ByteMessageBuilder.SetByteArray(1, 0x00);
-            ByteMessageBuilder.SetByteArray(2, 0x00);
-            ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-            WasItRun = false;
-            LoopMessagesArrayToSend();
-            UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+            if (SelectedCardType == "VoIP2CH")
+            {
+                //System.Threading.Thread.Sleep(10000);
+                if (CTRL_udpClient == null)
+                {
+                    CTRL_udpClient = new UdpClient(23999);
+                    CTRL_udpClient.BeginReceive(OnCTRL_UDPReceive, null);
+                }
+                connectionTimer.Elapsed += OnTimedEvent;
+                connectionTimer.AutoReset = true;
+                connectionTimer.Enabled = true;
+
+                MessageRecievedText += "VoIP Connecting... ";
+                //SendKeepalive();
+                ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
+                ByteMessageBuilder.SetByteArray(1, 0x00);
+                ByteMessageBuilder.SetByteArray(2, 0x00);
+                ByteMessageBuilder.SetByteArray(3, 0x00);
+                ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+                WasItRun = false;
+                LoopMessagesArrayToSend();
+                UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClickVoip);
+            }
+            else
+            {
+                ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
+                ByteMessageBuilder.SetByteArray(1, 0x00);
+                ByteMessageBuilder.SetByteArray(2, 0x00);
+                ByteMessageBuilder.SetByteArray(3, 0x00);
+                ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+                WasItRun = false;
+                LoopMessagesArrayToSend();
+                UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+            }
+           
         }
 
         public void SendMeasureOff()
         {
+            if (SelectedCardType == "VoIP2CH")
+            {
+                if (CTRL_udpClient != null)
+                {
+
+                }
+                //CTRL_udpClient = new UdpClient(23999);
+                //CTRL_udpClient.BeginReceive(new AsyncCallback(OnCTRL_UDPReceive), null);
+                connectionTimer.Elapsed -= OnTimedEvent;
+                connectionTimer.Enabled = false;
+                MessageRecievedText += "VoIP Disconnected\r\n";
+                //SendKeepalive();
+            }
+
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
             ByteMessageBuilder.SetByteArray(1, 0x00);
             ByteMessageBuilder.SetByteArray(2, 0x00);

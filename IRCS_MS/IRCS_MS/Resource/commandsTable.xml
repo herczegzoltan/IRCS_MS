@@ -72,7 +72,7 @@
     <Card name="AMP100_BR" value="0x09" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
     </Card>
-    <Card name="AMP100_BR" value="0x09" iscommon="False">
+    <Card name="VoIP2CH" value="0x0b" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
     </Card>
 </RootObject>
