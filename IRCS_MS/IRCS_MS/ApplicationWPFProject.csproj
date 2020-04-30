@@ -86,10 +86,11 @@
     <Compile Include="Infrastructure\ByteMessageBuilderRepository.cs" />
     <Compile Include="Infrastructure\ConverterRepository.cs" />
     <Compile Include="Infrastructure\ByteMessages.cs" />
-    <Compile Include="Infrastructure\ByteMessagesStandardCommands.cs" />
+    <Compile Include="Infrastructure\MeasureMode\MeasureByteMessagesStandardCommands.cs" />
     <Compile Include="Infrastructure\SerialPortManager.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Infrastructure\ServiceMode\ServiceByteMessagesStandardCommands.cs" />
     <Compile Include="Model\ServiceMode\Channel.cs" />
     <Compile Include="Model\ServiceMode\ServiceRootObject.cs" />
     <Compile Include="Model\ServiceMode\SubChannel.cs" />

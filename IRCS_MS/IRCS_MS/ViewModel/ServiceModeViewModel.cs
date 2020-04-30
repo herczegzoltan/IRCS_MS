@@ -61,7 +61,6 @@ namespace IRCS_MS.ViewModel
             ChannelTypes = XmlFilter.Instance.ServiceModeGetChannelNames();
             FrequencyTypes = XmlFilter.Instance.ServiceModeGetDefaultValuesByTag("frequency");
             AmplitudeTypes = XmlFilter.Instance.ServiceModeGetDefaultValuesByTag("amplitude");
-            //COMPort = SerialPortManager.Instance;
         }
 
         public void Temp()

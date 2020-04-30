@@ -21,6 +21,7 @@ using IRCS_MS.ViewModel.Commands;
 using IRCS_MS.Infrastructure.XmlHandler;
 using IRCS_MS.Infrastructure;
 using IRCS_MS.ViewModel.MainViewModelCommands;
+using IRCS_MS.Infrastructure.MeasureMode;
 
 namespace IRCS_MS.ViewModel
 {
@@ -74,8 +75,6 @@ namespace IRCS_MS.ViewModel
 
         private bool _runningTask;
 
-        ByteMessagesStandardCommands byteMessagesStandardCommands;
-             
         private string _currentDateTime;
 
         public bool WasItRun = false;
@@ -109,8 +108,6 @@ namespace IRCS_MS.ViewModel
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
 
             CardTypes = XmlFilter.Instance.GetCardTypeNames();
-
-            byteMessagesStandardCommands = new ByteMessagesStandardCommands();
 
             UpdateTimeUI();
             UIElementCollectionHelper = new UIElementCollectionHelper(this);
@@ -212,7 +209,7 @@ namespace IRCS_MS.ViewModel
         private void ConfigureDevice()
         {
 
-            byteMessagesStandardCommands.MeasureModeConnectConfigureDevice();
+            MeasureModeByteMessagesStandardCommands.ConnectConfigureDevice();
             WasItRun = false;
 
             LoopMessagesArrayToSend();
@@ -220,7 +217,7 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOn()
         {
-            byteMessagesStandardCommands.MeasureModeMeasureOn();
+            MeasureModeByteMessagesStandardCommands.MeasureOn();
 
             WasItRun = false;
             LoopMessagesArrayToSend();
@@ -229,7 +226,7 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOff()
         {
-            byteMessagesStandardCommands.MeasureModeMeasureOff();
+            MeasureModeByteMessagesStandardCommands.MeasureOff();
 
             WasItRun = false;
             LoopMessagesArrayToSend();
@@ -242,7 +239,7 @@ namespace IRCS_MS.ViewModel
             TimeOutValidator(TimeOutValidatorStates.Start);
             //stopWatchTimeOut.Start();
 
-            byteMessagesStandardCommands.MeasureModeSendRun(SelectedCardType, SelectedMeasureType);
+            MeasureModeByteMessagesStandardCommands.SendRun(SelectedCardType, SelectedMeasureType);
    
             WasItRun = true;
             LoopMessagesArrayToSend();
@@ -262,7 +259,7 @@ namespace IRCS_MS.ViewModel
 
         private void DisConfigureDevice()
         {
-            byteMessagesStandardCommands.MeasureModeDisConfigureDevice();
+            MeasureModeByteMessagesStandardCommands.DisConfigureDevice();
             WasItRun = false;
             LoopMessagesArrayToSend();
         }
