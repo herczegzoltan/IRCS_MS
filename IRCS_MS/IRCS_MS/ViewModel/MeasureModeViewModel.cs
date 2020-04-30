@@ -221,15 +221,6 @@ namespace IRCS_MS.ViewModel
         {
 
             byteMessagesStandardCommands.MeasureModeConnectConfigureDevice();
-            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, xmlData.GetConnect());
-            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, xmlData.GetEOF());
-
-
-            //ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
-            //ByteMessageBuilder.SetByteArray(1, 0x00);
-            //ByteMessageBuilder.SetByteArray(2, 0x00);
-            //ByteMessageBuilder.SetByteArray(3, 0x00);
-            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
             WasItRun = false;
 
             LoopMessagesArrayToSend();
@@ -239,18 +230,6 @@ namespace IRCS_MS.ViewModel
         {
             byteMessagesStandardCommands.MeasureModeMeasureOn();
 
-            //ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
-            //ByteMessageBuilder.SetByteArray(1, 0x00);
-            //ByteMessageBuilder.SetByteArray(2, 0x00);
-            //ByteMessageBuilder.SetByteArray(3, 0x00);
-            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, xmlData.GetMeasureOn());
-            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, xmlData.GetEOF());
-
-            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, xmlData.GetMeasureOn());
-            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, xmlData.GetEOF());
-
-
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
@@ -259,13 +238,6 @@ namespace IRCS_MS.ViewModel
         public void SendMeasureOff()
         {
             byteMessagesStandardCommands.MeasureModeMeasureOff();
-
-
-            //ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
-            //ByteMessageBuilder.SetByteArray(1, 0x00);
-            //ByteMessageBuilder.SetByteArray(2, 0x00);
-            //ByteMessageBuilder.SetByteArray(3, 0x00);
-            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
 
             WasItRun = false;
             LoopMessagesArrayToSend();
@@ -279,12 +251,7 @@ namespace IRCS_MS.ViewModel
             //stopWatchTimeOut.Start();
 
             byteMessagesStandardCommands.MeasureModeSendRun(SelectedCardType, SelectedMeasureType);
-            //ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
-            //ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
-            //ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
-            //ByteMessageBuilder.SetByteArray(3, xmlData.GetRun());
-            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-
+   
             WasItRun = true;
             LoopMessagesArrayToSend();
         }
