@@ -79,6 +79,8 @@ namespace IRCS_MS.ViewModel
         SerialPortManager COMPort;
         //SerialPort COMPort = null;
 
+        ByteMessagesStandardCommands byteMessagesStandardCommands;
+             
         private string _currentDateTime;
 
         public bool WasItRun = false;
@@ -94,6 +96,8 @@ namespace IRCS_MS.ViewModel
         private Stopwatch _stopWatchTimeOut =null;
 
         public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
+
+
 
         #endregion
         public MeasureModeViewModel()
@@ -111,6 +115,8 @@ namespace IRCS_MS.ViewModel
 
             xmlData = new XmlFilter();
             CardTypes = xmlData.GetCardTypeNames();
+
+            byteMessagesStandardCommands = new ByteMessagesStandardCommands();
 
             UpdateTimeUI();
             UIElementCollectionHelper = new UIElementCollectionHelper(this);
@@ -213,11 +219,17 @@ namespace IRCS_MS.ViewModel
         }
         private void ConfigureDevice()
         {
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
-            ByteMessageBuilder.SetByteArray(1, 0x00);
-            ByteMessageBuilder.SetByteArray(2, 0x00);
-            ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            byteMessagesStandardCommands.MeasureModeConnectConfigureDevice();
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, xmlData.GetConnect());
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, xmlData.GetEOF());
+
+
+            //ByteMessageBuilder.SetByteArray(0, xmlData.GetConnect());
+            //ByteMessageBuilder.SetByteArray(1, 0x00);
+            //ByteMessageBuilder.SetByteArray(2, 0x00);
+            //ByteMessageBuilder.SetByteArray(3, 0x00);
+            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
             WasItRun = false;
 
             LoopMessagesArrayToSend();
@@ -225,11 +237,20 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOn()
         {
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
-            ByteMessageBuilder.SetByteArray(1, 0x00);
-            ByteMessageBuilder.SetByteArray(2, 0x00);
-            ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+            byteMessagesStandardCommands.MeasureModeMeasureOn();
+
+            //ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
+            //ByteMessageBuilder.SetByteArray(1, 0x00);
+            //ByteMessageBuilder.SetByteArray(2, 0x00);
+            //ByteMessageBuilder.SetByteArray(3, 0x00);
+            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, xmlData.GetMeasureOn());
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, xmlData.GetEOF());
+
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 0, xmlData.GetMeasureOn());
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(_byteMessages.MeasureModeOutgoing, 4, xmlData.GetEOF());
+
+
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
@@ -237,11 +258,15 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOff()
         {
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
-            ByteMessageBuilder.SetByteArray(1, 0x00);
-            ByteMessageBuilder.SetByteArray(2, 0x00);
-            ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+            byteMessagesStandardCommands.MeasureModeMeasureOff();
+
+
+            //ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
+            //ByteMessageBuilder.SetByteArray(1, 0x00);
+            //ByteMessageBuilder.SetByteArray(2, 0x00);
+            //ByteMessageBuilder.SetByteArray(3, 0x00);
+            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOffClick);
@@ -252,11 +277,13 @@ namespace IRCS_MS.ViewModel
             //stopwatch
             TimeOutValidator(TimeOutValidatorStates.Start);
             //stopWatchTimeOut.Start();
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
-            ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
-            ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
-            ByteMessageBuilder.SetByteArray(3, xmlData.GetRun());
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
+
+            byteMessagesStandardCommands.MeasureModeSendRun(SelectedCardType, SelectedMeasureType);
+            //ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
+            //ByteMessageBuilder.SetByteArray(1, xmlData.GetSelectedCardTypeValue(SelectedCardType));
+            //ByteMessageBuilder.SetByteArray(2, xmlData.GetSelectedMeasurementValue(SelectedCardType, SelectedMeasureType));
+            //ByteMessageBuilder.SetByteArray(3, xmlData.GetRun());
+            //ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
 
             WasItRun = true;
             LoopMessagesArrayToSend();
@@ -270,20 +297,15 @@ namespace IRCS_MS.ViewModel
             ByteMessageBuilder.SetByteIncomingArray(1, String.Empty);
             ByteMessageBuilder.SetByteIncomingArray(2, String.Empty);
 
-            for (int i = 0; i < ByteMessageBuilder.GetByteArray().Length; i++)
+            for (int i = 0; i < ByteMessages.Instance.MeasureModeOutgoing.Length; i++)
             {
-                SendData(ByteMessageBuilder.GetByteArray()[i]);
+                SendData(ByteMessages.Instance.MeasureModeOutgoing[i]);
             }
         }
 
         private void DisConfigureDevice()
         {
-            ByteMessageBuilder.SetByteArray(0, xmlData.GetDisConnect());
-            ByteMessageBuilder.SetByteArray(1, 0x00);
-            ByteMessageBuilder.SetByteArray(2, 0x00);
-            ByteMessageBuilder.SetByteArray(3, 0x00);
-            ByteMessageBuilder.SetByteArray(4, xmlData.GetEOF());
-
+            byteMessagesStandardCommands.MeasureModeDisConfigureDevice();
             WasItRun = false;
             LoopMessagesArrayToSend();
         }

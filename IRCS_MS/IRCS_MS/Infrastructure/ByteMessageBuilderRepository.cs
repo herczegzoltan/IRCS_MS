@@ -15,10 +15,17 @@ namespace IRCS_MS.Infrastructure
             return byteArray;
         }
 
-        public static byte[] SetByteArrayByIndex(byte[] byteArray, int index, byte inputByte)
+        public static byte[] SetByteArrayByIndex(byte[] byteArray, int index, string value)
         {
-            byteArray[index] = inputByte;
-            
+            byteArray[index] = ByteMessageConverterRepository.ConvertStringToByte(value);
+
+            return byteArray;
+        }
+
+        public static byte[] SetByteArrayByIndex(byte[] byteArray, int index, byte value)
+        {
+            byteArray[index] = value;
+
             return byteArray;
         }
 
