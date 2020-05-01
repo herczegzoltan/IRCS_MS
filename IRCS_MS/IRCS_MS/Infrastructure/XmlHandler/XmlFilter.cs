@@ -72,7 +72,6 @@ namespace IRCS_MS.Infrastructure.XmlHandler
                                         .Select(n => n.Value).First();
 
             return singleCardTypeValue;
-           
         }
 
         public string GetSelectedCardTypeName(string cardValue)
@@ -81,7 +80,6 @@ namespace IRCS_MS.Infrastructure.XmlHandler
                                         .Select(n => n.Name).First();
 
             return singleCardTypeName;
-
         }
 
         public string GetSelectedMeasurementValue(string cardType, string measurement)
@@ -254,32 +252,32 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
         #region Service Mode Filters
 
-        public List<string> ServiceModeGetChannelNames()
-        {
-            IEnumerable<String> channelTypes = _rootServiceObject.Channel.Select(x => x.Name);
+        //public List<string> ServiceModeGetChannelNames()
+        //{
+        //    IEnumerable<String> channelTypes = _rootServiceObject.Channel.Select(x => x.Name);
 
-            return new List<string>(channelTypes);
-        }
+        //    return new List<string>(channelTypes);
+        //}
 
-        public List<string> ServiceModeGetSubChannelNames(string channelType)
-        {
-            IEnumerable<IEnumerable<String>> subCahnnel = _rootServiceObject.Channel.Where(x => string.Equals(x.Name, channelType, StringComparison.OrdinalIgnoreCase))
-                                         .Select(m => m.Measure.Select(l => l.Name));
+        //public List<string> ServiceModeGetSubChannelNames(string channelType)
+        //{
+        //    IEnumerable<IEnumerable<String>> subCahnnel = _rootServiceObject.Channel.Where(x => string.Equals(x.Name, channelType, StringComparison.OrdinalIgnoreCase))
+        //                                 .Select(m => m.Measure.Select(l => l.Name));
 
-            IEnumerable<String> subChannelList = subCahnnel.SelectMany(s => s);
+        //    IEnumerable<String> subChannelList = subCahnnel.SelectMany(s => s);
 
-            return new List<string>(subChannelList);
-        }
+        //    return new List<string>(subChannelList);
+        //}
 
-        public List<string> ServiceModeGetDefaultValuesByTag(string input)
-        {
-            IEnumerable<String> result = _rootServiceObject.DefaultValues.Record.Where(x => string.Equals(x.Tag, input, StringComparison.OrdinalIgnoreCase))
-                             .Select(m => m.Name);
+        //public List<string> ServiceModeGetDefaultValuesByTag(string input)
+        //{
+        //    IEnumerable<String> result = _rootServiceObject.DefaultValues.Record.Where(x => string.Equals(x.Tag, input, StringComparison.OrdinalIgnoreCase))
+        //                     .Select(m => m.Name);
 
-            //IEnumerable<String> measureList = result.SelectMany(s => s);
+        //    //IEnumerable<String> measureList = result.SelectMany(s => s);
 
-            return new List<string>(result);
-        }
+        //    return new List<string>(result);
+        //}
 
         //IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
         //                     .Select(m => m.Measure.Select(l => l.Name));

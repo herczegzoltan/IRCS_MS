@@ -17,10 +17,10 @@ namespace IRCS_MS.Infrastructure.ServiceMode
         public void SystemBusPsuOn()
         {
             ResetByteMessages();
-
-        
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.ServiceModeOutgoing, 0, XmlFilterServiceMode.Instance.);
+            //ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
-        
+
         public void SystemBusPsuOff()
         {
             ResetByteMessages();

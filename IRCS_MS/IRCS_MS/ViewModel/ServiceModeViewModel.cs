@@ -58,9 +58,9 @@ namespace IRCS_MS.ViewModel
             FcnGenOnCommand = new FcnGenOnCommand(this);
             ModulInitCommand = new ModulInitCommand(this);
 
-            ChannelTypes = XmlFilter.Instance.ServiceModeGetChannelNames();
-            FrequencyTypes = XmlFilter.Instance.ServiceModeGetDefaultValuesByTag("frequency");
-            AmplitudeTypes = XmlFilter.Instance.ServiceModeGetDefaultValuesByTag("amplitude");
+            ChannelTypes = XmlFilterServiceMode.Instance.GetChannelNames();
+            FrequencyTypes = XmlFilterServiceMode.Instance.GetDefaultValuesByTag("frequency");
+            AmplitudeTypes = XmlFilterServiceMode.Instance.GetDefaultValuesByTag("amplitude");
         }
 
         public void Temp()
@@ -112,7 +112,7 @@ namespace IRCS_MS.ViewModel
             {
                 _selectedChannelType = value;
                 OnPropertyChanged("ChannelTypes");
-                SubChannelTypes = XmlFilter.Instance.ServiceModeGetSubChannelNames(SelectedChannelType);
+                SubChannelTypes = XmlFilterServiceMode.Instance.GetSubChannelNames(SelectedChannelType);
 
             }
         }
