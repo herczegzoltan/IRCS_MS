@@ -21,3 +21,8 @@ Bug & Questions
 
 Q: Azt mondtad, hogy sound bus channel az egy user input, de a te progidban az egy combobox. Most akkor textbox vagy combobox legyen?
 A: ja sry, combobox legyen
+
+B: Ha nem AUtomeasure-t választok ki, hanem egy bármilyen más mérést akkor a mérés végén a konzol ablakban nem annak a mérésnek a neve látszik amit kiválasztottam
+Általában a kártya méréseinek az első mérése. Pl: Common mérésnél ha SoundBus-t mérek akkor azt írj a végén hogy Current--Measure OK
+
+B: Ha EOF hiba jön egyszer akkor elég ha csak hibaüzenetet küldesz róla, nem kell elmenteni, mert újra kell indítani miatta a progit.
