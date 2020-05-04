@@ -4,6 +4,21 @@ TODO
 - Interfaces, binding, layers of the application check any example (Example was sent)
 - Each class write one summary sentence
 
+service mode commands:
+12 byte
+
+0.byte service_mode_on/off
+1.byte service_mode_command
+2.byte service_mode_channel
+3.byte service_mode_subchannel
+4.byte service_mode_freq_msb
+5.byte service_mode_freq_lsb
+6.byte service_mode_freq_prefix
+7.byte service_mode_amp_msb
+8.byte service_mode_amp_lsb
+9.byte service_mode_amp_prefix
+10.byte service_mode_data
+11.byte service_mode_EOF-0x04
 
 service mode responses:
 6 byte
