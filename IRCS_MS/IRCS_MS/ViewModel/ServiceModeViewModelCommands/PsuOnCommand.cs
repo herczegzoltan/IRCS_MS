@@ -25,12 +25,11 @@ namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
         public bool CanExecute(object parameter)
         {
             return true;
-
         }
 
         public void Execute(object parameter)
         {
-            VM.Temp();
+            VM.PsuOnButtonClicked();
         }
     }
 }

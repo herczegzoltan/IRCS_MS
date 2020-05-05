@@ -1,5 +1,6 @@
 ﻿
 using IRCS_MS.Infrastructure;
+using IRCS_MS.Infrastructure.ServiceMode;
 using IRCS_MS.Infrastructure.XmlHandler;
 using IRCS_MS.Model;
 using IRCS_MS.ViewModel.ServiceModeViewModelCommands;
@@ -70,9 +71,20 @@ namespace IRCS_MS.ViewModel
         // TODO: event unsub before opening this UI and subscrube for this and reverse
         //
 
-        
+        public void PsuOnButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing,1,ServiceByteMessagesStandardCommands.PSUON);
+            byte[] t = ByteMessages.Instance.ServiceModeOutgoing;
+        }
 
-        
+        public void PsuOffButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.PSUOFF);
+            byte[] t = ByteMessages.Instance.ServiceModeOutgoing;
+        }
+
+
+
         #region Properties
 
         public List<string> ChannelTypes

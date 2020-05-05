@@ -23,10 +23,7 @@ namespace IRCS_MS.Infrastructure
         public static void SetStrArrayByIndex(string[] byteArray, int index, string value)
         {
             byteArray[index] = value;
-
         }
-
-
 
         public static byte[] SetByteArrayByIndex(byte[] byteArray, int index, string value)
         {

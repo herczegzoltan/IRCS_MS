@@ -16,13 +16,13 @@ namespace IRCS_MS.Infrastructure.XmlHandler
     {
         private ServiceRootObject _rootServiceObject;
 
-        public readonly int DefaultNumbersOfBytes = 3;
+        //public readonly int DefaultNumbersOfBytes = 3;
 
         public XmlFilterServiceMode()
         {
             _rootServiceObject = XmlProcessor.GetXmlServiceRootObjectCommands();
 
-            GetEOF();
+            //GetEOF();
         }
 
         private static XmlFilterServiceMode instance = null;
@@ -46,6 +46,12 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleEof;
         }
 
+        public string GetDefaultValueByName(string name)
+        {
+            string selectedValue = _rootServiceObject.DefaultValues.Record.Where(x => x.Name == name)
+                .Select(n => n.Value).First();
+            return selectedValue;
+        }
 
         #region Service Mode Filters
 
@@ -73,7 +79,6 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
             return new List<string>(result);
         }
-
 
         #endregion
     }
