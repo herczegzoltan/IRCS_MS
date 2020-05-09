@@ -7,11 +7,11 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
 {
-    public class SystemBusWriteCommand : ICommand
+    public class AnalGenOnCommand : ICommand
     {
         public ServiceModeViewModel VM { get; set; }
 
-        public SystemBusWriteCommand(ServiceModeViewModel vM)
+        public AnalGenOnCommand(ServiceModeViewModel vM)
         {
             VM = vM;
         }
@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.WriteButtonClicked();
+            VM.AnalyserOnButtonClicked();
         }
     }
 }

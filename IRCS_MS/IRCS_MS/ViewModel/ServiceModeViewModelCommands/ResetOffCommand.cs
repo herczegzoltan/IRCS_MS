@@ -30,7 +30,7 @@ namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
 
         public void Execute(object parameter)
         {
-            VM.Temp();
+            VM.ResetOffButtonClicked();
         }
     }
 }

@@ -30,6 +30,8 @@ namespace IRCS_MS.ViewModel
         public ResetOffCommand ResetOffCommand { get; set; }
         public ResetOnCommand ResetOnCommand { get; set; }
         public AnalGenRunCommand AnalGenRunCommand { get; set; }
+        public AnalGenRunCommand AnalGenOnCommand { get; set; }
+        public AnalGenRunCommand AnalGenOffCommand { get; set; }
         public ChangeCommand ChangeCommand { get; set; }
         public FcnGenOffCommand FcnGenOffCommand { get; set; }
         public FcnGenOnCommand FcnGenOnCommand { get; set; }
@@ -54,6 +56,8 @@ namespace IRCS_MS.ViewModel
             ResetOffCommand = new ResetOffCommand(this);
             ResetOnCommand = new ResetOnCommand(this);
             AnalGenRunCommand = new AnalGenRunCommand(this);
+            AnalGenOnCommand = new AnalGenRunCommand(this);
+            AnalGenOffCommand = new AnalGenRunCommand(this);
             ChangeCommand = new ChangeCommand(this);
             FcnGenOffCommand = new FcnGenOffCommand(this);
             FcnGenOnCommand = new FcnGenOnCommand(this);
@@ -64,26 +68,68 @@ namespace IRCS_MS.ViewModel
             AmplitudeTypes = XmlFilterServiceMode.Instance.GetDefaultValuesByTag("amplitude");
         }
 
-        public void Temp()
-        {
-            MessageBox.Show("asd");
-        }
-        // TODO: event unsub before opening this UI and subscrube for this and reverse
-        //
+        //TODO: event unsub before opening this UI and subscrube for this and reverse
+        //index position
 
+        public void ChangeButtonClicked()
+        {
+            //ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing,1,ServiceByteMessagesStandardCommands.PSUON);
+        }
+        
         public void PsuOnButtonClicked()
         {
             ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing,1,ServiceByteMessagesStandardCommands.PSUON);
-            byte[] t = ByteMessages.Instance.ServiceModeOutgoing;
         }
 
         public void PsuOffButtonClicked()
         {
             ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.PSUOFF);
-            byte[] t = ByteMessages.Instance.ServiceModeOutgoing;
+        }
+        
+        public void ResetOnButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.PSUOFF);
+        }
+        public void ResetOffButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.PSUOFF);
+        }
+        public void ModulInitButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.MODULINIT);
+        }
+        public void WriteButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.WRITECMD);
+        }
+        public void ReadButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.READCMD);
+        } 
+        
+        public void FuncGenOnButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.FUNCGENON);
+        }
+        public void FuncGenOffButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.FUNCGENOFF);
         }
 
+        public void AnalyserOnButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.ANALYSERON);
+        }
 
+        public void AnalyserOffButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.ANALYSEROFF);
+        }
+
+        public void AnalGenRunButtonClicked()
+        {
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.ANALYSEROFF);
+        }
 
         #region Properties
 

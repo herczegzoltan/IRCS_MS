@@ -10,9 +10,19 @@ namespace IRCS_MS.Infrastructure.ServiceMode
     public static class ServiceByteMessagesStandardCommands
     {
         public const string SRVMODON = "ServiceOn";
+        public const string SRVMODOFF = "ServiceOff";
         public const string PSUON = "PsuOn";
         public const string PSUOFF = "PsuOff";
-
+        public const string RESETON = "ResetOn";
+        public const string RESETOFF = "ResetOFF";
+        public const string MODULINIT = "ModulInit";
+        public const string WRITECMD = "WriteCommand";
+        public const string READCMD = "ReadCommand";
+        public const string FUNCGENON = "FunctionGen_On";
+        public const string FUNCGENOFF = "FunctionGen_Off";
+        public const string ANALYSERON = "Analyser_On";
+        public const string ANALYSEROFF = "Analyser_Off";
+        public const string RUN = "Run";
 
         private static void ResetByteMessages(byte[] array)
         {
