@@ -4,8 +4,10 @@ using IRCS_MS.Infrastructure.ServiceMode;
 using IRCS_MS.Infrastructure.XmlHandler;
 using IRCS_MS.Model;
 using IRCS_MS.ViewModel.ServiceModeViewModelCommands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO.Ports;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -66,6 +68,42 @@ namespace IRCS_MS.ViewModel
             ChannelTypes = XmlFilterServiceMode.Instance.GetChannelNames();
             FrequencyTypes = XmlFilterServiceMode.Instance.GetDefaultValuesByTag("frequency");
             AmplitudeTypes = XmlFilterServiceMode.Instance.GetDefaultValuesByTag("amplitude");
+
+
+        }
+
+        private void LoopMessagesArrayToSend()
+        {
+            ByteMessageBuilderRepository.ClearArray(ByteMessages.Instance.ServiceModeIncoming);
+
+            for (int i = 0; i < ByteMessages.Instance.ServiceModeOutgoing.Length; i++)
+            {
+                SendData(ByteMessages.Instance.ServiceModeOutgoing[i]);
+            }
+        }
+
+        private void SendData(byte data)
+        {
+            var dataArray = new byte[] { data };
+            if (SerialPortManager.Instance == null)
+            {
+                MessageBox.Show("Serial Port is not active!");
+            }
+            else
+            {
+                SerialPortManager.Instance.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
+                SerialPortManager.Instance.Write(dataArray, 0, 1);
+            }
+        }
+
+        private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
+        {
+            if (SerialPortManager.Instance.IsOpen)
+            {
+                string incomingByte = SerialPortManager.Instance.ReadByte().ToString();
+                //MessageRecievedText = incomingByte + MessageRecievedText;
+
+            }
         }
 
         //TODO: event unsub before opening this UI and subscrube for this and reverse
@@ -79,6 +117,7 @@ namespace IRCS_MS.ViewModel
         public void PsuOnButtonClicked()
         {
             ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing,1,ServiceByteMessagesStandardCommands.PSUON);
+            LoopMessagesArrayToSend();
         }
 
         public void PsuOffButtonClicked()
@@ -128,8 +167,14 @@ namespace IRCS_MS.ViewModel
 
         public void AnalGenRunButtonClicked()
         {
-            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.ANALYSEROFF);
+            ServiceByteMessagesStandardCommands.SetValueToOutGoingMassage(ByteMessages.Instance.ServiceModeOutgoing, 1, ServiceByteMessagesStandardCommands.RUN);
         }
+
+        private void SendCommandsToDevice() 
+        {
+        
+        }
+
 
         #region Properties
 
