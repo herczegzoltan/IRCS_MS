@@ -21,6 +21,10 @@ namespace IRCS_MS.ViewModel
         private string _selectedChannelType;
         private List<string> _frequencyTypes;
         private List<string> _amplitudeTypes;
+        private string _analyserInfoText;
+        private string _functionInfoText;
+        private string _systemInfoText;
+
         // COMPort;
 
         #region Commands
@@ -241,6 +245,44 @@ namespace IRCS_MS.ViewModel
             {
                 _amplitudeTypes = value;
                 OnPropertyChanged("AmplitudeTypes");
+            }
+        }
+        public string AnalyserInfoText
+        {
+            get
+            {
+                return _analyserInfoText;
+            }
+            set
+            {
+                _analyserInfoText = value;
+                OnPropertyChanged("AnalyserInfoText");
+            }
+        }
+        
+        public string FunctionInfoText
+        {
+            get
+            {
+                return _functionInfoText;
+            }
+            set
+            {
+                _functionInfoText = value;
+                OnPropertyChanged("FunctionInfoText");
+            }
+        }
+        
+        public string SystemInfoText
+        {
+            get
+            {
+                return _systemInfoText;
+            }
+            set
+            {
+                _systemInfoText = value;
+                OnPropertyChanged("SystemInfoText");
             }
         }
         

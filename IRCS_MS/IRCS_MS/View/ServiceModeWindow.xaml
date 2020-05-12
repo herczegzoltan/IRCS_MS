@@ -341,7 +341,7 @@
             Grid.RowSpan="8"
             Grid.ColumnSpan="2"
             Background="Black">
-            <TextBlock Text=""
+            <TextBlock Text="{Binding SystemInfoText}"
                 Width="Auto" 
                 Height="Auto"
                 TextWrapping="Wrap"
@@ -358,7 +358,7 @@
             Grid.RowSpan="6"
             Background="Black"
             Grid.ColumnSpan="2">
-            <TextBlock Text=""
+            <TextBlock Text="{Binding FunctionInfoText}"
                 Width="Auto" 
                 Height="Auto"
                 TextWrapping="Wrap"
@@ -375,7 +375,7 @@
             Grid.RowSpan="4"
             Grid.ColumnSpan="2"
             Background="Black">
-            <TextBlock Text=""
+            <TextBlock Text="{Binding AnalyserInfoText}"
                 Width="Auto" 
                 Height="Auto"
                 TextWrapping="Wrap"
