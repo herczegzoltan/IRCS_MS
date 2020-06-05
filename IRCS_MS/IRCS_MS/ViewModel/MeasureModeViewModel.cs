@@ -91,8 +91,6 @@ namespace IRCS_MS.ViewModel
 
         public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
 
-
-
         #endregion
         public MeasureModeViewModel()
         {

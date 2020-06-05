@@ -7,11 +7,11 @@ using System.Windows.Input;
 
 namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
 {
-    public class PsuOnCommand : ICommand
+    public class AnalGenOffCommand : ICommand
     {
         public ServiceModeViewModel VM { get; set; }
 
-        public PsuOnCommand(ServiceModeViewModel vM)
+        public AnalGenOffCommand(ServiceModeViewModel vM)
         {
             VM = vM;
         }
@@ -25,11 +25,12 @@ namespace IRCS_MS.ViewModel.ServiceModeViewModelCommands
         public bool CanExecute(object parameter)
         {
             return true;
+
         }
 
         public void Execute(object parameter)
         {
-            VM.PsuOnButtonClicked();
+            VM.AnalyserOffButtonClicked();
         }
     }
 }

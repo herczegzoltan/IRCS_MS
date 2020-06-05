@@ -265,8 +265,7 @@
                 Grid.Column="2"
                 Orientation="Horizontal"
                     HorizontalAlignment="Center">
-
-
+            
             <Button Command="{Binding FcnGenOnCommand}"
                     Content="On" FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="130" HorizontalAlignment="Left"/>
@@ -274,7 +273,6 @@
             <Button Command="{Binding FcnGenOffCommand}"
                     Content="Off" FontSize="30" Height="Auto"
                     Margin="5,5,5,5" Width="130" HorizontalAlignment="Right"/>
-
         </StackPanel>
 
 
@@ -302,14 +300,39 @@
                   FontSize="16"
                   />
 
-        <Button Command="{Binding AnalGenRunCommand}" 
+
+        <StackPanel Grid.Row="18" 
+                Grid.Column="2"
+                Orientation="Horizontal"
+                HorizontalAlignment="Center">
+
+            <Button Command="{Binding AnalGenOnCommand}" 
+                Content="On" 
+                Grid.Row="18" Grid.Column="2" 
+                FontSize="30" Height="Auto" Margin="30,5,5,5" 
+                Width="100"
+                HorizontalAlignment="Center"
+            />
+            
+            <Button Command="{Binding AnalGenOffCommand}" 
+                Content="Off" 
+                Grid.Row="18" Grid.Column="2" 
+                FontSize="30" Height="Auto" Margin="30,5,5,5" 
+                Width="100"
+                HorizontalAlignment="Center"
+            />
+            
+            <Button Command="{Binding AnalGenRunCommand}" 
                 Content="Run" 
                 Grid.Row="18" Grid.Column="2" 
                 FontSize="30" Height="Auto" Margin="30,5,5,5" 
                 Width="100"
                 HorizontalAlignment="Center"
             />
+        </StackPanel>
 
+
+  
         <!--colum 5-->
         <ScrollViewer 
             Margin="30,10,30,10"
@@ -318,7 +341,7 @@
             Grid.RowSpan="8"
             Grid.ColumnSpan="2"
             Background="Black">
-            <TextBlock Text=""
+            <TextBlock Text="{Binding SystemInfoText}"
                 Width="Auto" 
                 Height="Auto"
                 TextWrapping="Wrap"
@@ -335,7 +358,7 @@
             Grid.RowSpan="6"
             Background="Black"
             Grid.ColumnSpan="2">
-            <TextBlock Text=""
+            <TextBlock Text="{Binding FunctionInfoText}"
                 Width="Auto" 
                 Height="Auto"
                 TextWrapping="Wrap"
@@ -352,7 +375,7 @@
             Grid.RowSpan="4"
             Grid.ColumnSpan="2"
             Background="Black">
-            <TextBlock Text=""
+            <TextBlock Text="{Binding AnalyserInfoText}"
                 Width="Auto" 
                 Height="Auto"
                 TextWrapping="Wrap"

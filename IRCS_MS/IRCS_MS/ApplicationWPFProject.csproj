@@ -100,6 +100,8 @@
     <Compile Include="ViewModel\MeasureModeViewModelCommands\RunCommand.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\ConnectCommand.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\DisConnectCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\AnalGenOnCommand.cs" />
+    <Compile Include="ViewModel\ServiceModeViewModelCommands\AnalGenOffCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\AnalGenRunCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\FcnGenOffCommand.cs" />
     <Compile Include="ViewModel\ServiceModeViewModelCommands\FcnGenOnCommand.cs" />
