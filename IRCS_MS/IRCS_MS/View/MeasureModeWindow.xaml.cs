@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,14 +27,15 @@ namespace IRCS_MS
         public MeasureModeWindow()
         {
             InitializeComponent();
-            this.WindowState = WindowState.Maximized;
+            //// this.WindowState = WindowState.Maximized;
         }
 
         private void OpenServiceModWindow(object sender, RoutedEventArgs e)
         {
-           
-
-           // ServiceModeWindow smw = new ServiceModeWindow();
+            //ServiceModeWindow smw = new ServiceModeWindow();
+            //MeasureModeViewModel mmvm = new MeasureModeViewModel();
+            
+            //SerialPortManager.Instance.DataReceived -= mmvm.DataRecieved;
 
             var smainViewModel = new ServiceModeViewModel();
             var smainWindow = new ServiceModeWindow { DataContext = smainViewModel };

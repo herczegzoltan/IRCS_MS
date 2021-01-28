@@ -25,7 +25,7 @@ namespace IRCS_MS.Infrastructure
         
         private List<string> HeaderZeroColumInsertable = null;
         
-        private List<List<string>> HeaderRowInsertable2 = null;
+        private List<List<string>> MeasuredResults = null;
 
         //TODO Constructor DI
         private ExcelPackage _excel = null;
@@ -33,7 +33,7 @@ namespace IRCS_MS.Infrastructure
         {
             _excel = new ExcelPackage();
             HeaderRowInsertable = new List<string>() { };
-            HeaderRowInsertable2 = new List<List<string>>() { };
+            MeasuredResults = new List<List<string>>() { };
             HeaderZeroColumInsertable = new List<string>() { };
             _measuredCardsColum = new List<string>() { };
         }
@@ -41,7 +41,7 @@ namespace IRCS_MS.Infrastructure
         public void AddData(List<string> data, List<List<string>> data2, string name, List<string> measuredCardsColum)
         {
             HeaderRowInsertable = data;
-            HeaderRowInsertable2 = data2;
+            MeasuredResults = data2;
             Name = name;
             _measuredCardsColum = measuredCardsColum;
         }
@@ -55,7 +55,7 @@ namespace IRCS_MS.Infrastructure
             HeaderRowInsertable.Insert(1, "Auto Measure:");
             HeaderRowInsertable.Insert(2, "Name:" + Name);
                        
-            foreach (var item in HeaderRowInsertable2)
+            foreach (var item in MeasuredResults)
             {
                 item.Insert(0, "");
                 item.Insert(2, "");
@@ -65,8 +65,6 @@ namespace IRCS_MS.Infrastructure
         public void CreateFile()
         {
             FixExtraValues();
-
-            char[] apha = "BCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 
             using (_excel)
             {
@@ -82,18 +80,12 @@ namespace IRCS_MS.Infrastructure
                 worksheet.Cells[headerRange].LoadFromCollection(HeaderRowInsertable);
 
                 int i = 0;
-                string headerRange2 = "";
-                foreach (var item in HeaderRowInsertable2)
+                foreach (var item in MeasuredResults)
                 {
-                    headerRange2 = apha[i + 1].ToString() + 0 + ":" + item.Count;
-                    if(i == item.Count)
-                    {
-                        i = 0;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    string headerRange2 = GenerateExcelAlpha().ElementAt(i + 2) + 0 + ":" + MeasuredResults.Count;
+                    
+                    i++;
+                    
                     worksheet.Cells[headerRange2].LoadFromCollection(item);
                 }
 
@@ -141,6 +133,15 @@ namespace IRCS_MS.Infrastructure
                     }
                 }
             }
+        }
+
+        private IEnumerable<string> GenerateExcelAlpha()
+        {
+            for (char c = 'A'; c <= 'Z'; c++)
+                yield return new string(c, 1);
+            for (char c = 'A'; c <= 'Z'; c++)
+                for (char d = 'A'; d <= 'Z'; d++)
+                    yield return new string(new[] { c, d });
         }
 
         private void OtherCellsModification(ExcelWorksheet workSheet)
