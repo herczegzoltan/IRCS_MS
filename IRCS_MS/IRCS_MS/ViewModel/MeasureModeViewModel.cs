@@ -186,6 +186,13 @@ namespace IRCS_MS.ViewModel
                 try
                 {
                     COMPort.Open();
+
+                    if (CTRL_udpClient == null)
+                    {
+                        CTRL_udpClient = new UdpClient(23999);
+                        CTRL_udpClient.BeginReceive(OnCTRL_UDPReceive, null);
+                    }
+
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
@@ -239,7 +246,7 @@ namespace IRCS_MS.ViewModel
             if (SelectedCardType == "VoIP2CH")
             {
                 //System.Threading.Thread.Sleep(10000);
-                if (CTRL_udpClient == null)
+             /*   if (CTRL_udpClient == null)
                 {
                     CTRL_udpClient = new UdpClient(23999);
                     CTRL_udpClient.BeginReceive(OnCTRL_UDPReceive, null);
@@ -248,7 +255,7 @@ namespace IRCS_MS.ViewModel
                 connectionTimer.AutoReset = true;
                 connectionTimer.Enabled = true;
 
-                MessageRecievedText += "VoIP Connecting... ";
+                MessageRecievedText += "VoIP Connecting... ";*/
                 //SendKeepalive();
                 ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOn());
                 ByteMessageBuilder.SetByteArray(1, 0x00);
@@ -275,7 +282,7 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOff()
         {
-            if (SelectedCardType == "VoIP2CH")
+           /* if (SelectedCardType == "VoIP2CH")
             {
                 if (CTRL_udpClient != null)
                 {
@@ -287,7 +294,7 @@ namespace IRCS_MS.ViewModel
                 connectionTimer.Enabled = false;
                 MessageRecievedText += "VoIP Disconnected\r\n";
                 //SendKeepalive();
-            }
+            }*/
 
             ByteMessageBuilder.SetByteArray(0, xmlData.GetMeasureOff());
             ByteMessageBuilder.SetByteArray(1, 0x00);

@@ -302,7 +302,8 @@
                   FontSize="16"
                   />
 
-        <Button Command="{Binding AnalGenRunCommand}" 
+        <Button Command="{Binding Binding AnalGenRunCommand}"
+            
                 Content="Run" 
                 Grid.Row="18" Grid.Column="2" 
                 FontSize="30" Height="Auto" Margin="30,5,5,5" 
