@@ -21,6 +21,9 @@ using IRCS_MS.ViewModel.Commands;
 using IRCS_MS.Infrastructure.XmlHandler;
 using IRCS_MS.Infrastructure;
 using IRCS_MS.ViewModel.MainViewModelCommands;
+using System.Net.Sockets;
+using System.Net;
+using System.Timers;
 using IRCS_MS.Infrastructure.MeasureMode;
 
 namespace IRCS_MS.ViewModel
@@ -88,6 +91,14 @@ namespace IRCS_MS.ViewModel
         private bool _reportCheckBoxEnabled;
 
         private Stopwatch _stopWatchTimeOut =null;
+
+        #region UDP controlls 
+
+        private static UdpClient CTRL_udpClient;
+        private static System.Timers.Timer connectionTimer = new System.Timers.Timer(2000);
+
+        private static int tries = 15;
+        #endregion
 
         public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
 
@@ -168,6 +179,13 @@ namespace IRCS_MS.ViewModel
                 try
                 {
                     SerialPortManager.Instance.Open();
+
+                    if (CTRL_udpClient == null)
+                    {
+                        CTRL_udpClient = new UdpClient(23999);
+                        CTRL_udpClient.BeginReceive(OnCTRL_UDPReceive, null);
+                    }
+
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
@@ -560,6 +578,85 @@ namespace IRCS_MS.ViewModel
             t.Join();
 
         }
+        #region VoIP_methods
+
+        private void SendKeepalive()
+        {
+            int command_counter = 11;
+            byte[] counterBytes = Encoding.ASCII.GetBytes(command_counter.ToString());
+
+            byte[] commandBytes = Encoding.ASCII.GetBytes("KEEPALIVE");
+            byte[] sendBytes = new byte[counterBytes.Length + commandBytes.Length];
+
+            Array.Copy(counterBytes, 0, sendBytes, 0, counterBytes.Length);
+            Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
+            IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
+            CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
+
+        }
+
+        private void IP_loopback()
+        {
+            int command_counter = 11;
+            byte[] counterBytes = Encoding.ASCII.GetBytes(command_counter.ToString());
+
+            byte[] commandBytes = Encoding.ASCII.GetBytes("KEEPALIVE");
+            byte[] sendBytes = new byte[counterBytes.Length + commandBytes.Length];
+
+            Array.Copy(counterBytes, 0, sendBytes, 0, counterBytes.Length);
+            Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
+            IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
+            CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
+
+        }
+
+        private void OnCTRL_UDPReceive(IAsyncResult res)
+        {
+            //nodataneeded = false;
+            // UdpClient u = (UdpClient)((UdpState)(res.AsyncState)).u;
+            //IPEndPoint e = (IPEndPoint)((UdpState)(res.AsyncState)).e;
+            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            if (CTRL_udpClient != null)
+            {
+                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref remote);
+                string receiveString = Encoding.ASCII.GetString(receiveBytes);
+
+                if (receiveString.Contains("KEEPALIVE"))
+                {
+                    connectionTimer.Elapsed -= OnTimedEvent;
+                    connectionTimer.Enabled = false;
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+                }
+
+                MessageRecievedText += " Received:" + receiveString.ToString() + "\r\n";
+
+                CTRL_udpClient.BeginReceive(new AsyncCallback(OnCTRL_UDPReceive), null);
+            }
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            MessageRecievedText = "VoIP Connecting... Timeout in " + (tries * 2).ToString() + "s";
+            int command_counter = 11;
+            byte[] counterBytes = Encoding.ASCII.GetBytes(command_counter.ToString());
+
+            byte[] commandBytes = Encoding.ASCII.GetBytes("KEEPALIVE");
+            byte[] sendBytes = new byte[counterBytes.Length + commandBytes.Length];
+
+            Array.Copy(counterBytes, 0, sendBytes, 0, counterBytes.Length);
+            Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
+            IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
+            CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
+            if (tries-- == 0)
+            {
+                connectionTimer.Enabled = false;
+                connectionTimer.Elapsed -= OnTimedEvent;
+                MessageRecievedText += "\r\nVoIP connecting error! Try RUN.\r\n";
+                UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+            }
+        }
+
+        #endregion
 
         #region Properties
         public event PropertyChangedEventHandler PropertyChanged;
