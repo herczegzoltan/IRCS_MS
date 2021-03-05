@@ -95,6 +95,7 @@
     <Compile Include="Model\ServiceMode\Channel.cs" />
     <Compile Include="Model\ServiceMode\ServiceRootObject.cs" />
     <Compile Include="Model\ServiceMode\SubChannel.cs" />
+    <Compile Include="Model\Udp.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\MeasureOffCommand.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\MeasureOnCommand.cs" />
     <Compile Include="ViewModel\MeasureModeViewModelCommands\RunCommand.cs" />
