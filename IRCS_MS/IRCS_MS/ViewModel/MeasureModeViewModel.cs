@@ -110,7 +110,6 @@ namespace IRCS_MS.ViewModel
             ReportDataCollector.InitializeLists();
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
-
             this._udp = new Udp();
         }
 
@@ -373,26 +372,19 @@ namespace IRCS_MS.ViewModel
 
                                 if(XmlFilter.Instance.GetResponseCommand(this._receivedBytes[0].ToString()) == "VOIP_UDP_Start")
                                 {
-                                    this._udp.SendBytes.Add(_receivedBytes[1]);
-                                    //udp_send_bytes[_udpByteCounter] = _udpReceivedBytes[1];
-                                    // _udpByteCounter++;
+                                    this._udp = new Udp();
                                     this._udp.IsEnabled = true;
+
+                                    this._udp.SendBytes.Add(_receivedBytes[1]);
                                 }
                                 else if(XmlFilter.Instance.GetResponseCommand(this._receivedBytes[0].ToString()) == "VOIP_UDP_Cont")
                                 {
                                     this._udp.SendBytes.Add(this._receivedBytes[1]);
-                                    //_udpSendBytes.Add(_udpReceivedBytes[1]);
-                                    //udp_send_bytes[_udpByteCounter] = _udpReceivedBytes[1];
-                                    //_udpByteCounter++;
                                 }
                                 else if (XmlFilter.Instance.GetResponseCommand(_receivedBytes[0].ToString()) == "VOIP_UDP_Stop")
                                 {
                                     CTRL_udpClient.Send(this._udp.SendBytes.ToArray(), this._udp.SendBytes.Count, this._udp.IPADDRESS, this._udp.PORT);
-                                    //CTRL_udpClient.Send(udp_send_bytes, udp_send_bytes.Length, _udpRemoteIpAddress, _udpRemotePort);
-                                    //_udpByteCounter = 0;
-                                    //_udpSendBytes.Clear();
-                                    //_udpTransferIsEnabled = false;
-                                    this._udp.IsEnabled = false;
+
                                     this._udp.IsFinished = true;
                                 }
 
@@ -437,7 +429,7 @@ namespace IRCS_MS.ViewModel
 
                                 //if incoming message returns with measure ok or not-> negative logic
                                 if (ValidatorIncomingMessage.ErrorMessageBack(
-                                        ByteMessages.Instance.MeasureModeIncoming[1]) && !this._udp.IsEnabled && !this._udp.IsFinished)
+                                        ByteMessages.Instance.MeasureModeIncoming[1]) && !this._udp.IsEnabled)
                                 {
                                     //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
@@ -472,8 +464,6 @@ namespace IRCS_MS.ViewModel
                                 GeneralMessageCollection.LoopCounter = 0; 
                                 MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
                             }
-
-
                         }
                         else
                         {
@@ -503,6 +493,11 @@ namespace IRCS_MS.ViewModel
                         _counterIncomingPackage = 1;
                         _validateFinished = false;
                         IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
+                    }
+                    if (this._udp.IsFinished)
+                    {
+                       this._udp.Reset();
+                        GeneralMessageCollection.LoopCounter = 0;
                     }
                 }
                 catch (Exception ex)
@@ -602,7 +597,6 @@ namespace IRCS_MS.ViewModel
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
-
         }
         #region VoIP_methods
 
@@ -633,7 +627,6 @@ namespace IRCS_MS.ViewModel
             Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
             IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
             CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
-
         }
 
         private void OnCTRL_UDPReceive(IAsyncResult res)
