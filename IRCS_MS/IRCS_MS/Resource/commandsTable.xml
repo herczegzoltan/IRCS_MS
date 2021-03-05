@@ -9,7 +9,7 @@
       <Record name = "ServiceOn"  value = "0X06"/>
       <Record name = "ServiceOff" value = "0X07"/>
       <Record name = "Run" value = "0X05"/>
-      <Record name = "TimeOutDefault" value ="90000"/>
+      <Record name = "TimeOutDefault" value ="900000"/>
     </DefaultValues>
     <Card name="Common" value="0x07" iscommon="False" default ="true">
         <Measure name = "AutoMeasure" value="0x01" />
@@ -74,5 +74,16 @@
     </Card>
     <Card name="VoIP2CH" value="0x0b" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "PSU" value="0xb0" />
+        <Measure name = "OFF" value="0xb1" />
+        <Measure name = "UDP" value="0xb2" />
+        <Measure name = "Reset" value="0xb3" />
+        <Measure name = "EEPROM" value="0xb4" />
+        <Measure name = "GPIO" value="0xb5" />
+        <Measure name = "Fantom" value="0xb6" />
+        <Measure name = "Ch1_Loop" value="0xb7" />
+        <Measure name = "Ch2_Loop" value="0xb8" />
+        <Measure name = "Ch1_Jack" value="0xb9" />
+        <Measure name = "Ch2_Jack" value="0xba" />
     </Card>
 </RootObject>

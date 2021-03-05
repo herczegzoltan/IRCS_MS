@@ -151,6 +151,7 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleRun;
         }
 
+        
         public string GetResponseTranslate(string command, string data, string eof)
         {
             command = ConverterRepository.ConvertDecimalStringToHexString(command);
@@ -161,6 +162,14 @@ namespace IRCS_MS.Infrastructure.XmlHandler
                                              && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase)))
                .Select(n => n.Translate).FirstOrDefault();
             return singleResponseTranslate;
+        }
+        public string GetResponseCommand(string command)
+        {
+            command = ConverterRepository.ConvertDecimalStringToHexString(command);
+            string singleResponseTranslateByCommand = _rootOjectResponse.Answer.Where(x => string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
+                                                   .Select(h => h.Translate).FirstOrDefault();
+
+            return singleResponseTranslateByCommand;
         }
 
         public string GetResponseData(string data)

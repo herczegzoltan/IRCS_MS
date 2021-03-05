@@ -39,56 +39,38 @@ namespace IRCS_MS.ViewModel
 
         #region Variables
         private List<string> _availablePorts;
-
         private List<int> _baudRates;
-
         private string _selectedCardType = "";
-
         private string _selectedMeasureType = "";
-
         private List<string> _cardTypes;
-
         private List<string> _measureTypes;
-
         private string _selectedAvailablePort = null;
-
         private string _messageSendText;
-
         private string _messageRecievedText;
-
         private int _selectedBaudRate = 0;
-
         private string _stateOfDevice = "State: Not connected!";
-
         private string _stateOfDeviceColor = "Red";
-
         private bool _connectButtonIsEnabled = true;
-
         private bool _disConnectButtonIsEnabled;
-
         private bool _measureOffButtonIsEnabled;
-
         private bool _measureOnButtonIsEnabled;
-
         private bool _cmdCardTypeIsEnabled;
-
         private bool _cmdMeasureTypeIsEnabled;
-
         private bool _runButtonIsEnabled;
-
         private bool _runningTask;
-
         private string _currentDateTime;
-
         public bool WasItRun = false;
-
         private int countBytes = 0;
-
         private ulong _schauerNumber;
         
         private string _currentMeasureCount = "Measured data to save: 0";
         private bool _reportFieldState;
         private bool _reportCheckBoxEnabled;
+
+        private int _counterIncomingPackage = 1;
+        private int _extramessages = 0;
+        private bool _validateFinished = false;
+        private int _savedMeasureCounter = 0;
 
         private Stopwatch _stopWatchTimeOut =null;
 
@@ -98,6 +80,11 @@ namespace IRCS_MS.ViewModel
         private static System.Timers.Timer connectionTimer = new System.Timers.Timer(2000);
 
         private static int tries = 15;
+        private string _udpRemoteIpAddress = "192.168.1.122";
+        private int _udpRemotePort = 23400;
+        private bool _udpTransferIsEnabled = false;
+        private byte[] _udpReceivedBytes = new byte[3];
+        private List<byte> _udpSendBytes = new List<byte>();
         #endregion
 
         public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
@@ -359,18 +346,16 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-        private int _counterIncomingPackage = 1;
-        private int _extramessages = 0;
-        private bool _validateFinished = false;
-        private int _savedMeasureCounter = 0;
-
         private void DataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             if (SerialPortManager.Instance.IsOpen)
             {
                 try
                 {
-                    string incomingByte = SerialPortManager.Instance.ReadByte().ToString();
+                    byte received_byte = Convert.ToByte(SerialPortManager.Instance.ReadByte());
+
+                    _udpReceivedBytes[countBytes] = received_byte;
+                    string incomingByte = received_byte.ToString();
 
                     ByteMessageBuilderRepository.SetStrArrayByIndex(ByteMessages.Instance.MeasureModeIncoming, countBytes, incomingByte);
                     
@@ -390,29 +375,68 @@ namespace IRCS_MS.ViewModel
                                     XmlFilter.Instance.GetNumberOfExpectedMeasureState(XmlFilter.Instance.GetDefaultName()) * XmlFilter.Instance.DefaultNumbersOfBytes :
                                     _extramessages = 0;
 
-
-                                //if the incoming messages's number is equle with the required number from XML file
-                                if (_counterIncomingPackage ==
-                                    XmlFilter.Instance.GetNumberOfExpectedMeasureState(SelectedCardType) * XmlFilter.Instance.DefaultNumbersOfBytes + _extramessages)
+                                if(XmlFilter.Instance.GetResponseCommand(_udpReceivedBytes[0].ToString()) == "VOIP_UDP_Start")
                                 {
-                                    TimeOutValidator(TimeOutValidatorStates.Stop);
+                                    _udpSendBytes.Add(_udpReceivedBytes[1]);
+                                    //udp_send_bytes[_udpByteCounter] = _udpReceivedBytes[1];
+                                    // _udpByteCounter++;
+                                    _udpTransferIsEnabled = true;
+                                }
+                                else if(XmlFilter.Instance.GetResponseCommand(_udpReceivedBytes[0].ToString()) == "VOIP_UDP_Cont")
+                                {
+                                    _udpSendBytes.Add(_udpReceivedBytes[1]);
+                                    //udp_send_bytes[_udpByteCounter] = _udpReceivedBytes[1];
+                                    //_udpByteCounter++;
+                                }
+                                else if (XmlFilter.Instance.GetResponseCommand(_udpReceivedBytes[0].ToString()) == "VOIP_UDP_Stop")
+                                {
+                                    CTRL_udpClient.Send(_udpSendBytes.ToArray(), _udpSendBytes.Count, _udpRemoteIpAddress, _udpRemotePort);
+                                    //CTRL_udpClient.Send(udp_send_bytes, udp_send_bytes.Length, _udpRemoteIpAddress, _udpRemotePort);
+                                    //_udpByteCounter = 0;
+                                    _udpSendBytes.Clear();
+                                    _udpTransferIsEnabled = false;
+                                }
 
-                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation(" -> Validate OK") + MessageRecievedText;
-                                    //_counterIncomingPackage = 1;
-                                    _validateFinished = true;
-                                    GeneralMessageCollection.LoopCounter = 0;
+                                if (!_udpTransferIsEnabled)
+                                {
+                                    //if the incoming messages's number is equle with the required number from XML file
+                                    if (_counterIncomingPackage ==
+                                        XmlFilter.Instance.GetNumberOfExpectedMeasureState(SelectedCardType) * XmlFilter.Instance.DefaultNumbersOfBytes + _extramessages)
+                                    {
+                                        TimeOutValidator(TimeOutValidatorStates.Stop);
+                                        MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation(" -> Validate OK") + MessageRecievedText;
+                                        //_counterIncomingPackage = 1;
+                                        _validateFinished = true;
+                                        GeneralMessageCollection.LoopCounter = 0;
+                                    }
+                                    else
+                                    {
+                                        //when it is not validated yet.   
+                                        TimeOutValidator(TimeOutValidatorStates.Reset);
+                                        MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation("") + MessageRecievedText;
+                                        GeneralMessageCollection.LoopCounter++;
+                                        _validateFinished = false;
+                                    }
                                 }
                                 else
                                 {
-                                 //when it is not validated yet.   
-                                    TimeOutValidator(TimeOutValidatorStates.Reset);
-                                    MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation("") + MessageRecievedText;
-                                    GeneralMessageCollection.LoopCounter++;
-                                    _validateFinished = false;
+                                    if (_counterIncomingPackage == XmlFilter.Instance.GetNumberOfExpectedMeasureState(SelectedCardType) * XmlFilter.Instance.DefaultNumbersOfBytes + _extramessages)
+                                    {
+                                        TimeOutValidator(TimeOutValidatorStates.Stop);
+                                        _validateFinished = true;
+                                        GeneralMessageCollection.LoopCounter = 0;
+                                    }
+                                    else
+                                    {
+                                        //when it is not validated yet.   
+                                        TimeOutValidator(TimeOutValidatorStates.Reset);
+                                        _validateFinished = false;
+                                        GeneralMessageCollection.LoopCounter++;
+                                    }
                                 }
 
                                 //if incoming message returns with measure ok or not-> negative logic
-                                if (ValidatorIncomingMessage.ErrorMessageBack(ByteMessages.Instance.MeasureModeIncoming[1]))
+                                if (ValidatorIncomingMessage.ErrorMessageBack(ByteMessages.Instance.MeasureModeIncoming[1]) && !_udpTransferIsEnabled)
                                 {
                                     //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
@@ -420,7 +444,6 @@ namespace IRCS_MS.ViewModel
                                     _validateFinished = true;
                                     GeneralMessageCollection.LoopCounter = 0;
                                 }
-
                                 if (ReportFieldState)
                                 {
                                     _savedMeasureCounter++;
@@ -448,6 +471,8 @@ namespace IRCS_MS.ViewModel
                                 GeneralMessageCollection.LoopCounter = 0; 
                                 MessageRecievedText = GeneralMessageCollection.GeneralMessageRecived("Validate Error -> Wrong EoF") + MessageRecievedText;
                             }
+
+
                         }
                         else
                         {
@@ -468,7 +493,7 @@ namespace IRCS_MS.ViewModel
                         countBytes++;
                     }
 
-                    if (WasItRun && !_validateFinished)
+                    if (WasItRun && !_validateFinished && !_udpTransferIsEnabled)
                     {
                         _counterIncomingPackage++;
                     }
