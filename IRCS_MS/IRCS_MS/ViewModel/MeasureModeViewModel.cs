@@ -84,6 +84,8 @@ namespace IRCS_MS.ViewModel
         private byte[] _receivedBytes = new byte[3];
         private static int tries = 15;
 
+        private bool _voipPingStatus = false;
+
         
         #endregion
 
@@ -232,13 +234,24 @@ namespace IRCS_MS.ViewModel
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOffClick);
         }
+        public void SendResetOk()
+        {
+            MeasureModeByteMessagesStandardCommands.ResetOk();
+            WasItRun = true;
+            LoopMessagesArrayToSend();
+        }
+
+        public void SendResetNok()
+        {
+            MeasureModeByteMessagesStandardCommands.ResetNok();
+            WasItRun = true;
+            LoopMessagesArrayToSend();
+        }
 
         public void SendRun()
-        {   
+        {
             TimeOutValidator(TimeOutValidatorStates.Start);
             MeasureModeByteMessagesStandardCommands.SendRun(SelectedCardType, SelectedMeasureType);
-            TopMessage("Reset Button", "Push the Reset button and OK!");
-            Thread.Sleep(5000);
             WasItRun = true;
             LoopMessagesArrayToSend();
         }
@@ -402,6 +415,46 @@ namespace IRCS_MS.ViewModel
                                     CTRL_udpClient.Send(this._udp.SendBytes.ToArray(), this._udp.SendBytes.Count, this._udp.IPADDRESS, this._udp.PORT);
 
                                     this._udp.IsFinished = true;
+                                }
+                                else if(XmlFilter.Instance.GetResponseCommand(_receivedBytes[0].ToString()) == "VOIP_Reset_Cmd")
+                                {
+                                    VoipPing();
+                                    if (_voipPingStatus == true)
+                                    {
+                                        _voipPingStatus = false;
+                                        TopMessage("Reset Button", "Push the Reset button and OK");
+                                        VoipPing();
+                                        if (_voipPingStatus == true)
+                                        {
+                                            _voipPingStatus = false;
+                                            //nem lenne szabad pingelnie, ha mégis akkor nem resetelt
+                                            SendResetNok();
+                                        }
+                                        else
+                                        {
+                                            //elment a ping, így jó
+                                            Thread.Sleep(5000);
+                                            VoipPing();
+                                            if(_voipPingStatus == true)
+                                            {
+                                                //visszajött, Reset OK
+                                                _voipPingStatus = false;
+                                                SendResetOk();
+
+                                            }
+                                            else
+                                            {
+                                                //timeout
+                                                SendResetNok();
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                            TopMessage("Error", "Ping Error");
+                                            return;
+                                    }
+                                    
                                 }
 
                                 if (!this._udp.IsEnabled)
@@ -616,18 +669,22 @@ namespace IRCS_MS.ViewModel
         #region VoIP_methods
         private async void VoipPing ()
         {
+            string status;
             try
             {
                 Ping myPing = new Ping();
                 PingReply reply = await myPing.SendPingAsync("google.com", 1000);
                 if(reply != null)
                 {
-                    MessageRecievedText += "Ping result:" + reply.Status + "\n";
+                    status = Convert.ToString(reply.Status);
+                    MessageRecievedText += "Ping result:" + status + "\n";
+                    _voipPingStatus = true;
                 }
             }
             catch(Exception ex)
             {
-                TopMessage("Error", ex.Message);
+                MessageRecievedText += "Ping result:" + ex + "\n";
+                _voipPingStatus = false;
             }
         }
 

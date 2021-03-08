@@ -37,6 +37,20 @@ namespace IRCS_MS.Infrastructure.MeasureMode
             ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
 
+        public static void ResetOk()
+        {
+            ResetByteMessages();
+            ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 0, XmlFilter.Instance.GetResetOk());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
+        }
+
+        public static void ResetNok()
+        {
+            ResetByteMessages();
+            ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 0, XmlFilter.Instance.GetResetNok());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
+        }
+
         public static void SendRun(string cardType, string measureType)
         {
             ResetByteMessages();

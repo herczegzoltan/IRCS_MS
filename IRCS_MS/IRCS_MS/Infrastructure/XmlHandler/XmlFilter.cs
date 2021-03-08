@@ -130,6 +130,20 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleMeasureOff;
         }
 
+        public string GetResetOk()
+        {
+            string singleResetOk = _rootOject.ValuesCommands.Record.Where(x => x.Name == "VoipResetOk")
+                .Select(n => n.Value).First();
+            return singleResetOk;
+        }
+
+        public string GetResetNok()
+        {
+            string singleResetNok = _rootOject.ValuesCommands.Record.Where(x => x.Name == "VoipResetNok")
+                .Select(n => n.Value).First();
+            return singleResetNok;
+        }
+
         public string GetConnect()
         {
             string singleConnect = _rootOject.ValuesCommands.Record.Where(x => x.Name == "Connect")
