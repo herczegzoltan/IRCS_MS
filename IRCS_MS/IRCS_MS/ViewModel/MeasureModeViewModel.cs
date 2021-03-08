@@ -23,6 +23,7 @@ using IRCS_MS.Infrastructure;
 using IRCS_MS.ViewModel.MainViewModelCommands;
 using System.Net.Sockets;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Timers;
 using IRCS_MS.Infrastructure.MeasureMode;
 
@@ -82,6 +83,8 @@ namespace IRCS_MS.ViewModel
         private Udp _udp;
         private byte[] _receivedBytes = new byte[3];
         private static int tries = 15;
+
+        
         #endregion
 
         public UIElementCollectionHelper  UIElementCollectionHelper{ get; set; }
@@ -98,7 +101,6 @@ namespace IRCS_MS.ViewModel
 
             AvailablePorts = SerialCommunicationSettings.ListOfSerialPorts();
             BaudRates = SerialCommunicationSettings.ListOfSerialBaudRates();
-
             CardTypes = XmlFilter.Instance.GetCardTypeNames();
 
             UpdateTimeUI();
@@ -207,7 +209,6 @@ namespace IRCS_MS.ViewModel
         }
         private void ConfigureDevice()
         {
-
             MeasureModeByteMessagesStandardCommands.ConnectConfigureDevice();
             WasItRun = false;
             
@@ -236,6 +237,8 @@ namespace IRCS_MS.ViewModel
         {   
             TimeOutValidator(TimeOutValidatorStates.Start);
             MeasureModeByteMessagesStandardCommands.SendRun(SelectedCardType, SelectedMeasureType);
+            TopMessage("Reset Button", "Push the Reset button and OK!");
+            Thread.Sleep(5000);
             WasItRun = true;
             LoopMessagesArrayToSend();
         }
@@ -580,7 +583,6 @@ namespace IRCS_MS.ViewModel
                 TopMessage("Error!", "No measurement data!");
             }
         }
-
       
         private string FolderPath = "";
         private string _isRunningNow;
@@ -612,6 +614,23 @@ namespace IRCS_MS.ViewModel
             t.Join();
         }
         #region VoIP_methods
+        private async void VoipPing ()
+        {
+            try
+            {
+                Ping myPing = new Ping();
+                PingReply reply = await myPing.SendPingAsync("google.com", 1000);
+                if(reply != null)
+                {
+                    MessageRecievedText += "Ping result:" + reply.Status + "\n";
+                }
+            }
+            catch(Exception ex)
+            {
+                TopMessage("Error", ex.Message);
+            }
+        }
+
         private void OnCTRL_UDPReceive(IAsyncResult res)
         {
             IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
