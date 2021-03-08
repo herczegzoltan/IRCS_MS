@@ -151,7 +151,20 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleRun;
         }
 
-        
+        public string GetUdpUartTransmitStart()
+        {
+            string singleUdpUartTransmit = _rootOject.ValuesCommands.Record.Where(x => x.Name == "UdpToUartStart")
+                .Select(n => n.Value).First();
+            return singleUdpUartTransmit;
+        }
+        public string GetUdpUartTransmitStop()
+        {
+            string singleUdpUartTransmit = _rootOject.ValuesCommands.Record.Where(x => x.Name == "UdpToUartStop")
+                .Select(n => n.Value).First();
+            return singleUdpUartTransmit;
+        }
+
+
         public string GetResponseTranslate(string command, string data, string eof)
         {
             command = ConverterRepository.ConvertDecimalStringToHexString(command);

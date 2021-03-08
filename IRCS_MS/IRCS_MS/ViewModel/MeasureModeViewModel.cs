@@ -171,6 +171,7 @@ namespace IRCS_MS.ViewModel
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
                     _runningTask = true;
                     ConfigureDevice();
+                    
                 }
                 catch (Exception e)
                 {
@@ -209,7 +210,7 @@ namespace IRCS_MS.ViewModel
 
             MeasureModeByteMessagesStandardCommands.ConnectConfigureDevice();
             WasItRun = false;
-
+            
             LoopMessagesArrayToSend();
         }
 
@@ -232,13 +233,25 @@ namespace IRCS_MS.ViewModel
         }
 
         public void SendRun()
-        {
-            //stopwatch
+        {   
             TimeOutValidator(TimeOutValidatorStates.Start);
-            //stopWatchTimeOut.Start();
-
             MeasureModeByteMessagesStandardCommands.SendRun(SelectedCardType, SelectedMeasureType);
-   
+            WasItRun = true;
+            LoopMessagesArrayToSend();
+        }
+
+        public void UdpToUartTransmitStart(char data)
+        {
+            
+            MeasureModeByteMessagesStandardCommands.UdpUartTransmitStart(SelectedCardType, SelectedMeasureType,data);
+            WasItRun = true;
+            LoopMessagesArrayToSend();
+        }
+
+        public void UdpToUartTransmitStop()
+        {
+
+            MeasureModeByteMessagesStandardCommands.UdpUartTransmitStop(SelectedCardType, SelectedMeasureType);
             WasItRun = true;
             LoopMessagesArrayToSend();
         }
@@ -599,52 +612,29 @@ namespace IRCS_MS.ViewModel
             t.Join();
         }
         #region VoIP_methods
-
-        private void SendKeepalive()
-        {
-            int command_counter = 11;
-            byte[] counterBytes = Encoding.ASCII.GetBytes(command_counter.ToString());
-
-            byte[] commandBytes = Encoding.ASCII.GetBytes("KEEPALIVE");
-            byte[] sendBytes = new byte[counterBytes.Length + commandBytes.Length];
-
-            Array.Copy(counterBytes, 0, sendBytes, 0, counterBytes.Length);
-            Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
-            IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
-            CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
-
-        }
-
-        private void IP_loopback()
-        {
-            int command_counter = 11;
-            byte[] counterBytes = Encoding.ASCII.GetBytes(command_counter.ToString());
-
-            byte[] commandBytes = Encoding.ASCII.GetBytes("KEEPALIVE");
-            byte[] sendBytes = new byte[counterBytes.Length + commandBytes.Length];
-
-            Array.Copy(counterBytes, 0, sendBytes, 0, counterBytes.Length);
-            Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
-            IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
-            CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
-        }
-
         private void OnCTRL_UDPReceive(IAsyncResult res)
         {
-            //nodataneeded = false;
-            // UdpClient u = (UdpClient)((UdpState)(res.AsyncState)).u;
-            //IPEndPoint e = (IPEndPoint)((UdpState)(res.AsyncState)).e;
-            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
             if (CTRL_udpClient != null)
             {
-                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref remote);
+                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref voip_endpoint);
                 string receiveString = Encoding.ASCII.GetString(receiveBytes);
 
-                if (receiveString.Contains("KEEPALIVE"))
+                if (receiveString.Contains("T_MS_UDP"))
                 {
-                    connectionTimer.Elapsed -= OnTimedEvent;
-                    connectionTimer.Enabled = false;
-                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+                    string testString = "T_MS_UDP";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for(int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+
+                }
+                else if(receiveString.Contains("T_MS_IO"))
+                {
+
                 }
 
                 MessageRecievedText += " Received:" + receiveString.ToString() + "\r\n";
@@ -652,29 +642,6 @@ namespace IRCS_MS.ViewModel
                 CTRL_udpClient.BeginReceive(new AsyncCallback(OnCTRL_UDPReceive), null);
             }
         }
-
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
-        {
-            MessageRecievedText = "VoIP Connecting... Timeout in " + (tries * 2).ToString() + "s";
-            int command_counter = 11;
-            byte[] counterBytes = Encoding.ASCII.GetBytes(command_counter.ToString());
-
-            byte[] commandBytes = Encoding.ASCII.GetBytes("KEEPALIVE");
-            byte[] sendBytes = new byte[counterBytes.Length + commandBytes.Length];
-
-            Array.Copy(counterBytes, 0, sendBytes, 0, counterBytes.Length);
-            Array.Copy(commandBytes, 0, sendBytes, counterBytes.Length, commandBytes.Length);
-            IPEndPoint voipend = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
-            CTRL_udpClient.Send(sendBytes, sendBytes.Length, voipend);
-            if (tries-- == 0)
-            {
-                connectionTimer.Enabled = false;
-                connectionTimer.Elapsed -= OnTimedEvent;
-                MessageRecievedText += "\r\nVoIP connecting error! Try RUN.\r\n";
-                UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
-            }
-        }
-
         #endregion
 
         #region Properties
