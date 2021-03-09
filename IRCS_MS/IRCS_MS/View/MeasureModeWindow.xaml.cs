@@ -28,7 +28,7 @@ namespace IRCS_MS
         public MeasureModeWindow()
         {
             InitializeComponent();
-            //// this.WindowState = WindowState.Maximized;
+            this.WindowState = WindowState.Maximized;
         }
 
         private void OpenServiceModWindow(object sender, RoutedEventArgs e)
