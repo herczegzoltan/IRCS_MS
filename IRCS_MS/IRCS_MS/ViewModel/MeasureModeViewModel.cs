@@ -78,14 +78,14 @@ namespace IRCS_MS.ViewModel
         #region UDP controlls 
 
         private static UdpClient CTRL_udpClient;
+        private static UdpClient Ch1_udpClient;
+        private static UdpClient Ch2_udpClient;
         private static System.Timers.Timer connectionTimer = new System.Timers.Timer(2000);
 
-        private Udp _udp;
-        private byte[] _receivedBytes = new byte[3];
-        private static int tries = 15;
+        private Udp     _udp;
+        private byte[]  _receivedBytes = new byte[3];
 
-        private bool _voipPingStatus = false;
-
+        private Ping _ping;
         
         #endregion
 
@@ -114,6 +114,7 @@ namespace IRCS_MS.ViewModel
             ReportDataCollector.InitializeLists();
             IsRunningNow = GeneralMessageCollection.IsRunningStateChecker(false);
             _stopWatchTimeOut = new Stopwatch();
+            _ping = new Ping();
             this._udp = new Udp();
         }
 
@@ -166,10 +167,20 @@ namespace IRCS_MS.ViewModel
                 {
                     SerialPortManager.Instance.Open();
 
-                    if (CTRL_udpClient == null)
+                    if(CTRL_udpClient == null)
                     {
-                        CTRL_udpClient = new UdpClient(23999);
+                        CTRL_udpClient = new UdpClient(23400);
                         CTRL_udpClient.BeginReceive(OnCTRL_UDPReceive, null);
+                    }
+                    if(Ch1_udpClient == null)
+                    {
+                        Ch1_udpClient = new UdpClient(23410);
+                        Ch1_udpClient.BeginReceive(Ch1_UDPReceive, null);
+                    }
+                    if (Ch2_udpClient == null)
+                    {
+                        Ch2_udpClient = new UdpClient(23420);
+                        Ch2_udpClient.BeginReceive(Ch2_UDPReceive, null);
                     }
 
                     UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.ConnectAfterClick);
@@ -386,6 +397,7 @@ namespace IRCS_MS.ViewModel
                     //all bytes arrived
                     if (countBytes == 2)
                     {
+                        countBytes = 0;
                         if (WasItRun)
                         {
 
@@ -418,15 +430,14 @@ namespace IRCS_MS.ViewModel
                                 }
                                 else if(XmlFilter.Instance.GetResponseCommand(_receivedBytes[0].ToString()) == "VOIP_Reset_Cmd")
                                 {
-                                    VoipPing();
-                                    if (_voipPingStatus == true)
+                                    var status = VoipPing();
+                                    if (status.Result == "Success")
                                     {
-                                        _voipPingStatus = false;
                                         TopMessage("Reset Button", "Push the Reset button and OK");
-                                        VoipPing();
-                                        if (_voipPingStatus == true)
+                                        status = VoipPing();
+
+                                        if (status.Result == "Success")
                                         {
-                                            _voipPingStatus = false;
                                             //nem lenne szabad pingelnie, ha mégis akkor nem resetelt
                                             SendResetNok();
                                         }
@@ -434,11 +445,10 @@ namespace IRCS_MS.ViewModel
                                         {
                                             //elment a ping, így jó
                                             Thread.Sleep(5000);
-                                            VoipPing();
-                                            if(_voipPingStatus == true)
+                                            status = VoipPing();
+                                            if(status.Result == "Success")
                                             {
                                                 //visszajött, Reset OK
-                                                _voipPingStatus = false;
                                                 SendResetOk();
 
                                             }
@@ -544,7 +554,7 @@ namespace IRCS_MS.ViewModel
                                                 + "\n" + MessageRecievedText + "\n";
                         }
 
-                        countBytes = 0;
+                        //countBytes = 0;
                         WasItDisconnect();
                         ByteMessageBuilderRepository.ClearArray(ByteMessages.Instance.MeasureModeIncoming);
                     }
@@ -667,25 +677,27 @@ namespace IRCS_MS.ViewModel
             t.Join();
         }
         #region VoIP_methods
-        private async void VoipPing ()
+        private async Task<string> VoipPing ()
         {
-            string status;
+            string status = "";
             try
             {
-                Ping myPing = new Ping();
-                PingReply reply = await myPing.SendPingAsync("google.com", 1000);
+                //Ping myPing = new Ping();
+                PingReply reply = await _ping.SendPingAsync("192.168.1.122", 1000);
                 if(reply != null)
                 {
                     status = Convert.ToString(reply.Status);
                     MessageRecievedText += "Ping result:" + status + "\n";
-                    _voipPingStatus = true;
                 }
             }
             catch(Exception ex)
             {
                 MessageRecievedText += "Ping result:" + ex + "\n";
-                _voipPingStatus = false;
+                status = ex.ToString();
+                return status;
             }
+
+            return status;
         }
 
         private void OnCTRL_UDPReceive(IAsyncResult res)
@@ -708,15 +720,166 @@ namespace IRCS_MS.ViewModel
                     UdpToUartTransmitStop();
 
                 }
-                else if(receiveString.Contains("T_MS_IO"))
+                else if(receiveString.Contains("T_MS_EEPROM_OK_"))
                 {
+                    string testString = "T_MS_EEPROM_OK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
 
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_EEPROM_NOK"))
+                {
+                    string testString = "T_MS_EEPROM_NOK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("SENT"))
+                {
+                    string testString = "SENT";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_10_OK"))
+                {
+                    string testString = "T_MS_FAN_10_OK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_10NOK"))
+                {
+                    string testString = "T_MS_FAN_10NOK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_11_OK"))
+                {
+                    string testString = "T_MS_FAN_11_OK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_11NOK"))
+                {
+                    string testString = "T_MS_FAN_11NOK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_20_OK"))
+                {
+                    string testString = "T_MS_FAN_20_OK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_20NOK"))
+                {
+                    string testString = "T_MS_FAN_20NOK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_21_OK"))
+                {
+                    string testString = "T_MS_FAN_21_OK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("T_MS_FAN_21NOK"))
+                {
+                    string testString = "T_MS_FAN_21NOK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else
+                {
+                    byte[] testArray = Encoding.UTF8.GetBytes(receiveString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
                 }
 
                 MessageRecievedText += " Received:" + receiveString.ToString() + "\r\n";
 
                 CTRL_udpClient.BeginReceive(new AsyncCallback(OnCTRL_UDPReceive), null);
             }
+        }
+
+        private void Ch1_UDPReceive(IAsyncResult res)
+        {
+            IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23410);
+            if (CTRL_udpClient != null)
+            {
+                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref voip_endpoint);
+
+                Ch1_udpClient.Send(receiveBytes, receiveBytes.Length, voip_endpoint);
+            }
+
+        }
+
+        private void Ch2_UDPReceive(IAsyncResult res)
+        {
+            IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23420);
+            if (CTRL_udpClient != null)
+            {
+                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref voip_endpoint);
+
+                Ch2_udpClient.Send(receiveBytes, receiveBytes.Length, voip_endpoint);
+            }
+
         }
         #endregion
 
