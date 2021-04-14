@@ -80,12 +80,16 @@ namespace IRCS_MS.ViewModel
         private static UdpClient CTRL_udpClient;
         private static UdpClient Ch1_udpClient;
         private static UdpClient Ch2_udpClient;
-        private static System.Timers.Timer connectionTimer = new System.Timers.Timer(2000);
+        private static System.Timers.Timer keepaliveTimer = new System.Timers.Timer(10000);
 
         private Udp     _udp;
         private byte[]  _receivedBytes = new byte[3];
 
         private Ping _ping;
+
+        private bool keepalive_enable = false;
+        private int keepalive_cnt = 0;
+       
         
         #endregion
 
@@ -116,6 +120,8 @@ namespace IRCS_MS.ViewModel
             _stopWatchTimeOut = new Stopwatch();
             _ping = new Ping();
             this._udp = new Udp();
+
+           // Keepalive_timer();
         }
 
         private void MeasureTypeComboBoxChanged()
@@ -230,11 +236,18 @@ namespace IRCS_MS.ViewModel
 
         public void SendMeasureOn()
         {
-            MeasureModeByteMessagesStandardCommands.MeasureOn();
+            MeasureModeByteMessagesStandardCommands.MeasureOn(SelectedCardType, SelectedMeasureType);
 
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+            if (SelectedCardType == "VoIP2CH")
+            {
+                UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClickVoip);
+                keepaliveTimer.Elapsed += KeepaliveSendEvent;
+                keepaliveTimer.AutoReset = true;
+                keepaliveTimer.Enabled = true;
+            }
         }
 
         public void SendMeasureOff()
@@ -244,6 +257,8 @@ namespace IRCS_MS.ViewModel
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOffClick);
+            //keepalive_enable = false;
+            keepaliveTimer.Enabled = false;
         }
         public void SendResetOk()
         {
@@ -433,31 +448,37 @@ namespace IRCS_MS.ViewModel
                                     var status = VoipPing();
                                     if (status.Result == "Success")
                                     {
-                                        TopMessage("Reset Button", "Push the Reset button and OK");
-                                        status = VoipPing();
+                                        DialogResult diag = MessageBox.Show("Push the reset button", "Reset Button", MessageBoxButtons.OK);
 
-                                        if (status.Result == "Success")
+                                        if (diag == DialogResult.OK)
                                         {
-                                            //nem lenne szabad pingelnie, ha mégis akkor nem resetelt
-                                            SendResetNok();
-                                        }
-                                        else
-                                        {
-                                            //elment a ping, így jó
-                                            Thread.Sleep(5000);
                                             status = VoipPing();
-                                            if(status.Result == "Success")
-                                            {
-                                                //visszajött, Reset OK
-                                                SendResetOk();
 
+                                            if (status.Result == "Success")
+                                            {
+                                                //nem lenne szabad pingelnie, ha mégis akkor nem resetelt
+                                                SendResetNok();
                                             }
                                             else
                                             {
-                                                //timeout
-                                                SendResetNok();
+                                                //elment a ping, így jó
+                                                Thread.Sleep(3000);
+                                                status = VoipPing();
+                                                if (status.Result == "Success")
+                                                {
+                                                    //visszajött, Reset OK
+                                                    SendResetOk();
+
+                                                }
+                                                else
+                                                {
+                                                    //timeout
+                                                    SendResetNok();
+                                                }
                                             }
                                         }
+
+                                        // TopMessage("Reset Button", "Push the Reset button and OK");
                                     }
                                     else
                                     {
@@ -479,10 +500,11 @@ namespace IRCS_MS.ViewModel
                                         _validateFinished = true;
                                         GeneralMessageCollection.LoopCounter = 0;
                                     }
-                                    else
+                                    else 
                                     {
                                         //when it is not validated yet.   
                                         TimeOutValidator(TimeOutValidatorStates.Reset);
+
                                         MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation("") + MessageRecievedText;
                                         GeneralMessageCollection.LoopCounter++;
                                         _validateFinished = false;
@@ -507,8 +529,9 @@ namespace IRCS_MS.ViewModel
                                 }
 
                                 //if incoming message returns with measure ok or not-> negative logic
-                                if (ValidatorIncomingMessage.ErrorMessageBack(
-                                        ByteMessages.Instance.MeasureModeIncoming[1]) && !this._udp.IsEnabled)
+                                if (IsMeasureModeIncomingReseted
+                                    && ValidatorIncomingMessage.ErrorMessageBack(ByteMessages.Instance.MeasureModeIncoming[1]) 
+                                    && !this._udp.IsEnabled)
                                 {
                                     //TimeOutValidator(TimeOutValidatorStates.Reset);
                                     TimeOutValidator(TimeOutValidatorStates.Stop);
@@ -520,8 +543,8 @@ namespace IRCS_MS.ViewModel
                                 {
                                     _savedMeasureCounter++;
 
-                                    string reportInsertData = XmlFilter.Instance.GetResponseData(
-                                        ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()));
+                                    string reportInsertData = IsMeasureModeIncomingReseted ? XmlFilter.Instance.GetResponseData(
+                                        ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString())) : "";
 
                                     ReportDataCollector.AddToVertical(reportInsertData);
 
@@ -584,15 +607,17 @@ namespace IRCS_MS.ViewModel
                     //throw;
                     MessageBox.Show(GeneralMessageCollection.LogIntoFile(ex));
                 }
+               
             }
         }
 
         private void WasItDisconnect()
         {
-            if (XmlFilter.Instance.GetResponseTranslate
-                                               (ByteMessages.Instance.MeasureModeIncoming[0].ToString(),
-                                               ByteMessages.Instance.MeasureModeIncoming[1].ToString(),
-                                               ByteMessages.Instance.MeasureModeIncoming[2].ToString()) == "Disconnected")
+            if (IsMeasureModeIncomingReseted 
+                && XmlFilter.Instance.GetResponseTranslate(
+                    ByteMessages.Instance.MeasureModeIncoming[0].ToString(),
+                    ByteMessages.Instance.MeasureModeIncoming[1].ToString(),
+                    ByteMessages.Instance.MeasureModeIncoming[2].ToString()) == "Disconnected")
             {
                 SerialPortManager.Instance.Close();
                 SerialPortManager.Instance.Dispose();
@@ -699,7 +724,16 @@ namespace IRCS_MS.ViewModel
 
             return status;
         }
+        private void KeepaliveSendEvent (object source, ElapsedEventArgs e)
+        {
+            string _keepalive = "00KEEPALIVE";
+            byte[] sendbytes = Encoding.ASCII.GetBytes(_keepalive);
 
+            if (CTRL_udpClient != null)
+            {
+                CTRL_udpClient.Send(sendbytes, sendbytes.Length, this._udp.IPADDRESS, this._udp.PORT);
+            }
+        }
         private void OnCTRL_UDPReceive(IAsyncResult res)
         {
             IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23400);
@@ -707,8 +741,11 @@ namespace IRCS_MS.ViewModel
             {
                 Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref voip_endpoint);
                 string receiveString = Encoding.ASCII.GetString(receiveBytes);
-
-                if (receiveString.Contains("T_MS_UDP"))
+                if(receiveString.Contains("KEEPALIVE"))
+                {
+                    UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
+                }
+                else if (receiveString.Contains("T_MS_UDP"))
                 {
                     string testString = "T_MS_UDP";
                     byte[] testArray = Encoding.UTF8.GetBytes(testString);
@@ -720,7 +757,7 @@ namespace IRCS_MS.ViewModel
                     UdpToUartTransmitStop();
 
                 }
-                else if(receiveString.Contains("T_MS_EEPROM_OK_"))
+                else if(receiveString.Contains("T_MS_EEPROM_OK"))
                 {
                     string testString = "T_MS_EEPROM_OK";
                     byte[] testArray = Encoding.UTF8.GetBytes(testString);
@@ -745,6 +782,28 @@ namespace IRCS_MS.ViewModel
                 else if (receiveString.Contains("SENT"))
                 {
                     string testString = "SENT";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("GPIO_OK"))
+                {
+                    string testString = "GPIO_OK";
+                    byte[] testArray = Encoding.UTF8.GetBytes(testString);
+
+                    for (int i = 0; i < testArray.Length; i++)
+                    {
+                        UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
+                    }
+                    UdpToUartTransmitStop();
+                }
+                else if (receiveString.Contains("GPIO_ERROR"))
+                {
+                    string testString = "GPIO_ERROR";
                     byte[] testArray = Encoding.UTF8.GetBytes(testString);
 
                     for (int i = 0; i < testArray.Length; i++)
@@ -843,13 +902,13 @@ namespace IRCS_MS.ViewModel
                 }
                 else
                 {
-                    byte[] testArray = Encoding.UTF8.GetBytes(receiveString);
+                    /*byte[] testArray = Encoding.UTF8.GetBytes(receiveString);
 
                     for (int i = 0; i < testArray.Length; i++)
                     {
                         UdpToUartTransmitStart(Convert.ToChar(testArray[i]));
                     }
-                    UdpToUartTransmitStop();
+                    UdpToUartTransmitStop();*/
                 }
 
                 MessageRecievedText += " Received:" + receiveString.ToString() + "\r\n";
@@ -863,10 +922,12 @@ namespace IRCS_MS.ViewModel
             IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23410);
             if (CTRL_udpClient != null)
             {
-                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref voip_endpoint);
+                Byte[] receiveBytes = Ch1_udpClient.EndReceive(res, ref voip_endpoint);
 
                 Ch1_udpClient.Send(receiveBytes, receiveBytes.Length, voip_endpoint);
             }
+
+            Ch1_udpClient.BeginReceive(new AsyncCallback(Ch1_UDPReceive), null);
 
         }
 
@@ -875,16 +936,31 @@ namespace IRCS_MS.ViewModel
             IPEndPoint voip_endpoint = new IPEndPoint(IPAddress.Parse("192.168.1.122"), 23420);
             if (CTRL_udpClient != null)
             {
-                Byte[] receiveBytes = CTRL_udpClient.EndReceive(res, ref voip_endpoint);
+                Byte[] receiveBytes = Ch2_udpClient.EndReceive(res, ref voip_endpoint);
 
                 Ch2_udpClient.Send(receiveBytes, receiveBytes.Length, voip_endpoint);
             }
-
+            Ch2_udpClient.BeginReceive(new AsyncCallback(Ch2_UDPReceive), null);
         }
         #endregion
 
         #region Properties
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        /// <summary>
+        /// True if measure incoming is reseted (contains valid values).
+        /// False if measure incoming is not reseted (does not contains valid values).
+        /// </summary>
+        private bool IsMeasureModeIncomingReseted
+        {
+            get
+            {
+                return  ByteMessages.Instance.MeasureModeIncoming[0] != null
+                && ByteMessages.Instance.MeasureModeIncoming[1] != null
+                && ByteMessages.Instance.MeasureModeIncoming[2] != null;
+            }
+        }
 
         private void OnPropertyChanged(string propertyName)
         {
@@ -1186,7 +1262,6 @@ namespace IRCS_MS.ViewModel
             }
         }
 
-
         public string CurrentMeasureCount
         {
             get
@@ -1200,7 +1275,6 @@ namespace IRCS_MS.ViewModel
 
             }
         }
-
 
         public string Name
         {

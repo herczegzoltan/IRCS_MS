@@ -12,6 +12,10 @@ namespace IRCS_MS.Helper
 {
     public static class GeneralMessageCollection
     {
+        private static string _getSelectCardTypeName = "";
+        private static string _getCurrentMeasurement = "";
+        private static string _getResponseData = "";
+
         public static string GeneralMessageRecived(string customText)
         {
             return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " + customText + "\n";
@@ -20,15 +24,24 @@ namespace IRCS_MS.Helper
 
         public static string GeneralMessageRecivedTranslation(string customText)
         {
+            if (ByteMessages.Instance.MeasureModeIncoming[0] != null 
+                && ByteMessages.Instance.MeasureModeIncoming[1] != null 
+                && ByteMessages.Instance.MeasureModeIncoming[2] != null)
+            {
+                _getSelectCardTypeName = XmlFilter.Instance.GetSelectedCardTypeName
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString()));
+                _getCurrentMeasurement = XmlFilter.Instance.GetCurrentMeasurement(XmlFilter.Instance.GetSelectedCardTypeName
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString())), LoopCounter);
+                _getResponseData = XmlFilter.Instance.GetResponseData
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()));
+            }
+
             return "Info: " + DateTime.Now.ToString("HH:mm:ss").ToString() + " -> " +
-                              XmlFilter.Instance.GetSelectedCardTypeName
-                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString()))
+                              _getSelectCardTypeName
                               + " -> " +
-                              XmlFilter.Instance.GetCurrentMeasurement(XmlFilter.Instance.GetSelectedCardTypeName
-                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString())), LoopCounter)
+                              _getCurrentMeasurement
                               + " -> " +
-                              XmlFilter.Instance.GetResponseData
-                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()))
+                              _getResponseData
                               + customText + "\n";
         }
 

@@ -72,16 +72,24 @@
     </Card>
     <Card name="AMP100" value="0x06" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Current" value="0x60" />
+        <Measure name = "Error" value="0x61" />
+        <Measure name = "Line" value="0x62" />
     </Card>
     <Card name="AMP100_BR" value="0x09" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Current" value="0x90" />
+        <Measure name = "Error" value="0x91" />
+        <Measure name = "Line" value="0x92" />
+        <Measure name = "Address" value="0x93" />
+        <Measure name = "Uart" value="0x94" />
     </Card>
     <Card name="VoIP2CH" value="0x0b" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "PSU" value="0xb0" />
         <Measure name = "OFF" value="0xb1" />
-        <Measure name = "UDP" value="0xb2" />
-        <Measure name = "Reset" value="0xb3" />
+        <Measure name = "Reset" value="0xb2" />
+        <Measure name = "UDP" value="0xb3" />
         <Measure name = "EEPROM" value="0xb4" />
         <Measure name = "GPIO" value="0xb5" />
         <Measure name = "Fantom" value="0xb6" />

@@ -113,6 +113,14 @@
     <Answer translate="R3ER_Amp3_Spare_Zone_2_error" command="0x05" data="0x8a" eof="0x04"/>
     <Answer translate="R3ER_Amp3_Spare_Zone_3_error" command="0x05" data="0x8b" eof="0x04"/>
     <Answer translate="R3ER_Amp3_Spare_Zone_4_error" command="0x05" data="0x8c" eof="0x04"/>
+    <Answer translate="AMP100_Current_error" command="0x06" data="0xb0" eof="0x04"/>
+    <Answer translate="AMP100_Error_error" command="0x06" data="0xb1" eof="0x04"/>
+    <Answer translate="AMP100_Line_error" command="0x06" data="0xb2" eof="0x04"/>
+    <Answer translate="AMP100BR_Current_error" command="0x09" data="0xc0" eof="0x04"/>
+    <Answer translate="AMP100BR_Error_error" command="0x09" data="0xc1" eof="0x04"/>
+    <Answer translate="AMP100BR_Line_error" command="0x09" data="0xc2" eof="0x04"/>
+    <Answer translate="AMP100BR_Address_error" command="0x09" data="0xc3" eof="0x04"/>
+    <Answer translate="AMP100BR_Uart_error" command="0x09" data="0xc4" eof="0x04"/>
     <Answer translate="VOIP_PSU_error" command="0x0b" data="0x90" eof="0x04"/>
     <Answer translate="VOIP_OFF_error" command="0x0b" data="0x91" eof="0x04"/>
     <Answer translate="VOIP_UDP_error" command="0x0b" data="0x92" eof="0x04"/>

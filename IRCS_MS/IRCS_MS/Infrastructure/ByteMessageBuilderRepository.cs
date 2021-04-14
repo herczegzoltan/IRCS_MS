@@ -17,7 +17,10 @@ namespace IRCS_MS.Infrastructure
 
         public static void ClearArray(string[] strArray)
         {
-            Array.Clear(strArray, 0, strArray.Length);
+            if (strArray != null)
+            {
+                Array.Clear(strArray, 0, strArray.Length);
+            }
         }
 
         public static void SetStrArrayByIndex(string[] byteArray, int index, string value)

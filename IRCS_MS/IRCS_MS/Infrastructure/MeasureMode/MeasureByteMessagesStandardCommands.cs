@@ -23,10 +23,12 @@ namespace IRCS_MS.Infrastructure.MeasureMode
             ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
 
-        public static void MeasureOn()
+        public static void MeasureOn(string cardType, string measureType)
         {
             ResetByteMessages();
             ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 0, XmlFilter.Instance.GetMeasureOn());
+            ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 1, XmlFilter.Instance.GetSelectedCardTypeValue(cardType));
+            ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 2, XmlFilter.Instance.GetSelectedMeasurementValue(cardType, measureType));
             ByteMessageBuilderRepository.SetByteArrayByIndex(ByteMessages.Instance.MeasureModeOutgoing, 4, XmlFilter.Instance.GetEOF());
         }
 
