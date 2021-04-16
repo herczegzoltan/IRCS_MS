@@ -144,5 +144,4 @@
   <Answer translate="VOIP_UDP_Start" command="0x0c" data="0x00" eof="0x04"/>
   <Answer translate="VOIP_UDP_Cont" command="0x0d" data="0x00" eof="0x04"/>
   <Answer translate="VOIP_UDP_Stop" command="0x0e" data="0x00" eof="0x04"/>
-  <Answer translate="VOIP_Reset_Cmd" command="0x0f" data="0x00" eof="0x04"/>
 </RootObjectResponse>

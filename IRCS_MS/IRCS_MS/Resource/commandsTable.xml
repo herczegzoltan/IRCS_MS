@@ -12,8 +12,6 @@
       <Record name = "TimeOutDefault" value ="900000"/>
       <Record name = "UdpToUartStart" value ="0x0b"/>
       <Record name = "UdpToUartStop" value ="0x0c"/>
-      <Record name = "VoipResetOk" value ="0x0d"/>
-      <Record name = "VoipResetNok" value ="0x0e"/>
     </DefaultValues>
     <Card name="Common" value="0x07" iscommon="False" default ="true">
         <Measure name = "AutoMeasure" value="0x01" />
