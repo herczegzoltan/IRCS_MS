@@ -276,7 +276,7 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             }
         }
 
-        private IEnumerable<String> GetMeasureListByCardTypeWithoutAuto(string cardType)
+        public IEnumerable<String> GetMeasureListByCardTypeWithoutAuto(string cardType)
         {
             IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
                               .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
@@ -285,6 +285,7 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
             return measureList;
         }
+
 
         #region Service Mode Filters
 

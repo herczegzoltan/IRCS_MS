@@ -38,13 +38,18 @@ namespace IRCS_MS.Infrastructure
 
         public static void CleanerVertical()
         {
-            VerticalList = null;
             VerticalList = new List<string>() { };
         }
 
         public static List<List<string>> GetTotal()
         {
             return HorizontalList;
+        }
+        
+        public static void ClearAll()
+        {
+            CleanerVertical();
+            HorizontalList = new List<List<string>>() { };
         }
 
         public static List<string> FillColumnForReport(bool IsCommonInclided, string selectedCardType)
@@ -59,13 +64,14 @@ namespace IRCS_MS.Infrastructure
                 temp.Add("");
                 temp.Add("");
                 temp.Add(selectedCardType);
+
                 return temp;
             }
             else
             {
                 temp.Add("");
                 temp.Add("");
-                temp.Add(XmlFilter.Instance.GetDefaultName());
+                temp.Add(selectedCardType);
                 return temp;
             }
         }

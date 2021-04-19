@@ -217,7 +217,7 @@
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   IsChecked="{Binding ReportFieldState}"
-                  IsEnabled="{Binding ReportCheckBoxEnabled}"
+                  IsEnabled="{Binding ReportCheckBoxEnabled}" Checked="CheckBox_Checked"
                   />
 
         <Label Content="{Binding CurrentMeasureCount}"

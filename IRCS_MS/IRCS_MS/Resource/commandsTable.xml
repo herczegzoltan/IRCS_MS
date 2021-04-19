@@ -86,7 +86,6 @@
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "PSU" value="0xb0" />
         <Measure name = "OFF" value="0xb1" />
-        <Measure name = "Reset" value="0xb2" />
         <Measure name = "UDP" value="0xb3" />
         <Measure name = "EEPROM" value="0xb4" />
         <Measure name = "GPIO" value="0xb5" />

@@ -47,5 +47,10 @@ namespace IRCS_MS
             //this.Close();
             //smw.Show();
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
