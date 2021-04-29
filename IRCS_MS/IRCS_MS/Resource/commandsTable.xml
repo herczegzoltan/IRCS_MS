@@ -78,9 +78,9 @@
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "Current" value="0x90" />
         <Measure name = "Error" value="0x91" />
-        <Measure name = "Line" value="0x92" />
-        <Measure name = "Address" value="0x93" />
         <Measure name = "Uart" value="0x94" />
+        <Measure name = "Address" value="0x93" />
+        <Measure name = "Line" value="0x92" />
     </Card>
     <Card name="VoIP2CH" value="0x0b" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
