@@ -22,7 +22,7 @@ namespace IRCS_MS.Helper
         }
         public static int LoopCounter = 0;
 
-        public static string GeneralMessageRecivedTranslation(string customText)
+        public static string GeneralMessageRecivedTranslation(string customText, bool isAutoMeasure = false)
         {
             if (ByteMessages.Instance.MeasureModeIncoming[0] != null 
                 && ByteMessages.Instance.MeasureModeIncoming[1] != null 
@@ -31,7 +31,7 @@ namespace IRCS_MS.Helper
                 _getSelectCardTypeName = XmlFilter.Instance.GetSelectedCardTypeName
                               (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString()));
                 _getCurrentMeasurement = XmlFilter.Instance.GetCurrentMeasurement(XmlFilter.Instance.GetSelectedCardTypeName
-                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString())), LoopCounter);
+                              (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[0].ToString())), LoopCounter, isAutoMeasure);
                 _getResponseData = XmlFilter.Instance.GetResponseData
                               (ConverterRepository.ConvertDecimalStringToHexString(ByteMessages.Instance.MeasureModeIncoming[1].ToString()));
             }

@@ -256,10 +256,10 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleResponseTranslate;
         }
 
-        public string GetCurrentMeasurement(string cardType,int data)
+        public string GetCurrentMeasurement(string cardType, int data, bool isAutoMeasure)
         {
 
-            if (IsCommonIncluded(cardType))
+            if (IsCommonIncluded(cardType) && isAutoMeasure)
             {
                 IEnumerable<String> measureListForDefault = GetMeasureListByCardTypeWithoutAuto(GetDefaultName());
 

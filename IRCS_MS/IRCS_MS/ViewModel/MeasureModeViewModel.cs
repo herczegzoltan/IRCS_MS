@@ -232,7 +232,7 @@ namespace IRCS_MS.ViewModel
             WasItRun = false;
             LoopMessagesArrayToSend();
             UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClick);
-            if (SelectedCardType == "VoIP2CH")
+            if (SelectedCardType == "VoIP3HE_1v2" || SelectedCardType == "VoIP3HE_1v21")
             {
                 UIElementCollectionHelper.UIElementVisibilityUpdater(UIElementStateVariations.MeasureOnAfterClickVoip);
                 TopMessage("Keepalive", "Wait until Voip gets Keepalive!");
@@ -440,7 +440,7 @@ namespace IRCS_MS.ViewModel
                                     if (_incomingMeasureCounter == (XmlFilter.Instance.GetNumberOfExpectedMeasureState(SelectedCardType)) + _commonMeasures)
                                     {
                                         TimeOutValidator(TimeOutValidatorStates.Stop);
-                                        MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation(" -> Validate OK") + MessageRecievedText;
+                                        MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation(" -> Validate OK", true) + MessageRecievedText;
                                         _validateFinished = true;
                                         GeneralMessageCollection.LoopCounter = 0;
                                     }
@@ -463,7 +463,7 @@ namespace IRCS_MS.ViewModel
                                             //when it is not validated yet and AutoMeasure.   
                                             TimeOutValidator(TimeOutValidatorStates.Reset);
                                             _incomingMeasureCounter++;
-                                            MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation("") + MessageRecievedText;
+                                            MessageRecievedText = GeneralMessageCollection.GeneralMessageRecivedTranslation("", true) + MessageRecievedText;
                                             GeneralMessageCollection.LoopCounter++;
                                             _validateFinished = false;
                                         }
