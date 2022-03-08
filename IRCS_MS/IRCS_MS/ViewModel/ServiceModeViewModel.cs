@@ -95,7 +95,6 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                SerialPortManager.Instance.DiscardInBuffer();
                 SerialPortManager.Instance.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
                 SerialPortManager.Instance.Write(dataArray, 0, 1);
             }

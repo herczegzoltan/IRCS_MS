@@ -164,7 +164,7 @@ namespace IRCS_MS.ViewModel
                 try
                 {
                     SerialPortManager.Instance.Open();
-
+                    SerialPortManager.Instance.DiscardInBuffer();
                     if (CTRL_udpClient == null)
                     {
                         CTRL_udpClient = new UdpClient(23400);
@@ -314,7 +314,6 @@ namespace IRCS_MS.ViewModel
             }
             else
             {
-                SerialPortManager.Instance.DiscardInBuffer();
                 SerialPortManager.Instance.DataReceived += new SerialDataReceivedEventHandler(DataRecieved);
                 SerialPortManager.Instance.Write(dataArray, 0, 1);
             }
