@@ -17,6 +17,7 @@
     <Answer translate="Error_sp" command="0x07" data="0x7b" eof="0x04"/>
     <Answer translate="Data_Bus_Error" command="0x07" data="0x7c" eof="0x04"/>
     <Answer translate="Soundbus_Error" command="0x07" data="0x7d" eof="0x04"/>
+    <Answer translate="OwnAddress_Error" command="0x07" data="0x7e" eof="0x04"/>
   
     <Answer translate="Disp_i2c_error" command="0x02" data="0x20" eof="0x04"/>
     <Answer translate="Disp_opto_error" command="0x02" data="0x21" eof="0x04"/>
@@ -38,6 +39,7 @@
     <Answer translate="Intercom_Input sense_error" command="0x03" data="0x34" eof="0x04"/>
     <Answer translate="Intercom_Output load_error" command="0x03" data="0x35" eof="0x04"/>
     <Answer translate="Intercom_Opto_error" command="0x03" data="0x36" eof="0x04"/>
+    <Answer translate="Intercom_Uart_error" command="0x03" data="0x37" eof="0x04"/>
     <Answer translate="CBLB_Line1_error" command="0x04" data="0x40" eof="0x04"/>
     <Answer translate="CBLB_Line2_error" command="0x04" data="0x41" eof="0x04"/>
     <Answer translate="CBLB_Line3_error" command="0x04" data="0x42" eof="0x04"/>
@@ -113,5 +115,38 @@
     <Answer translate="R3ER_Amp3_Spare_Zone_2_error" command="0x05" data="0x8a" eof="0x04"/>
     <Answer translate="R3ER_Amp3_Spare_Zone_3_error" command="0x05" data="0x8b" eof="0x04"/>
     <Answer translate="R3ER_Amp3_Spare_Zone_4_error" command="0x05" data="0x8c" eof="0x04"/>
-    <Answer translate="AMP100_e" command="0x06" data="0x90" eof="0x04"/>
+    <Answer translate="AMP100_Current_error" command="0x06" data="0xb0" eof="0x04"/>
+    <Answer translate="AMP100_Error_error" command="0x06" data="0xb1" eof="0x04"/>
+    <Answer translate="AMP100_Line_error" command="0x06" data="0xb2" eof="0x04"/>
+    <Answer translate="AMP100BR_Current_error" command="0x09" data="0xc0" eof="0x04"/>
+    <Answer translate="AMP100BR_Error_error" command="0x09" data="0xc1" eof="0x04"/>
+    <Answer translate="AMP100BR_Uart_error" command="0x09" data="0xc2" eof="0x04"/>
+    <Answer translate="AMP100BR_Uart_error" command="0x09" data="0xc3" eof="0x04"/>
+    <Answer translate="AMP100BR_Address_error" command="0x09" data="0xc4" eof="0x04"/>
+    <Answer translate="AMP100BR_Line_100_error" command="0x09" data="0xc5" eof="0x04"/>
+    <Answer translate="AMP100BR_Line_70_error" command="0x09" data="0xc6" eof="0x04"/>
+    <Answer translate="VOIP_PSU_error" command="0x0b" data="0x90" eof="0x04"/>
+    <Answer translate="VOIP_OFF_error" command="0x0b" data="0x91" eof="0x04"/>
+    <Answer translate="VOIP_UDP_error" command="0x0b" data="0x92" eof="0x04"/>
+    <Answer translate="VOIP_Reset_error" command="0x0b" data="0x93" eof="0x04"/>
+    <Answer translate="VOIP_EEPROM_error" command="0x0b" data="0x94" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_RTS_error" command="0x0b" data="0x95" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_DCLK_error" command="0x0b" data="0x96" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_DDAT_error" command="0x0b" data="0x97" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_A2_error" command="0x0b" data="0x98" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_A1_error" command="0x0b" data="0x99" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_A0_error" command="0x0b" data="0x9a" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_RX_error" command="0x0b" data="0x9b" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_TX_error" command="0x0b" data="0x9c" eof="0x04"/>
+    <Answer translate="VOIP_Phantom1_error" command="0x0b" data="0x9d" eof="0x04"/>
+    <Answer translate="VOIP_Phantom2_error" command="0x0b" data="0x9e" eof="0x04"/>
+    <Answer translate="VOIP_Ch1_Loop_error" command="0x0b" data="0x9f" eof="0x04"/>
+    <Answer translate="VOIP_Ch2_Loop_error" command="0x0b" data="0xa0" eof="0x04"/>
+    <Answer translate="VOIP_Ch1_Jack_error" command="0x0b" data="0xa1" eof="0x04"/>
+    <Answer translate="VOIP_Ch2_Jack_error" command="0x0b" data="0xa2" eof="0x04"/>
+    <Answer translate="VOIP_GPIO_error" command="0x0b" data="0xa3" eof="0x04"/>
+
+  <Answer translate="VOIP_UDP_Start" command="0xf0" data="0x00" eof="0x04"/>
+  <Answer translate="VOIP_UDP_Cont" command="0xf1" data="0x00" eof="0x04"/>
+  <Answer translate="VOIP_UDP_Stop" command="0xf2" data="0x00" eof="0x04"/>
 </RootObjectResponse>

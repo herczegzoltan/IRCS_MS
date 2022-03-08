@@ -9,7 +9,9 @@
       <Record name = "ServiceOn"  value = "0X06"/>
       <Record name = "ServiceOff" value = "0X07"/>
       <Record name = "Run" value = "0X05"/>
-      <Record name = "TimeOutDefault" value ="90000"/>
+      <Record name = "TimeOutDefault" value ="900000"/>
+      <Record name = "UdpToUartStart" value ="0x0b"/>
+      <Record name = "UdpToUartStop" value ="0x0c"/>
     </DefaultValues>
     <Card name="Common" value="0x07" iscommon="False" default ="true">
         <Measure name = "AutoMeasure" value="0x01" />
@@ -29,7 +31,7 @@
         <Measure name = "Phone Office DC Ohm" value="0x27" />
         <Measure name = "Phone Office Sound"  value="0x28" />
     </Card>
-    <Card name="Intercom" value="0x03" iscommon="True">
+    <Card name="Intercom_1v3" value="0x03" iscommon="True">
         <Measure name = "AutoMeasure" value="0x01" />
         <Measure name = "Line1" value="0x30" />
         <Measure name = "Line2" value="0x31" />
@@ -37,6 +39,16 @@
         <Measure name = "Line4" value="0x33" />
         <Measure name = "Input sense" value="0x34" />
         <Measure name = "Output load" value="0x35" />
+    </Card>
+    <Card name="Intercom_2v1" value="0x0d" iscommon="True">
+      <Measure name = "AutoMeasure" value="0x01" />
+      <Measure name = "Uart Status" value="0x36" />      
+      <Measure name = "Line1" value="0x30" />
+      <Measure name = "Line2" value="0x31" />
+      <Measure name = "Line3" value="0x32" />
+      <Measure name = "Line4" value="0x33" />
+      <Measure name = "Input sense" value="0x34" />
+      <Measure name = "Output load" value="0x35" />
     </Card>
     <Card name="CBLB" value="0x04" iscommon="True">
         <Measure name = "AutoMeasure" value="0x01" />
@@ -68,11 +80,43 @@
     </Card>
     <Card name="AMP100" value="0x06" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Current" value="0x60" />
+        <Measure name = "Error" value="0x61" />
+        <Measure name = "Line" value="0x62" />
     </Card>
     <Card name="AMP100_BR" value="0x09" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "Current" value="0x90" />
+        <Measure name = "Error" value="0x91" />
+        <Measure name = "Uart" value="0x92" />
+        <Measure name = "Address" value="0x93" />
+        <Measure name = "Line_100" value="0x94" />
+        <Measure name = "Line_70" value="0x95" />
     </Card>
-    <Card name="VoIP2CH" value="0x0b" iscommon="False">
+    <Card name="VoIP3HE_1v2" value="0x0b" iscommon="False">
         <Measure name = "AutoMeasure" value="0x01" />
+        <Measure name = "PSU" value="0xb0" />
+        <Measure name = "OFF" value="0xb1" />
+        <Measure name = "UDP" value="0xb3" />
+        <Measure name = "EEPROM" value="0xb4" />
+        <Measure name = "GPIO" value="0xb5" />
+        <Measure name = "Fantom" value="0xb6" />
+        <Measure name = "Ch1_Loop" value="0xb7" />
+        <Measure name = "Ch2_Loop" value="0xb8" />
+        <Measure name = "Ch1_Jack" value="0xb9" />
+        <Measure name = "Ch2_Jack" value="0xba" />
+    </Card>
+    <Card name="VoIP3HE_1v21" value="0x0c" iscommon="False">
+      <Measure name = "AutoMeasure" value="0x01" />
+      <Measure name = "PSU" value="0xb0" />
+      <Measure name = "OFF" value="0xb1" />
+      <Measure name = "UDP" value="0xb3" />
+      <Measure name = "EEPROM" value="0xb4" />
+      <Measure name = "GPIO" value="0xb5" />
+      <Measure name = "Fantom" value="0xb6" />
+      <Measure name = "Ch1_Loop" value="0xb7" />
+      <Measure name = "Ch2_Loop" value="0xb8" />
+      <Measure name = "Ch1_Jack" value="0xb9" />
+      <Measure name = "Ch2_Jack" value="0xba" />
     </Card>
 </RootObject>

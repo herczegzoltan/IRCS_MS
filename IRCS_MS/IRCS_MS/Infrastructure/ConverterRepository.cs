@@ -15,6 +15,13 @@ namespace IRCS_MS.Infrastructure
 
             return byteVal;
         }
+        public static byte ConvertCharToByte(char charByte)
+        {
+            int value = Convert.ToInt32(charByte);
+            byte byteVal = Convert.ToByte(value);
+
+            return byteVal;
+        }
 
         public static string ConvertDecimalStringToHexString(string decimalNumber)
         {

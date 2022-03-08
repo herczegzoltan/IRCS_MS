@@ -130,6 +130,20 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleMeasureOff;
         }
 
+        public string GetResetOk()
+        {
+            string singleResetOk = _rootOject.ValuesCommands.Record.Where(x => x.Name == "VoipResetOk")
+                .Select(n => n.Value).First();
+            return singleResetOk;
+        }
+
+        public string GetResetNok()
+        {
+            string singleResetNok = _rootOject.ValuesCommands.Record.Where(x => x.Name == "VoipResetNok")
+                .Select(n => n.Value).First();
+            return singleResetNok;
+        }
+
         public string GetConnect()
         {
             string singleConnect = _rootOject.ValuesCommands.Record.Where(x => x.Name == "Connect")
@@ -151,6 +165,20 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleRun;
         }
 
+        public string GetUdpUartTransmitStart()
+        {
+            string singleUdpUartTransmit = _rootOject.ValuesCommands.Record.Where(x => x.Name == "UdpToUartStart")
+                .Select(n => n.Value).First();
+            return singleUdpUartTransmit;
+        }
+        public string GetUdpUartTransmitStop()
+        {
+            string singleUdpUartTransmit = _rootOject.ValuesCommands.Record.Where(x => x.Name == "UdpToUartStop")
+                .Select(n => n.Value).First();
+            return singleUdpUartTransmit;
+        }
+
+
         public string GetResponseTranslate(string command, string data, string eof)
         {
             command = ConverterRepository.ConvertDecimalStringToHexString(command);
@@ -161,6 +189,14 @@ namespace IRCS_MS.Infrastructure.XmlHandler
                                              && (string.Equals(x.Eof, eof, StringComparison.OrdinalIgnoreCase)))
                .Select(n => n.Translate).FirstOrDefault();
             return singleResponseTranslate;
+        }
+        public string GetResponseCommand(string command)
+        {
+            command = ConverterRepository.ConvertDecimalStringToHexString(command);
+            string singleResponseTranslateByCommand = _rootOjectResponse.Answer.Where(x => string.Equals(x.Command, command, StringComparison.OrdinalIgnoreCase))
+                                                   .Select(h => h.Translate).FirstOrDefault();
+
+            return singleResponseTranslateByCommand;
         }
 
         public string GetResponseData(string data)
@@ -220,10 +256,10 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             return singleResponseTranslate;
         }
 
-        public string GetCurrentMeasurement(string cardType,int data)
+        public string GetCurrentMeasurement(string cardType, int data, bool isAutoMeasure)
         {
 
-            if (IsCommonIncluded(cardType))
+            if (IsCommonIncluded(cardType) && isAutoMeasure)
             {
                 IEnumerable<String> measureListForDefault = GetMeasureListByCardTypeWithoutAuto(GetDefaultName());
 
@@ -240,7 +276,7 @@ namespace IRCS_MS.Infrastructure.XmlHandler
             }
         }
 
-        private IEnumerable<String> GetMeasureListByCardTypeWithoutAuto(string cardType)
+        public IEnumerable<String> GetMeasureListByCardTypeWithoutAuto(string cardType)
         {
             IEnumerable<IEnumerable<String>> measure = _rootOject.Card.Where(x => string.Equals(x.Name, cardType, StringComparison.OrdinalIgnoreCase))
                               .Select(m => m.Measure.Where(o => o.Name != "AutoMeasure").Select(l => l.Name));
@@ -249,6 +285,7 @@ namespace IRCS_MS.Infrastructure.XmlHandler
 
             return measureList;
         }
+
 
         #region Service Mode Filters
 

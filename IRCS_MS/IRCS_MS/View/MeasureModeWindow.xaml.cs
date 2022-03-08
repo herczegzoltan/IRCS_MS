@@ -28,7 +28,7 @@ namespace IRCS_MS
         public MeasureModeWindow()
         {
             InitializeComponent();
-            //// this.WindowState = WindowState.Maximized;
+            this.WindowState = WindowState.Maximized;
         }
 
         private void OpenServiceModWindow(object sender, RoutedEventArgs e)
@@ -46,6 +46,11 @@ namespace IRCS_MS
             this.Close();
             //this.Close();
             //smw.Show();
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

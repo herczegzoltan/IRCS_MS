@@ -35,16 +35,16 @@ namespace IRCS_MS.ViewModel.Commands
                     UIElementUpdaterHelper(true, false, false, false, false, false, false);
                     break;
                 case UIElementStateVariations.CardAndMeasureSelected:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
+                    UIElementUpdaterHelper(false, true, true, false, false, true, true);
                     break;
                 case UIElementStateVariations.MeasureOffClick:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, false);
+                    UIElementUpdaterHelper(false, true, true, false, false, true, true);
                     break;
                 case UIElementStateVariations.MeasureOnAfterClick:
                     UIElementUpdaterHelper(false, true, false, true, true, false, false);
                     break;
                 case UIElementStateVariations.MeasureOnAfterClickVoip:
-                    UIElementUpdaterHelper(false, true, false, true, true, false, false);
+                    UIElementUpdaterHelper(false, true, false, true, false, false, false);
                     break;
                 default:
                     break;
@@ -66,7 +66,7 @@ namespace IRCS_MS.ViewModel.Commands
             MV.CmdRunIsEnabled = runButton;
             MV.CmdCardTypeIsEnabled = cardAndMeasureType;
             MV.CmdMeasureTypeIsEnabled = cardAndMeasureType;
-            //ReportFieldState = reportField;
+            MV.ReportCheckBoxEnabled = reportField;
         }
     }
 }
