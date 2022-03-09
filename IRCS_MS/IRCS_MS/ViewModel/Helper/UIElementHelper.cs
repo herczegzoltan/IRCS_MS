@@ -23,28 +23,29 @@ namespace IRCS_MS.ViewModel.Commands
             switch (uev)
             {
                 case UIElementStateVariations.ConnectBeforeClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
+                    //--------------------(Con,  Disc,  M_On,  M_Off, Run,   C&M,   Report, SM
+                    UIElementUpdaterHelper(true, false, false, false, false, false, false, false);
                     break;
                 case UIElementStateVariations.ConnectAfterClick:
-                    UIElementUpdaterHelper(false, true, false, false, false, true, false);
+                    UIElementUpdaterHelper(false, true, false, false, false, true, false, true);
                     break;
                 case UIElementStateVariations.DisConnectBase:
-                    UIElementUpdaterHelper(false, true, false, false, false, false, false);
+                    UIElementUpdaterHelper(false, true, false, false, false, false, false, true);
                     break;
                 case UIElementStateVariations.DisConnectClick:
-                    UIElementUpdaterHelper(true, false, false, false, false, false, false);
+                    UIElementUpdaterHelper(true, false, false, false, false, false, false, false);
                     break;
                 case UIElementStateVariations.CardAndMeasureSelected:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, true);
+                    UIElementUpdaterHelper(false, true, true, false, false, true, true, false);
                     break;
                 case UIElementStateVariations.MeasureOffClick:
-                    UIElementUpdaterHelper(false, true, true, false, false, true, true);
+                    UIElementUpdaterHelper(false, true, true, false, false, true, true, false);
                     break;
                 case UIElementStateVariations.MeasureOnAfterClick:
-                    UIElementUpdaterHelper(false, true, false, true, true, false, false);
+                    UIElementUpdaterHelper(false, true, false, true, true, false, false, false);
                     break;
                 case UIElementStateVariations.MeasureOnAfterClickVoip:
-                    UIElementUpdaterHelper(false, true, false, true, false, false, false);
+                    UIElementUpdaterHelper(false, true, false, true, false, false, false, false);
                     break;
                 default:
                     break;
@@ -57,7 +58,7 @@ namespace IRCS_MS.ViewModel.Commands
         public void UIElementUpdaterHelper(
          bool connectButton, bool disconnectButton,
          bool measureOnButton, bool measureOffButton,
-         bool runButton, bool cardAndMeasureType, bool reportField)
+         bool runButton, bool cardAndMeasureType, bool reportField,bool serviceButton)
         {
             MV.CmdConnectIsEnabled = connectButton;
             MV.CmdDisConnectIsEnabled = disconnectButton;
@@ -67,6 +68,7 @@ namespace IRCS_MS.ViewModel.Commands
             MV.CmdCardTypeIsEnabled = cardAndMeasureType;
             MV.CmdMeasureTypeIsEnabled = cardAndMeasureType;
             MV.ReportCheckBoxEnabled = reportField;
+            MV.CmdServiceModeIsEnabled = serviceButton;
         }
     }
 }

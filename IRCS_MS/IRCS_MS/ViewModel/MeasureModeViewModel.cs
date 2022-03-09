@@ -54,6 +54,7 @@ namespace IRCS_MS.ViewModel
         private bool _disConnectButtonIsEnabled;
         private bool _measureOffButtonIsEnabled;
         private bool _measureOnButtonIsEnabled;
+        private bool _serviceModeButtonIsEnabled;
         private bool _cmdCardTypeIsEnabled;
         private bool _cmdMeasureTypeIsEnabled;
         private bool _runButtonIsEnabled;
@@ -1069,7 +1070,7 @@ namespace IRCS_MS.ViewModel
         {
             get
             {
-                return _connectButtonIsEnabled; ;
+                return _connectButtonIsEnabled;
             }
             set
             {
@@ -1082,7 +1083,7 @@ namespace IRCS_MS.ViewModel
         {
             get
             {
-                return _disConnectButtonIsEnabled; ;
+                return _disConnectButtonIsEnabled;
             }
             set
             {
@@ -1095,7 +1096,7 @@ namespace IRCS_MS.ViewModel
         {
             get
             {
-                return _measureOnButtonIsEnabled; ;
+                return _measureOnButtonIsEnabled;
             }
             set
             {
@@ -1109,7 +1110,7 @@ namespace IRCS_MS.ViewModel
 
             get
             {
-                return _measureOffButtonIsEnabled; ;
+                return _measureOffButtonIsEnabled;
             }
             set
             {
@@ -1122,12 +1123,24 @@ namespace IRCS_MS.ViewModel
         {
             get
             {
-                return _runButtonIsEnabled; ;
+                return _runButtonIsEnabled;
             }
             set
             {
                 _runButtonIsEnabled = value;
                 OnPropertyChanged("CmdRunIsEnabled");
+            }
+        }
+        public bool CmdServiceModeIsEnabled
+        {
+            get
+            {
+                return _serviceModeButtonIsEnabled;
+            }
+            set
+            {
+                _serviceModeButtonIsEnabled = value;
+                OnPropertyChanged("CmdServiceModeIsEnabled");
             }
         }
 

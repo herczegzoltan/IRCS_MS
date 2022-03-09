@@ -129,6 +129,7 @@
     <Answer translate="AMP100BR_Errorcode" command="0x09" data="0xc8" eof="0x04"/>
     <Answer translate="AMP100BR_Voltage_error" command="0x09" data="0xc9" eof="0x04"/>
     <Answer translate="AMP100BR_Ntc_error" command="0x09" data="0xca" eof="0x04"/>
+    <Answer translate="AMP100BR_Eprom_error" command="0x09" data="0xcb" eof="0x04"/>
     <Answer translate="VOIP_PSU_error" command="0x0b" data="0x90" eof="0x04"/>
     <Answer translate="VOIP_OFF_error" command="0x0b" data="0x91" eof="0x04"/>
     <Answer translate="VOIP_UDP_error" command="0x0b" data="0x92" eof="0x04"/>
