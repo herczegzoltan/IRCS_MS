@@ -10,11 +10,16 @@ namespace IRCS_MS.ViewModel.Commands
     public class UIElementCollectionHelper
     {
 
-        public MeasureModeViewModel MV { get; set; }
+        public MeasureModeViewModel MMV { get; set; }
+        public ServiceModeViewModel SMV { get; set; }
 
-        public UIElementCollectionHelper(MeasureModeViewModel mv)
+        public UIElementCollectionHelper(MeasureModeViewModel mmv)
         {
-            MV = mv;
+            MMV = mmv;
+        }
+        public UIElementCollectionHelper(ServiceModeViewModel smv)
+        {
+            SMV = smv;
         }
 
         public void UIElementVisibilityUpdater(UIElementStateVariations uev)
@@ -60,15 +65,99 @@ namespace IRCS_MS.ViewModel.Commands
          bool measureOnButton, bool measureOffButton,
          bool runButton, bool cardAndMeasureType, bool reportField,bool serviceButton)
         {
-            MV.CmdConnectIsEnabled = connectButton;
-            MV.CmdDisConnectIsEnabled = disconnectButton;
-            MV.CmdMeasureOnIsEnabled = measureOnButton;
-            MV.CmdMeasureOffIsEnabled = measureOffButton;
-            MV.CmdRunIsEnabled = runButton;
-            MV.CmdCardTypeIsEnabled = cardAndMeasureType;
-            MV.CmdMeasureTypeIsEnabled = cardAndMeasureType;
-            MV.ReportCheckBoxEnabled = reportField;
-            MV.CmdServiceModeIsEnabled = serviceButton;
+            MMV.CmdConnectIsEnabled = connectButton;
+            MMV.CmdDisConnectIsEnabled = disconnectButton;
+            MMV.CmdMeasureOnIsEnabled = measureOnButton;
+            MMV.CmdMeasureOffIsEnabled = measureOffButton;
+            MMV.CmdRunIsEnabled = runButton;
+            MMV.CmdCardTypeIsEnabled = cardAndMeasureType;
+            MMV.CmdMeasureTypeIsEnabled = cardAndMeasureType;
+            MMV.ReportCheckBoxEnabled = reportField;
+            MMV.CmdServiceModeIsEnabled = serviceButton;
+        }
+
+
+        public void SM_UIElementVisibilityUpdater(UIElementStateVariations uev)
+        {
+
+            switch (uev)
+            {
+                case UIElementStateVariations.PsuBeforeClickOn:
+                    
+                    SM_UIElementUpdaterHelper(true, false, false, false, false, false, false, false, false,
+                       false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+                    break;
+                case UIElementStateVariations.PsuAfterClickOn:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, true, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false,  true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.ResetAfterClickOn:
+                    SM_UIElementUpdaterHelper(false, true, false, true, true, true, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.ResetAfterClickOff:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, true, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.SbChannelSelected:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, true, true, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.SmCardSelected:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, true, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.SmFunctionSelected:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, false, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.SmFreqAmpChannelsSelected:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, false, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.AnalChannelsSelectedAfterOn:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, false, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                case UIElementStateVariations.AnalChannelsSelectedAfterOff:
+                    SM_UIElementUpdaterHelper(false, true, true, false, true, false, false, true, false,
+                       false, false, true, false, false, false, false, false, false, false, true, false, false, false, false);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        public void SM_UIElementUpdaterHelper(
+            bool psuOn, bool psuOff, bool resetOn, bool resetOff, bool modulInit, bool sbChannel, bool sbChange, bool card, bool function, bool write, bool read,
+            bool freq, bool freqPref, bool amplitude, bool ampPref, bool channel, bool subChannel, bool fgOn, bool fgOff, bool analChannel, bool analSubChannel, 
+            bool analOn, bool analOff, bool analRun)
+        {
+            SMV.CmdPsuOnIsEnabled = psuOn;
+            SMV.CmdPsuOffIsEnabled = psuOff;
+            SMV.CmdResetOnIsEnabled = resetOn;
+            SMV.CmdResetOffIsEnabled = resetOff;
+            SMV.CmdModulInitIsEnabled = modulInit;
+            SMV.CmdSbComboIsEnabled = sbChannel;
+            SMV.CmdSbChangeIsEnabled = sbChange;
+            SMV.CmdSmCardIsEnabled = card;
+            SMV.CmdSmFunctionIsEnabled = function;
+            SMV.CmdWriteButtonIsEnabled = write;
+            SMV.CmdReadButtonIsEnabled = read;
+            SMV.CmdFgFreqIsEnabled = freq;
+            SMV.CmdFgFreqPrefixIsEnabled = freqPref;
+            SMV.CmdFgAmpIsEnabled = amplitude;
+            SMV.CmdFgAmpPrefixIsEnabled = ampPref;
+            SMV.CmdFgChannelIsEnabled = channel;
+            SMV.CmdFgSubChannelIsEnabled = subChannel;
+            SMV.CmdFgOnIsEnabled = fgOn;
+            SMV.CmdFgOffIsEnabled = fgOff;
+            SMV.CmdAnChannelIsEnabled = analChannel;
+            SMV.CmdAnSubChannelIsEnabled = analSubChannel;
+            SMV.CmdAnOnIsEnabled = analOn;
+            SMV.CmdAnOffIsEnabled = analOff;
+            SMV.CmdAnRunIsEnabled = analRun;
+
         }
     }
 }

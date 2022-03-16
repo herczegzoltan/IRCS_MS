@@ -7,6 +7,16 @@
         CardAndMeasureSelected,
         MeasureOffClick,
         MeasureOnAfterClick,
-        MeasureOnAfterClickVoip
+        MeasureOnAfterClickVoip,
+        PsuBeforeClickOn,
+        PsuAfterClickOn,
+        ResetAfterClickOn,
+        ResetAfterClickOff,
+        SbChannelSelected,
+        SmCardSelected,
+        SmFunctionSelected,
+        SmFreqAmpChannelsSelected,
+        AnalChannelsSelectedAfterOn,
+        AnalChannelsSelectedAfterOff
     }
 }
